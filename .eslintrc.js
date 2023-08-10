@@ -39,6 +39,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'react/display-name': 'off',
     'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {
