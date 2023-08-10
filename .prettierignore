@@ -1,0 +1,7 @@
+node_modules
+.eslintignore
+.prettierignore
+.gitattributes
+*.zip
+*.lock
+.husky/*
