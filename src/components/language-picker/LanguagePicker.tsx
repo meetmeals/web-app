@@ -29,6 +29,12 @@ function LanguagePicker() {
 
   React.useEffect(() => {
     const languageSearchParam = searchParams.get('lang');
+    if (!languageSearchParam) {
+      const currentSearchParams: { [key: string]: string } = {};
+      searchParams.forEach((value, key) => (currentSearchParams[key] = value));
+      setSearchParams({ ...currentSearchParams, lang: i18n.language });
+      return;
+    }
     if (
       languageSearchParam &&
       SUPPORTED_LANGUAGES.includes(languageSearchParam)
@@ -36,7 +42,7 @@ function LanguagePicker() {
       dispatch(setLanguage({ language: languageSearchParam }));
       i18n.changeLanguage(languageSearchParam);
     }
-  }, [dispatch, i18n, searchParams]);
+  }, [dispatch, i18n, searchParams, setSearchParams]);
 
   const languages = SUPPORTED_LANGUAGES.map((lang, idx) => ({
     lang,
