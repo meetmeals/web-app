@@ -1,0 +1,9 @@
+node_modules
+.gitignore
+.gitattributes
+*.md
+.prettier*
+.yarnrc.yml
+build
+.husky
+.vscode
