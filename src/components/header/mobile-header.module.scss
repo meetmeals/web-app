@@ -1,0 +1,54 @@
+@use 'styles/colors.scss' as color;
+
+.header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-width: 35rem;
+  height: 5rem;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0 #9e9e9e;
+
+  &__nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    &__links {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4rem;
+
+      &__a {
+        font-size: 1.6rem;
+        text-decoration: none;
+        color: color.$main-grey;
+
+        &--active {
+          color: color.$main-green;
+        }
+      }
+
+      &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  &__more {
+    margin-right: 2rem;
+  }
+}

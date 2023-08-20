@@ -1,3 +1,9 @@
 {
-  "hello_world": "Hello World"
+  "hello_world": "Hello World",
+  "pages": {
+    "contactUs": "Contact Us",
+    "explore": "Explore",
+    "list": "List",
+    "profile": "Profile"
+  }
 }

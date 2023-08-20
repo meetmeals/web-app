@@ -1,14 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEFAULT_LANGUAGE } from 'utilities/constants';
+
+import { DEFAULT_LANGUAGE, MOBILE_MAX_WIDTH } from 'utilities/constants';
 
 type PlatformState = {
+  isMobile: boolean;
   language: string;
 };
 
-const platformLanguage = localStorage.getItem('platform.language');
+const isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
+const platformLanguage =
+  localStorage.getItem('platform.language') || DEFAULT_LANGUAGE;
 
 const initialState: PlatformState = {
-  language: platformLanguage || DEFAULT_LANGUAGE,
+  isMobile,
+  language: platformLanguage,
 };
 
 const platformSlice = createSlice({
@@ -19,8 +24,11 @@ const platformSlice = createSlice({
       localStorage.setItem('platform.language', action.payload.language);
       state.language = action.payload.language;
     },
+    setMobile: (state, action: PayloadAction<boolean>) => {
+      state.isMobile = action.payload;
+    },
   },
 });
 
-export const setLanguage = platformSlice.actions.setLanguage;
+export const { setLanguage, setMobile } = platformSlice.actions;
 export default platformSlice.reducer;
