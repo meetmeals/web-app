@@ -8,12 +8,14 @@ import { RootState } from 'stores';
 import apiClient from 'utilities/api-client';
 
 import styles from './temp.module.scss';
+import Modal from 'components/modal/Modal';
 
 function Temp() {
   const { countdownTimer, language } = useSelector(
     (state: RootState) => state.platform,
   );
   const { t } = useTranslation();
+  const [isModalopen, setModalOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     async function loadProducts() {
@@ -28,10 +30,16 @@ function Temp() {
       <p>{t('hello_world')}</p>
       <p>Current Language: {language}</p>
       <LanguagePicker />
+      <p onClick={() => setModalOpen(true)}>Open modal</p>
       <CountdownTimer
         seconds={countdownTimer || 120}
         onFinish={() => console.log('Timer stopped')}
       />
+      {isModalopen ? (
+        <Modal title="Test" handleClose={() => setModalOpen(false)}>
+          <p>Hello world</p>
+        </Modal>
+      ) : null}
     </div>
   );
 }
