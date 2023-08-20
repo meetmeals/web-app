@@ -1,3 +1,9 @@
 {
-  "hello_world": "Hallo Wereld"
+  "hello_world": "Hallo Wereld",
+  "pages": {
+    "contactUs": "Neem contact met ons op",
+    "explore": "Ontdekken",
+    "list": "Lijst",
+    "profile": "Profiel"
+  }
 }

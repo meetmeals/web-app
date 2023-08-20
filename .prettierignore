@@ -2,6 +2,7 @@ node_modules
 .eslintignore
 .prettierignore
 .gitattributes
+.gitignore
 *.zip
 *.lock
 .husky/*
@@ -9,3 +10,4 @@ node_modules
 *Dockerfile
 .dockerignore
 *.conf
+*.png
