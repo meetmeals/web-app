@@ -5,5 +5,29 @@
     "explore": "Explore",
     "list": "List",
     "profile": "Profile"
+  },
+  "validations": {
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "emailRequired": "Email is required",
+    "validEmail": "Email must be valid"
+  },
+  "register": {
+    "createAccount": "Create account",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Your first name...",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Your last name...",
+    "email": "Email",
+    "emailPlaceholder": "Your email...",
+    "submit": "Register",
+    "alreadyHaveAccount": "Already have an account?"
+  },
+  "login": {
+    "welcomeBack": "Welcome back",
+    "email": "Email",
+    "emailPlaceholder": "Your email...",
+    "submit": "Login",
+    "noAccount": "Don't have an account yet?"
   }
 }

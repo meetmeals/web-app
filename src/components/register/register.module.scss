@@ -1,0 +1,48 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.form {
+  &__input-label {
+    font-size: 1.6rem;
+    margin: 1rem 0;
+  }
+
+  &__submit {
+    width: 80%;
+    text-align: center;
+    margin: 2rem auto;
+
+    &__btn {
+      width: 100%;
+      height: 4rem;
+      outline: none;
+      border: none;
+      border-radius: layout.$border-radius-7;
+      cursor: pointer;
+
+      &:disabled,
+      &--loading {
+        pointer-events: none;
+      }
+
+      &:enabled {
+        background-color: color.$main-green;
+        color: white;
+      }
+    }
+  }
+}
+
+.already-have-account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__p {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

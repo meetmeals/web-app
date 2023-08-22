@@ -1,0 +1,14 @@
+@use 'styles/colors.scss' as color;
+
+.error-message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  text-align: start;
+  font-size: 1rem;
+  font-weight: 400;
+  color: color.$grey-600;
+  margin-top: 0.8rem;
+  margin-left: 1rem;
+}
