@@ -5,5 +5,29 @@
     "explore": "Ontdekken",
     "list": "Lijst",
     "profile": "Profiel"
+  },
+  "validations": {
+    "firstNameRequired": "Voornaam is verplicht",
+    "lastNameRequired": "Achternaam is vereist",
+    "emailRequired": "E-mail is vereist",
+    "validEmail": "E-mail moet geldig zijn"
+  },
+  "register": {
+    "createAccount": "Account aanmaken",
+    "firstName": "Voornaam",
+    "firstNamePlaceholder": "Jouw voornaam...",
+    "lastName": "Achternaam",
+    "lastNamePlaceholder": "Je achternaam...",
+    "email": "E-mail",
+    "emailPlaceholder": "Jouw email...",
+    "submit": "Register",
+    "alreadyHaveAccount": "Heb je al een account?"
+  },
+  "login": {
+    "welcomeBack": "Welkom terug",
+    "email": "E-mail",
+    "emailPlaceholder": "Jouw email...",
+    "submit": "Log in",
+    "noAccount": "Heeft u nog geen account?"
   }
 }
