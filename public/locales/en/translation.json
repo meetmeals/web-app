@@ -1,33 +1,53 @@
 {
-  "hello_world": "Hello World",
-  "pages": {
-    "contactUs": "Contact Us",
-    "explore": "Explore",
-    "list": "List",
-    "profile": "Profile"
-  },
-  "validations": {
-    "firstNameRequired": "First name is required",
-    "lastNameRequired": "Last name is required",
-    "emailRequired": "Email is required",
-    "validEmail": "Email must be valid"
-  },
-  "register": {
-    "createAccount": "Create account",
-    "firstName": "First name",
-    "firstNamePlaceholder": "Your first name...",
-    "lastName": "Last name",
-    "lastNamePlaceholder": "Your last name...",
-    "email": "Email",
-    "emailPlaceholder": "Your email...",
-    "submit": "Register",
-    "alreadyHaveAccount": "Already have an account?"
-  },
-  "login": {
-    "welcomeBack": "Welcome back",
-    "email": "Email",
-    "emailPlaceholder": "Your email...",
-    "submit": "Login",
-    "noAccount": "Don't have an account yet?"
-  }
+    "app": {
+        "rights": "All rights reserved"
+    },
+    "pages": {
+        "contactUs": "Contact Us",
+        "contactUsDescription": "Need help? We're here to help",
+        "explore": "Explore",
+        "exploreDescription": "Various cooking styles and nationalities",
+        "packages": "Packages",
+        "packagesDescription": "Search through latest coooks",
+        "profile": "Profile"
+    },
+    "validations": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email is required",
+        "validEmail": "Email must be valid"
+    },
+    "register": {
+        "createAccount": "Create account",
+        "firstName": "First name",
+        "firstNamePlaceholder": "Your first name...",
+        "lastName": "Last name",
+        "lastNamePlaceholder": "Your last name...",
+        "email": "Email",
+        "emailPlaceholder": "Your email...",
+        "submit": "Register",
+        "alreadyHaveAccount": "Already have an account?"
+    },
+    "login": {
+        "welcomeBack": "Welcome back",
+        "email": "Email",
+        "emailPlaceholder": "Your email...",
+        "submit": "Login",
+        "noAccount": "Don't have an account yet?"
+    },
+    "nationalities": {
+        "all": "All",
+        "american": "American",
+        "chinese": "Chinese",
+        "indian": "Indian",
+        "indonesian": "Indonesian",
+        "italian": "Italian",
+        "mediterranean": "Mediterranean",
+        "mexican": "Mexican",
+        "moroccan": "Moroccan",
+        "persian": "Persian",
+        "polish": "Polish",
+        "surinamese": "Surinamese",
+        "turkish": "Turkish"
+    }
 }

@@ -1,33 +1,53 @@
 {
-  "hello_world": "Hallo Wereld",
-  "pages": {
-    "contactUs": "Neem contact met ons op",
-    "explore": "Ontdekken",
-    "list": "Lijst",
-    "profile": "Profiel"
-  },
-  "validations": {
-    "firstNameRequired": "Voornaam is verplicht",
-    "lastNameRequired": "Achternaam is vereist",
-    "emailRequired": "E-mail is vereist",
-    "validEmail": "E-mail moet geldig zijn"
-  },
-  "register": {
-    "createAccount": "Account aanmaken",
-    "firstName": "Voornaam",
-    "firstNamePlaceholder": "Jouw voornaam...",
-    "lastName": "Achternaam",
-    "lastNamePlaceholder": "Je achternaam...",
-    "email": "E-mail",
-    "emailPlaceholder": "Jouw email...",
-    "submit": "Register",
-    "alreadyHaveAccount": "Heb je al een account?"
-  },
-  "login": {
-    "welcomeBack": "Welkom terug",
-    "email": "E-mail",
-    "emailPlaceholder": "Jouw email...",
-    "submit": "Log in",
-    "noAccount": "Heeft u nog geen account?"
-  }
+    "app": {
+        "rights": "Alle rechten voorbehouden"
+    },
+    "pages": {
+        "contactUs": "Neem contact met ons op",
+        "contactUsDescription": "Hulp nodig? Wij zijn hier om te helpen",
+        "explore": "Ontdekken",
+        "exploreDescription": "Diverse kookstijlen en nationaliteiten",
+        "packages": "Pakketjes",
+        "packagesDescription": "Zoek door de nieuwste koks",
+        "profile": "Profiel"
+    },
+    "validations": {
+        "firstNameRequired": "Voornaam is verplicht",
+        "lastNameRequired": "Achternaam is vereist",
+        "emailRequired": "E-mail is vereist",
+        "validEmail": "E-mail moet geldig zijn"
+    },
+    "register": {
+        "createAccount": "Account aanmaken",
+        "firstName": "Voornaam",
+        "firstNamePlaceholder": "Jouw voornaam...",
+        "lastName": "Achternaam",
+        "lastNamePlaceholder": "Je achternaam...",
+        "email": "E-mail",
+        "emailPlaceholder": "Jouw email...",
+        "submit": "Register",
+        "alreadyHaveAccount": "Heb je al een account?"
+    },
+    "login": {
+        "welcomeBack": "Welkom terug",
+        "email": "E-mail",
+        "emailPlaceholder": "Jouw email...",
+        "submit": "Log in",
+        "noAccount": "Heeft u nog geen account?"
+    },
+    "nationalities": {
+        "all": "All",
+        "american": "Amerikaans",
+        "chinese": "Chinese",
+        "indian": "Indisch",
+        "indonesian": "Indonesisch",
+        "italian": "Italiaans",
+        "mediterranean": "Middellandse Zee",
+        "mexican": "Mexicaans",
+        "moroccan": "Marokkaans",
+        "persian": "Perzisch",
+        "polish": "Pools",
+        "surinamese": "Surinaams",
+        "turkish": "Turks"
+    }
 }
