@@ -14,29 +14,32 @@ import { useWindowWidth } from 'utilities/hooks';
 import { setMobile } from 'stores/platform';
 
 function App() {
-  const dispatch = useDispatch();
-  const windowWidth = useWindowWidth();
-  dispatch(setMobile(windowWidth <= MOBILE_MAX_WIDTH));
+    const dispatch = useDispatch();
+    const windowWidth = useWindowWidth();
+    dispatch(setMobile(windowWidth <= MOBILE_MAX_WIDTH));
 
-  return (
-    <>
-      <Header />
-      <Layout>
-        <Routes>
-          <Route
-            path={pages.explore.path}
-            element={<Navigate to={pages.explore.alias} replace />}
-          />
-          <Route path={pages.explore.alias} element={<Explore />} />
-          <Route path={pages.list.path} element={<List />} />
-          <Route path={pages.profile.path} element={<Profile />} />
-          <Route path={pages.contactUs.path} element={<ContactUs />} />
-          <Route path="/temp" element={<Temp />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <Layout>
+                <Routes>
+                    <Route
+                        path={pages.explore.path}
+                        element={<Navigate to={pages.explore.alias!} replace />}
+                    />
+                    <Route path={pages.explore.alias} element={<Explore />} />
+                    <Route path={pages.packages.path} element={<List />} />
+                    <Route path={pages.profile.path} element={<Profile />} />
+                    <Route
+                        path={pages.contactUs.path}
+                        element={<ContactUs />}
+                    />
+                    <Route path="/temp" element={<Temp />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Layout>
+        </>
+    );
 }
 
 export default App;
