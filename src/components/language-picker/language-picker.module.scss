@@ -1,55 +1,67 @@
 @use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
 @use 'styles/media.scss' as media;
 
 .dropdown {
-  position: relative;
-  display: inline-block;
-  color: color.$main-green;
+    position: relative;
+    display: inline-block;
+    color: color.$main-green;
 
-  &__content {
-    border-radius: 10px;
-    padding: 0.4rem 0;
-    overflow: hidden;
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    min-width: 8rem;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    &__content {
+        border-radius: layout.$border-radius-10;
+        padding: 0.4rem 0;
+        overflow: hidden;
+        display: none;
+        position: absolute;
+        background-color: color.$main-white;
+        min-width: 8rem;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
 
-    &__a {
-      cursor: pointer;
-      color: color.$main-green;
-      text-decoration: none;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
+        @include media.mobile {
+            min-width: 6rem;
+            top: 2rem;
+            left: 0.5rem;
+            background-color: color.$secondary-white;
+        }
 
-      &:hover {
-        background-color: color.$lighter-main-green;
-      }
+        &__a {
+            cursor: pointer;
+            color: color.$main-green;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+
+            &:hover {
+                background-color: color.$lighter-main-green;
+            }
+        }
+
+        &__span {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        &--visible {
+            display: block;
+        }
     }
 
-    &__span {
-      font-size: 1rem;
-      font-weight: 700;
+    &__button-container {
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.2rem;
+        padding-left: 0.8rem;
+
+        @include media.mobile {
+            font-size: 1rem;
+        }
     }
 
-    &--visible {
-      display: block;
+    &--green {
+        color: color.$main-white;
     }
-  }
-
-  &__button-container {
-    cursor: pointer;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1.2rem;
-    padding-left: 0.8rem;
-
-    @include media.mobile {
-      font-size: 1rem;
-    }
-  }
 }

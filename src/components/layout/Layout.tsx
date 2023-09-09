@@ -6,17 +6,17 @@ import MobileLayout from './MobileLayout';
 import DesktopLayout from './DesktopLayout';
 
 type LayoutProps = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
 function Layout(props: LayoutProps) {
-  const { isMobile } = useSelector((state: RootState) => state.platform);
+    const { isMobile } = useSelector((state: RootState) => state.platform);
 
-  return isMobile ? (
-    <MobileLayout>{props.children}</MobileLayout>
-  ) : (
-    <DesktopLayout>{props.children}</DesktopLayout>
-  );
+    return isMobile ? (
+        <MobileLayout>{props.children}</MobileLayout>
+    ) : (
+        <DesktopLayout>{props.children}</DesktopLayout>
+    );
 }
 
 export default Layout;

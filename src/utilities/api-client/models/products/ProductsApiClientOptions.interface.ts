@@ -3,7 +3,7 @@
  * @description Interface to wrap all product-related URLs
  */
 export interface ProductsApiClientEndpoints {
-  fetchProducts: string;
+    fetchProducts: string;
 }
 
 /**
@@ -11,6 +11,6 @@ export interface ProductsApiClientEndpoints {
  * @description Interface to wrap Products API client options
  */
 export interface ProductsApiClientOptions {
-  mockDelay?: number;
-  endpoints: ProductsApiClientEndpoints;
+    mockDelay?: number;
+    endpoints: ProductsApiClientEndpoints;
 }

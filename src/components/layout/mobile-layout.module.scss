@@ -1,0 +1,10 @@
+.container {
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    width: 100%;
+
+    &--mobile-drawer-open {
+        z-index: -1;
+    }
+}

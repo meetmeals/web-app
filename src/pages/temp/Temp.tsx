@@ -9,33 +9,34 @@ import apiClient from 'utilities/api-client';
 
 import styles from './temp.module.scss';
 import LoginRegisterWrapper from 'components/login-register-wrapper/LoginRegisterWrapper';
+import { ThemeEnum } from 'models/common';
 
 function Temp() {
-  const { countdownTimer, language } = useSelector(
-    (state: RootState) => state.platform,
-  );
-  const { t } = useTranslation();
+    const { countdownTimer, language } = useSelector(
+        (state: RootState) => state.platform,
+    );
+    const { t } = useTranslation();
 
-  React.useEffect(() => {
-    async function loadProducts() {
-      const products = await apiClient.products.fetchProducts();
-      console.log(products);
-    }
-    loadProducts();
-  }, []);
+    React.useEffect(() => {
+        async function loadProducts() {
+            const products = await apiClient.products.fetchProducts();
+            console.log(products);
+        }
+        loadProducts();
+    }, []);
 
-  return (
-    <div className={styles.container}>
-      <p>{t('hello_world')}</p>
-      <p>Current Language: {language}</p>
-      <LanguagePicker />
-      <CountdownTimer
-        seconds={countdownTimer || 120}
-        onFinish={() => console.log('Timer stopped')}
-      />
-      <LoginRegisterWrapper />
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <p>{t('hello_world')}</p>
+            <p>Current Language: {language}</p>
+            <LanguagePicker theme={ThemeEnum.WHITE} />
+            <CountdownTimer
+                seconds={countdownTimer || 120}
+                onFinish={() => console.log('Timer stopped')}
+            />
+            <LoginRegisterWrapper />
+        </div>
+    );
 }
 
 export default Temp;

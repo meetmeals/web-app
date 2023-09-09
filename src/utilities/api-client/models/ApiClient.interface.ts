@@ -5,5 +5,5 @@ import { ProductsApiClientInterface } from './products';
  * @description The interface to wrap all API client modules
  */
 export interface ApiClientInterface {
-  products: ProductsApiClientInterface;
+    products: ProductsApiClientInterface;
 }

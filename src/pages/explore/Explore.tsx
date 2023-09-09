@@ -1,9 +1,11 @@
+import NationalityPicker from 'components/nationality-picker';
+
 function Explore() {
-  return (
-    <>
-      <h2>Explore</h2>
-    </>
-  );
+    return (
+        <>
+            <NationalityPicker />
+        </>
+    );
 }
 
 export default Explore;
