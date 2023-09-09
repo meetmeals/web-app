@@ -6,15 +6,15 @@ import DesktopModal from './DesktopModal';
 import MobileModal from './MobileModal';
 
 type ModalProps = {
-  children: ReactNode;
-  title: string;
-  handleClose: () => void;
+    children: ReactNode;
+    title: string;
+    handleClose: () => void;
 };
 
 function Modal(props: ModalProps) {
-  const { isMobile } = useSelector((state: RootState) => state.platform);
+    const { isMobile } = useSelector((state: RootState) => state.platform);
 
-  return isMobile ? <MobileModal {...props} /> : <DesktopModal {...props} />;
+    return isMobile ? <MobileModal {...props} /> : <DesktopModal {...props} />;
 }
 
 export default Modal;
