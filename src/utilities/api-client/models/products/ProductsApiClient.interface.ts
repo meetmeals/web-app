@@ -5,5 +5,5 @@ import { ProductInterface } from 'models/products';
  * @description Interface for the Products API client module
  */
 export interface ProductsApiClientInterface {
-  fetchProducts: () => Promise<ProductInterface[]>;
+    fetchProducts: () => Promise<ProductInterface[]>;
 }
