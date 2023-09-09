@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Dispatch, SetStateAction, useRef, useState, TouchEvent } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import LanguagePicker from 'components/language-picker';
 import { ThemeEnum } from 'models/common';
 import { setMobileDrawerOpen } from 'stores/platform';
 import { pages } from 'utilities/constants';
-import { useClickOutside, useCurrentPage } from 'utilities/hooks';
+import { useCurrentPage } from 'utilities/hooks';
 
 import styles from './mobile-menu-drawer.module.scss';
 
@@ -18,33 +18,11 @@ type MobileMenuDrawerProps = {
     setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const MIN_SWIPE_DISTANCE = 30;
-
 function MobileMenuDrawer(props: MobileMenuDrawerProps) {
     const currentPage = useCurrentPage();
-    const [touchStart, setTouchStart] = useState<number>(0);
-    const [touchEnd, setTouchEnd] = useState<number>(0);
-
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    useClickOutside(wrapperRef, () => props.setOpen(false));
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    function onTouchStart(e: TouchEvent<HTMLDivElement>) {
-        setTouchEnd(0);
-        setTouchStart(e.targetTouches[0].clientX);
-    }
-    function onTouchMove(e: TouchEvent<HTMLDivElement>) {
-        setTouchEnd(e.targetTouches[0].clientX);
-    }
-    function onTouchEnd() {
-        if (!touchStart || !touchEnd) return;
-        const distance = touchStart - touchEnd;
-        const isSwipeToRight = distance < -MIN_SWIPE_DISTANCE;
-        if (isSwipeToRight) props.setOpen(false);
-        dispatch(setMobileDrawerOpen({ isMobileDrawerOpen: false }));
-    }
 
     function handleNavItemClick() {
         props.setOpen(false);
@@ -56,10 +34,6 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
             className={classNames(styles.container, {
                 [styles['container--open']]: props.isOpen,
             })}
-            ref={wrapperRef}
-            onTouchMove={onTouchMove}
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
         >
             <img
                 alt="Close menu"
