@@ -1,6 +1,7 @@
 {
     "app": {
-        "rights": "Alle rechten voorbehouden"
+        "rights": "Alle rechten voorbehouden",
+        "logout": "Uitloggen"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",

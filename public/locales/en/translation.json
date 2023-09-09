@@ -1,6 +1,7 @@
 {
     "app": {
-        "rights": "All rights reserved"
+        "rights": "All rights reserved",
+        "logout": "Logout"
     },
     "pages": {
         "contactUs": "Contact Us",
