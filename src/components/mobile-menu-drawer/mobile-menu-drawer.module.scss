@@ -78,6 +78,11 @@
                 border-radius: layout.$border-radius-5;
                 font-size: 1.6rem;
                 font-weight: bold;
+
+                &--logout {
+                    background-color: color.$main-orange;
+                    color: color.$main-white;
+                }
             }
         }
     }
