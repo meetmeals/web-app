@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FaRegWindowClose } from 'react-icons/fa';
 
 import { useClickOutside } from 'utilities/hooks';
 
@@ -26,7 +25,11 @@ function DesktopModal(props: DesktopModalProps) {
                         className={styles['modal__header__close-btn']}
                         onClick={props.handleClose}
                     >
-                        <FaRegWindowClose size="22px" />
+                        <img
+                            alt="Close menu"
+                            className={styles['modal__header__close-btn__img']}
+                            src="/img/icons/common/close-menu.svg"
+                        />
                     </span>
                 </section>
                 <section className={styles['modal__body']}>

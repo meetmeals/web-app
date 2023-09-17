@@ -8,14 +8,19 @@ import {
     FormikValues,
 } from 'formik';
 import { TFunction } from 'i18next';
-import { FaInbox } from 'react-icons/fa';
 import React from 'react';
+import { FaInbox } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 
 import { CustomErrorMessage } from 'components/error-message';
 import InputWithIcon from 'components/input-with-icon';
 import LoadingSpinner from 'components/loading-spinner';
+import { AuthStep } from 'models/common';
+import { LoginResponseInterface } from 'models/auth';
+import { setAuthenticating, setTempEmail } from 'stores/user';
+import apiClient from 'utilities/api-client';
 
 import styles from './login.module.scss';
 
@@ -33,22 +38,33 @@ function getLoginSchema(t: TFunction) {
     });
 }
 
-type LoginProps = {
-    onRegisterClicked: () => void;
-};
-
-function Login(props: LoginProps) {
+function Login() {
     const [isLoading, setLoading] = React.useState<boolean>(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [errorMessage, setErrorMessage] = React.useState<string>('');
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-    function handleLogin(values: LoginValuesInterface) {
+    async function handleLogin(values: LoginValuesInterface) {
         setLoading(true);
-        console.log(values);
-        setTimeout(() => {
-            setLoading(false);
-        }, 5000);
+        setErrorMessage('');
+        const loginResponse: LoginResponseInterface =
+            await apiClient.auth.login({ username: values.email });
+        setLoading(false);
+        switch (loginResponse.status) {
+            case 200:
+                dispatch(setTempEmail({ tempEmail: values.email }));
+                dispatch(setAuthenticating({ authStep: AuthStep.OTP }));
+                break;
+            case 400:
+                setErrorMessage(t('errors.user.notFound') as string);
+                break;
+            case 422:
+                setErrorMessage(t('errors.user.invalidEmail') as string);
+                break;
+            default:
+                setErrorMessage(t('errors.server.internal') as string);
+                break;
+        }
     }
 
     let submitBtnContent: JSX.Element | string;
@@ -91,7 +107,9 @@ function Login(props: LoginProps) {
                                     }) => (
                                         <div>
                                             <InputWithIcon
-                                                icon={<FaInbox />}
+                                                icon={
+                                                    <FaInbox color="#015248" />
+                                                }
                                                 type="text"
                                                 placeholder={t(
                                                     'login.emailPlaceholder',
@@ -108,11 +126,14 @@ function Login(props: LoginProps) {
                                     )}
                                 </ErrorMessage>
                             </div>
-                            {errorMessage && (
-                                <div className={styles['form__error']}>
-                                    {errorMessage}
-                                </div>
-                            )}
+                            <div
+                                className={classNames(styles['form__error'], {
+                                    [styles['form__error--visible']]:
+                                        errorMessage,
+                                })}
+                            >
+                                {errorMessage}
+                            </div>
                             <div className={styles['form__submit']}>
                                 <button
                                     type="submit"
@@ -135,7 +156,11 @@ function Login(props: LoginProps) {
             </Formik>
             <div className={styles['no-account']}>
                 <p
-                    onClick={props.onRegisterClicked}
+                    onClick={() =>
+                        dispatch(
+                            setAuthenticating({ authStep: AuthStep.REGISTER }),
+                        )
+                    }
                     className={styles['no-account__p']}
                 >
                     {t('login.noAccount')}

@@ -65,6 +65,11 @@
             color: color.$secondary-white;
             font-weight: bold;
             cursor: pointer;
+
+            &--logout {
+                background-color: color.$main-orange;
+                color: color.$main-white;
+            }
         }
     }
 }

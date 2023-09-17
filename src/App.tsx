@@ -8,7 +8,6 @@ import Explore from 'pages/explore/Explore';
 import List from 'pages/list/List';
 import NotFound from 'pages/not-found/NotFound';
 import Profile from 'pages/profile/Profile';
-import Temp from 'pages/temp';
 import { MOBILE_MAX_WIDTH, pages } from 'utilities/constants';
 import { useWindowWidth } from 'utilities/hooks';
 import { setMobile } from 'stores/platform';
@@ -34,7 +33,6 @@ function App() {
                         path={pages.contactUs.path}
                         element={<ContactUs />}
                     />
-                    <Route path="/temp" element={<Temp />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Layout>

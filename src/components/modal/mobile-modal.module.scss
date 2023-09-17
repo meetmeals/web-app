@@ -1,4 +1,5 @@
 @use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
 
 .container {
     position: fixed;
@@ -12,25 +13,35 @@
 .modal {
     position: fixed;
     background: white;
-    width: 60%;
+    width: 80%;
     height: auto;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 1rem 2rem;
+    border-radius: layout.$border-radius-10;
 
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        padding: 2rem 3rem;
+        background-color: color.$main-green;
+        border-top-left-radius: layout.$border-radius-10;
+        border-top-right-radius: layout.$border-radius-10;
+        color: color.$main-white;
 
         &__title {
-            color: color.$main-green;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            font-weight: bold;
         }
         &__close-btn {
             color: red;
+
+            &__img {
+                width: 2rem;
+                height: 2rem;
+            }
         }
     }
 

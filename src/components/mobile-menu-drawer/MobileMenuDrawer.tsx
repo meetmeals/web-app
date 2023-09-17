@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import AppRightsVersion from 'components/app-rights-version';
 import LanguagePicker from 'components/language-picker';
-import { ThemeEnum } from 'models/common';
+import { AuthStep, ThemeEnum } from 'models/common';
+import { RootState } from 'stores';
 import { setMobileDrawerOpen } from 'stores/platform';
+import { setAuthenticating, setLoggedIn } from 'stores/user';
 import { pages } from 'utilities/constants';
 import { useCurrentPage } from 'utilities/hooks';
 
@@ -19,12 +21,13 @@ type MobileMenuDrawerProps = {
 };
 
 function MobileMenuDrawer(props: MobileMenuDrawerProps) {
+    const { isLoggedIn } = useSelector((state: RootState) => state.user);
     const currentPage = useCurrentPage();
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    function handleNavItemClick() {
+    function handleMenuClose() {
         props.setOpen(false);
         dispatch(setMobileDrawerOpen({ isMobileDrawerOpen: false }));
     }
@@ -70,7 +73,7 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                             className={
                                 styles['container__content__nav__item__a']
                             }
-                            onClick={() => handleNavItemClick()}
+                            onClick={() => handleMenuClose()}
                         >
                             <span
                                 className={
@@ -107,7 +110,7 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                             className={
                                 styles['container__content__nav__item__a']
                             }
-                            onClick={() => handleNavItemClick()}
+                            onClick={() => handleMenuClose()}
                         >
                             <span
                                 className={
@@ -145,7 +148,7 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                             className={
                                 styles['container__content__nav__item__a']
                             }
-                            onClick={() => handleNavItemClick()}
+                            onClick={() => handleMenuClose()}
                         >
                             <span
                                 className={
@@ -170,8 +173,28 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                 </section>
                 <section className={styles['container__content__more']}>
                     <LanguagePicker theme={ThemeEnum.GREEN} />
-                    <p className={styles['container__content__more__login']}>
-                        {t('login.submit')}
+                    <p
+                        className={classNames(
+                            styles['container__content__more__login'],
+                            {
+                                [styles[
+                                    'container__content__more__login--logout'
+                                ]]: isLoggedIn,
+                            },
+                        )}
+                        onClick={() => {
+                            handleMenuClose();
+                            if (isLoggedIn)
+                                dispatch(setLoggedIn({ isLoggedIn: false }));
+                            else
+                                dispatch(
+                                    setAuthenticating({
+                                        authStep: AuthStep.LOGIN,
+                                    }),
+                                );
+                        }}
+                    >
+                        {isLoggedIn ? t('app.logout') : t('login.submit')}
                     </p>
                 </section>
             </div>

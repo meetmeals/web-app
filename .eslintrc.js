@@ -43,6 +43,15 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-misused-promises': [
+            2,
+            {
+                checksVoidReturn: {
+                    attributes: false,
+                },
+            },
+        ],
+        'no-case-declarations': 'off',
     },
     settings: {
         react: {

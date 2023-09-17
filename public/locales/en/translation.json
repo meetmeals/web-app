@@ -1,7 +1,9 @@
 {
     "app": {
         "rights": "All rights reserved",
-        "logout": "Logout"
+        "logout": "Logout",
+        "submit": "Submit",
+        "resend": "Resend"
     },
     "pages": {
         "contactUs": "Contact Us",
@@ -50,5 +52,24 @@
         "polish": "Polish",
         "surinamese": "Surinamese",
         "turkish": "Turkish"
+    },
+    "otp": {
+        "title": "Please enter the code sent to your Email",
+        "placeholder": "Verification Code",
+        "resendIn": "Resend in",
+        "changeEmail": "Wrong Email?",
+        "resend": "Resend Code"
+    },
+    "errors": {
+        "user": {
+            "notFound": "No user with this Email found",
+            "invalidEmail": "Please provide a valid Email address",
+            "alreadyExists": "User already exists. Please log in",
+            "invalidForm": "Please fill in the required fields",
+            "invalidOtp": "Provided OTP code is not valid"
+        },
+        "server": {
+            "internal": "Something went wrong :( Please try again later"
+        }
     }
 }
