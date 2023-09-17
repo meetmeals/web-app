@@ -1,17 +1,22 @@
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import LanguagePicker from 'components/language-picker';
-import { ThemeEnum } from 'models/common';
+import { AuthStep, ThemeEnum } from 'models/common';
+import { RootState } from 'stores';
+import { setAuthenticating, setLoggedIn } from 'stores/user';
 import { pages } from 'utilities/constants';
 import { useCurrentPage } from 'utilities/hooks';
 
 import styles from './desktop-header.module.scss';
 
 function DesktopHeader() {
+    const { isLoggedIn } = useSelector((state: RootState) => state.user);
     const currentPage = useCurrentPage();
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     return (
         <header className={styles.header}>
@@ -55,8 +60,20 @@ function DesktopHeader() {
             </nav>
             <section className={styles['header__more']}>
                 <LanguagePicker theme={ThemeEnum.WHITE} />
-                <button className={styles['header__more__login-btn']}>
-                    {t('login.submit')}
+                <button
+                    className={classNames(styles['header__more__login-btn'], {
+                        [styles['header__more__login-btn--logout']]: isLoggedIn,
+                    })}
+                    onClick={() => {
+                        if (isLoggedIn)
+                            dispatch(setLoggedIn({ isLoggedIn: false }));
+                        else
+                            dispatch(
+                                setAuthenticating({ authStep: AuthStep.LOGIN }),
+                            );
+                    }}
+                >
+                    {isLoggedIn ? t('app.logout') : t('login.submit')}
                 </button>
             </section>
         </header>
