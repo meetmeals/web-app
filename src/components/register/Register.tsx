@@ -8,14 +8,19 @@ import {
     FormikValues,
 } from 'formik';
 import { TFunction } from 'i18next';
-import { FaInbox, FaUser } from 'react-icons/fa';
 import React from 'react';
+import { FaInbox, FaUser } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 
 import { CustomErrorMessage } from 'components/error-message';
 import InputWithIcon from 'components/input-with-icon';
 import LoadingSpinner from 'components/loading-spinner';
+import { RegisterResponseInterface } from 'models/auth';
+import { AuthStep } from 'models/common';
+import { setAuthenticating, setTempEmail } from 'stores/user';
+import apiClient from 'utilities/api-client';
 
 import styles from './register.module.scss';
 
@@ -45,22 +50,37 @@ function getRegisterSchema(t: TFunction) {
     });
 }
 
-type RegisterProps = {
-    onLoginClicked: () => void;
-};
-
-function Register(props: RegisterProps) {
+function Register() {
     const [isLoading, setLoading] = React.useState<boolean>(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [errorMessage, setErrorMessage] = React.useState<string>('');
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-    function handleRegister(values: RegisterValuesInterface) {
+    async function handleRegister(values: RegisterValuesInterface) {
         setLoading(true);
-        console.log(values);
-        setTimeout(() => {
-            setLoading(false);
-        }, 5000);
+        setErrorMessage('');
+        const registerResponse: RegisterResponseInterface =
+            await apiClient.auth.register({
+                fName: values.firstName,
+                lName: values.lastName,
+                username: values.email,
+            });
+        setLoading(false);
+        switch (registerResponse.status) {
+            case 200:
+                dispatch(setTempEmail({ tempEmail: values.email }));
+                dispatch(setAuthenticating({ authStep: AuthStep.OTP }));
+                break;
+            case 400:
+                setErrorMessage(t('errors.user.alreadyExists') as string);
+                break;
+            case 422:
+                setErrorMessage(t('errors.user.invalidForm') as string);
+                break;
+            default:
+                setErrorMessage(t('errors.server.internal') as string);
+                break;
+        }
     }
 
     let submitBtnContent: JSX.Element | string;
@@ -105,7 +125,9 @@ function Register(props: RegisterProps) {
                                     }) => (
                                         <div>
                                             <InputWithIcon
-                                                icon={<FaUser />}
+                                                icon={
+                                                    <FaUser color="#015248" />
+                                                }
                                                 type="text"
                                                 placeholder={t(
                                                     'register.firstNamePlaceholder',
@@ -137,7 +159,9 @@ function Register(props: RegisterProps) {
                                     }) => (
                                         <div>
                                             <InputWithIcon
-                                                icon={<FaUser />}
+                                                icon={
+                                                    <FaUser color="#015248" />
+                                                }
                                                 type="text"
                                                 placeholder={t(
                                                     'register.lastNamePlaceholder',
@@ -169,7 +193,9 @@ function Register(props: RegisterProps) {
                                     }) => (
                                         <div>
                                             <InputWithIcon
-                                                icon={<FaInbox />}
+                                                icon={
+                                                    <FaInbox color="#015248" />
+                                                }
                                                 type="text"
                                                 placeholder={t(
                                                     'register.emailPlaceholder',
@@ -186,11 +212,14 @@ function Register(props: RegisterProps) {
                                     )}
                                 </ErrorMessage>
                             </div>
-                            {errorMessage && (
-                                <div className={styles['form__error']}>
-                                    {errorMessage}
-                                </div>
-                            )}
+                            <div
+                                className={classNames(styles['form__error'], {
+                                    [styles['form__error--visible']]:
+                                        errorMessage,
+                                })}
+                            >
+                                {errorMessage}
+                            </div>
                             <div className={styles['form__submit']}>
                                 <button
                                     type="submit"
@@ -213,7 +242,11 @@ function Register(props: RegisterProps) {
             </Formik>
             <div className={styles['already-have-account']}>
                 <p
-                    onClick={props.onLoginClicked}
+                    onClick={() =>
+                        dispatch(
+                            setAuthenticating({ authStep: AuthStep.LOGIN }),
+                        )
+                    }
                     className={styles['already-have-account__p']}
                 >
                     {t('register.alreadyHaveAccount')}
