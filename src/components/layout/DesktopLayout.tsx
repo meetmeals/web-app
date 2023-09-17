@@ -1,4 +1,10 @@
 import { ReactNode } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import AuthWrapper from 'components/auth-wrapper';
+import { AuthStep } from 'models/common';
+import { RootState } from 'stores';
+import { setAuthenticating } from 'stores/user';
 
 import styles from './desktop-layout.module.scss';
 
@@ -7,7 +13,27 @@ type DesktopLayoutProps = {
 };
 
 function DesktopLayout(props: DesktopLayoutProps) {
-    return <div className={styles.container}>{props.children}</div>;
+    const { authenticationStep } = useSelector(
+        (state: RootState) => state.user,
+    );
+
+    const dispatch = useDispatch();
+
+    return (
+        <div className={styles.container}>
+            {authenticationStep !== AuthStep.NONE && (
+                <AuthWrapper
+                    step={authenticationStep}
+                    onClose={() => {
+                        dispatch(
+                            setAuthenticating({ authStep: AuthStep.NONE }),
+                        );
+                    }}
+                />
+            )}
+            {props.children}
+        </div>
+    );
 }
 
 export default DesktopLayout;
