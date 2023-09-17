@@ -1,7 +1,9 @@
 {
     "app": {
         "rights": "Alle rechten voorbehouden",
-        "logout": "Uitloggen"
+        "logout": "Uitloggen",
+        "submit": "Indienen",
+        "resend": "Opnieuw versturen"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
@@ -50,5 +52,24 @@
         "polish": "Pools",
         "surinamese": "Surinaams",
         "turkish": "Turks"
+    },
+    "otp": {
+        "title": "Voer de code in die naar uw e-mailadres is verzonden",
+        "placeholder": "Verificatie code",
+        "resendIn": "Opnieuw insturen",
+        "changeEmail": "Foute email?",
+        "resend": "Code nogmaals versturen"
+    },
+    "errors": {
+        "user": {
+            "notFound": "Geen gebruiker met dit e-mailadres gevonden",
+            "invalidEmail": "Geef alstublieft een geldig email adres",
+            "alreadyExists": "Gebruiker bestaat al. Log alsjeblieft in",
+            "invalidForm": "Vul de verplichte velden in",
+            "invalidOtp": "Opgegeven OTP-code is niet geldig"
+        },
+        "server": {
+            "internal": "Er is iets misgegaan :( Probeer het later opnieuw"
+        }
     }
 }
