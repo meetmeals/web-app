@@ -3,7 +3,21 @@
         "rights": "All rights reserved",
         "logout": "Logout",
         "submit": "Submit",
-        "resend": "Resend"
+        "resend": "Resend",
+        "search": "Search",
+        "loading": "Loading",
+        "tomorrow": "Tomorrow",
+        "from": "from",
+        "to": "to",
+        "unknown": "Unknown",
+        "advancedSearch": "Advanced Search",
+        "deliveryTime": "Delivery Time",
+        "packageType": "Package Type",
+        "vegetarian": "Are you vegetarian?",
+        "imVegetarian": "I'm vegetarian",
+        "imVegan": "I'm vegan",
+        "reset": "Reset",
+        "apply": "Apply"
     },
     "pages": {
         "contactUs": "Contact Us",
@@ -71,5 +85,8 @@
         "server": {
             "internal": "Something went wrong :( Please try again later"
         }
+    },
+    "packages": {
+        "notFound": "No package found :("
     }
 }

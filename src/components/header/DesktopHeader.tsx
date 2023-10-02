@@ -25,7 +25,7 @@ function DesktopHeader() {
                     <img
                         alt="Meetmeals logo"
                         className={styles['header__nav__logo']}
-                        src="img/meetmeals-logo.png"
+                        src="/img/meetmeals-logo.png"
                     />
                 </Link>
                 <section className={styles['header__nav__links']}>

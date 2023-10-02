@@ -20,6 +20,12 @@
         margin-top: 2rem;
     }
 
+    &--white {
+        @include media.mobile {
+            max-width: 30rem;
+        }
+    }
+
     &__content {
         display: flex;
         justify-content: center;
@@ -68,6 +74,14 @@
                 &--selected {
                     font-weight: bold;
                     border-bottom: 2px solid color.$black-600;
+                }
+
+                &__white {
+                    color: color.$ternary-white;
+                    &--selected {
+                        font-weight: bold;
+                        border-bottom: 2px solid color.$secondary-white;
+                    }
                 }
             }
         }

@@ -1,0 +1,84 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border-radius: layout.$border-radius-5;
+    box-shadow: 2px 1px 5px 2px #acacac;
+    margin-top: 1.5rem;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 12rem;
+        color: color.$secondary-white;
+
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+
+            &__favorite {
+                cursor: pointer;
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1rem 2rem;
+            gap: 1rem;
+
+            &__chef-img {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            &__chef-name {
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+        }
+    }
+
+    &__body {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        color: color.$black-600;
+
+        &__package-info {
+            &__row {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.3rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+
+                &__dish {
+                    width: 2.2rem;
+                    height: 2.2rem;
+                }
+            }
+        }
+
+        &__package-price {
+            align-self: flex-end;
+            padding: 0.5rem;
+            color: color.$main-green;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+    }
+}

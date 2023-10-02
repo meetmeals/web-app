@@ -4,11 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from 'stores';
 import { setSelectedNationality } from 'stores/user';
-import { nationalities } from 'utilities/constants';
+import { nationalities, ThemeColor } from 'utilities/constants';
 
 import styles from './nationality-picker.module.scss';
 
-function NationalityPicker() {
+type NationalityPickerProps = {
+    theme: ThemeColor;
+};
+
+function NationalityPicker(props: NationalityPickerProps) {
     const { selectedNationality } = useSelector(
         (state: RootState) => state.user,
     );
@@ -20,7 +24,12 @@ function NationalityPicker() {
     }
 
     return (
-        <div className={styles['nationality-picker']}>
+        <div
+            className={classNames(styles['nationality-picker'], {
+                [styles['nationality-picker--white']]:
+                    props.theme === ThemeColor.WHITE,
+            })}
+        >
             <section className={styles['nationality-picker__content']}>
                 {nationalities.map((nationality) => (
                     <section
@@ -44,10 +53,23 @@ function NationalityPicker() {
                                 ],
                                 {
                                     [styles[
+                                        'nationality-picker__content__item__span__white'
+                                    ]]: props.theme === ThemeColor.WHITE,
+                                },
+                                {
+                                    [styles[
                                         'nationality-picker__content__item__span--selected'
                                     ]]:
                                         selectedNationality ===
                                         nationality.translationKey,
+                                },
+                                {
+                                    [styles[
+                                        'nationality-picker__content__item__span__white--selected'
+                                    ]]:
+                                        selectedNationality ===
+                                            nationality.translationKey &&
+                                        props.theme === ThemeColor.WHITE,
                                 },
                             )}
                         >

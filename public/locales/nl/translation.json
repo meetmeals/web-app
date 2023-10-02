@@ -3,7 +3,21 @@
         "rights": "Alle rechten voorbehouden",
         "logout": "Uitloggen",
         "submit": "Indienen",
-        "resend": "Opnieuw versturen"
+        "resend": "Opnieuw versturen",
+        "search": "Zoekopdracht",
+        "loading": "Bezig met laden",
+        "tomorrow": "Morgen",
+        "from": "van",
+        "to": "tot",
+        "unknown": "Onbekend",
+        "advancedSearch": "Geavanceerd zoeken",
+        "deliveryTime": "Aflevertijd",
+        "packageType": "Pakkettype",
+        "vegetarian": "Ben je vegetariër?",
+        "imVegetarian": "Ik ben vegetariër",
+        "imVegan": "Ik ben veganist",
+        "reset": "Opnieuw instellen",
+        "apply": "Toepassen"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
@@ -71,5 +85,8 @@
         "server": {
             "internal": "Er is iets misgegaan :( Probeer het later opnieuw"
         }
+    },
+    "packages": {
+        "notFound": "No package found :("
     }
 }

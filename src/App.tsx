@@ -7,6 +7,7 @@ import ContactUs from 'pages/contact-us/ContactUs';
 import Explore from 'pages/explore/Explore';
 import List from 'pages/list/List';
 import NotFound from 'pages/not-found/NotFound';
+import PackageDetails from 'pages/package-details';
 import Profile from 'pages/profile/Profile';
 import { MOBILE_MAX_WIDTH, pages } from 'utilities/constants';
 import { useWindowWidth } from 'utilities/hooks';
@@ -27,7 +28,10 @@ function App() {
                         element={<Navigate to={pages.explore.alias!} replace />}
                     />
                     <Route path={pages.explore.alias} element={<Explore />} />
-                    <Route path={pages.packages.path} element={<List />} />
+                    <Route path={pages.packages.path}>
+                        <Route path=":packageId" element={<PackageDetails />} />
+                        <Route path="" element={<List />} />
+                    </Route>
                     <Route path={pages.profile.path} element={<Profile />} />
                     <Route
                         path={pages.contactUs.path}

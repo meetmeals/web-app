@@ -1,0 +1,26 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    background-color: color.$main-green;
+    overflow: hidden;
+    border-radius: 35px 35px 0px 0px;
+    transition: 0.6s;
+
+    &__header {
+        padding: 1.5rem 0 3rem 0;
+
+        &__separator {
+            width: 10rem;
+            height: 0.4rem;
+            margin: 0 auto;
+            background-color: color.$secondary-white;
+            border-radius: layout.$border-radius-15;
+        }
+    }
+}
