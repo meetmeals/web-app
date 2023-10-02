@@ -54,7 +54,7 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                     <img
                         alt="Meetmeals logo"
                         className={styles['container__content__logo__img']}
-                        src="img/meetmeals-logo-green.png"
+                        src="/img/meetmeals-logo-green.png"
                     />
                 </section>
                 <section className={styles['container__content__nav']}>
