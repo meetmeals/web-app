@@ -1,9 +1,10 @@
 import NationalityPicker from 'components/nationality-picker';
+import { ThemeColor } from 'utilities/constants';
 
 function Explore() {
     return (
         <>
-            <NationalityPicker />
+            <NationalityPicker theme={ThemeColor.BLACK} />
         </>
     );
 }
