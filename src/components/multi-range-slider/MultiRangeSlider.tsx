@@ -53,6 +53,7 @@ function MultiRangeSlider(props: MultiRangeSliderProps) {
     // Get min and max values when their state changes
     React.useEffect(() => {
         props.onChange({ min: minVal, max: maxVal });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [minVal, maxVal, props.onChange]);
 
     return (
