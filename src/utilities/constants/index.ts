@@ -3,3 +3,4 @@ export * from './language';
 export * from './pages';
 export * from './media-breakpoints';
 export * from './nationalities';
+export * from './themes';
