@@ -52,6 +52,7 @@ module.exports = {
             },
         ],
         'no-case-declarations': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
     },
     settings: {
         react: {
