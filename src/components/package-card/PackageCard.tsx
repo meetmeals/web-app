@@ -16,7 +16,7 @@ type PackageCardProps = {
     packageTitle: string;
     deliveryStartDate?: string;
     deliveryEndDate?: string;
-    distance: string;
+    distance: number;
     price: number;
     isLoggedIn: boolean;
 };
@@ -108,8 +108,8 @@ function PackageCard(props: PackageCardProps) {
                     <p className={styles['container__body__package-info__row']}>
                         <FaMapMarkerAlt size="22px" color="black" />
                         <span>
-                            {props.distance.trim().length > 0
-                                ? props.distance
+                            {props.distance.toString().trim().length > 0
+                                ? `${props.distance} km`
                                 : t('app.unknown')}
                         </span>
                     </p>

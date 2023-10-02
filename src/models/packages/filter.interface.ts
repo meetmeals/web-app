@@ -38,8 +38,17 @@ export interface FilterPackage {
     end_time_str: string;
     status: number;
     package_finished_time: string;
-    distance: string;
+    distance: number;
     is_like: number;
+}
+
+export interface FilterRequestInterface {
+    customer_preference?: number;
+    end_time?: string;
+    limit?: number;
+    offset?: number;
+    start_time?: string;
+    text_input?: string;
 }
 
 export interface FilterResponseInterface extends ApiResponse {
