@@ -1,4 +1,5 @@
 import {
+    FilterRequestInterface,
     FilterResponseInterface,
     PackageLikeRequestInterface,
     PackageLikeResponseInterface,
@@ -11,7 +12,10 @@ import {
  * @description Interface for the Packages API client module
  */
 export interface PackagesApiClientInterface {
-    filter: (headers: object) => Promise<FilterResponseInterface>;
+    filter: (
+        body: FilterRequestInterface,
+        headers: object,
+    ) => Promise<FilterResponseInterface>;
     surfing: (
         body: SurfingRequestInterface,
     ) => Promise<SurfingResponseInterface>;

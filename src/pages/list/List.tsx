@@ -16,6 +16,7 @@ import {
 import { RootState } from 'stores';
 import apiClient from 'utilities/api-client';
 import { ThemeColor } from 'utilities/constants';
+import { useLocation } from 'utilities/hooks';
 
 import styles from './list.module.scss';
 
@@ -34,6 +35,7 @@ function List() {
     }>({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
     const [vegType, setVegType] = React.useState<string>('');
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
+    const { location, error } = useLocation();
 
     const { t } = useTranslation();
 
@@ -41,9 +43,23 @@ function List() {
         async function filter() {
             setLoading(true);
             const filterResponse: FilterResponseInterface =
-                await apiClient.packages.filter({
-                    Authorization: `Bearer ${token}`,
-                });
+                await apiClient.packages.filter(
+                    {
+                        limit: 100,
+                        offset: 0,
+                        ...(!error &&
+                            location.latitude && {
+                                customer_latitude: location.latitude,
+                            }),
+                        ...(!error &&
+                            location.longitude && {
+                                customer_longitude: location.longitude,
+                            }),
+                    },
+                    {
+                        Authorization: `Bearer ${token}`,
+                    },
+                );
             switch (filterResponse.status) {
                 case 200:
                     setPackages(filterResponse.data);
@@ -58,7 +74,8 @@ function List() {
             }
         }
         filter();
-    }, [token]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token, location]);
 
     async function handleFavoriteChange(packageId: number) {
         const packageLikeResponse: PackageLikeResponseInterface =
@@ -141,6 +158,7 @@ function List() {
                 deliveryEndDate: filterPackage.end_time,
                 distance: filterPackage.distance,
                 isLoggedIn,
+                packageImageUrl: filterPackage.food_img,
             };
             return <PackageCard key={filterPackage.id} {...props} />;
         });

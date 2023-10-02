@@ -1,5 +1,6 @@
 import { HttpMethodsEnum, MimeTypesEnum } from 'models/api';
 import {
+    FilterRequestInterface,
     FilterResponseInterface,
     PackageLikeRequestInterface,
     PackageLikeResponseInterface,
@@ -25,7 +26,10 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
         if (options.mockDelay) this.mockDelay = options.mockDelay;
     }
 
-    filter(headers: object): Promise<FilterResponseInterface> {
+    filter(
+        body: FilterRequestInterface,
+        headers: object,
+    ): Promise<FilterResponseInterface> {
         return new Promise<FilterResponseInterface>((resolve) => {
             const endpoint = this.endpoints.filter;
             const requestOptions: RequestInit = {
@@ -33,6 +37,7 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
                 headers: Object.assign(headers, {
                     'Content-Type': MimeTypesEnum.APPLICATION_JSON,
                 }),
+                body: JSON.stringify(body),
             };
 
             fetch(endpoint, requestOptions)
