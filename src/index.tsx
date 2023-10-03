@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from 'stores';
 
 import App from './App';
-import 'utilities/Languages';
+import 'utilities/languages';
 
 import 'styles/index.scss';
 

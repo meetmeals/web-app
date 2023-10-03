@@ -1,20 +1,25 @@
 import React from 'react';
 
-type LocationType = {
-    latitude: number;
-    longitude: number;
-};
+import { Point } from 'utilities/geometry';
 
 enum GeolocationError {
     NOT_SUPPORTED = 10,
 }
 
 function useLocation() {
-    const [location, setLocation] = React.useState<LocationType>({
+    const [location, setLocation] = React.useState<Point>({
         latitude: 0,
         longitude: 0,
     });
     const [error, setError] = React.useState<number>(0);
+
+    function onChange({ coords }: { coords: Point }) {
+        setLocation({ latitude: coords.latitude, longitude: coords.longitude });
+    }
+
+    function onError(error: GeolocationPositionError) {
+        console.warn(`${error.code}: ${error.message}.`);
+    }
 
     React.useEffect(() => {
         if ('geolocation' in navigator) {
@@ -29,6 +34,11 @@ function useLocation() {
                     setError(error.code);
                 },
             );
+            const watcher = navigator.geolocation.watchPosition(
+                onChange,
+                onError,
+            );
+            return () => navigator.geolocation.clearWatch(watcher);
         } else {
             setError(GeolocationError.NOT_SUPPORTED);
         }
