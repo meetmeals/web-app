@@ -1,6 +1,9 @@
+@use 'styles/colors.scss' as color;
+
 .container {
     position: fixed;
     top: 6rem;
     left: 0;
     width: 100%;
+    background-color: color.$ternary-white;
 }
