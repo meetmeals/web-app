@@ -16,6 +16,7 @@ import {
 import { RootState } from 'stores';
 import apiClient from 'utilities/api-client';
 import { ThemeColor } from 'utilities/constants';
+import { calculateDistance } from 'utilities/geometry';
 import { useLocation } from 'utilities/hooks';
 
 import styles from './list.module.scss';
@@ -49,12 +50,12 @@ function List() {
                         offset: 0,
                         ...(!error &&
                             location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
+                                customer_latitude: location.latitude,
+                            }),
                         ...(!error &&
                             location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                                customer_longitude: location.longitude,
+                            }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -75,7 +76,7 @@ function List() {
         }
         filter();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [token, location]);
+    }, [token]);
 
     async function handleFavoriteChange(packageId: number) {
         const packageLikeResponse: PackageLikeResponseInterface =
@@ -144,6 +145,15 @@ function List() {
         );
     } else {
         content = packages.map((filterPackage: FilterPackage) => {
+            let distance: string | undefined = undefined;
+            if (!error && location.latitude && location.longitude) {
+                if (filterPackage.lat && filterPackage.long) {
+                    distance = calculateDistance(location, {
+                        latitude: parseFloat(filterPackage.lat),
+                        longitude: parseFloat(filterPackage.long),
+                    }).toFixed(2);
+                }
+            }
             const props = {
                 isFavorite: filterPackage.is_like,
                 setFavorite: handleFavoriteChange,
@@ -156,7 +166,7 @@ function List() {
                 packageId: filterPackage.id,
                 deliveryStartDate: filterPackage.start_time,
                 deliveryEndDate: filterPackage.end_time,
-                distance: filterPackage.distance,
+                distance,
                 isLoggedIn,
                 packageImageUrl: filterPackage.food_img,
             };
