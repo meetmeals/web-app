@@ -17,7 +17,12 @@
         "imVegetarian": "I'm vegetarian",
         "imVegan": "I'm vegan",
         "reset": "Reset",
-        "apply": "Apply"
+        "apply": "Apply",
+        "showMore": "Show more",
+        "showLess": "Show less",
+        "buy": "Buy",
+        "routing": "Routing",
+        "packageDetails": "Details"
     },
     "pages": {
         "contactUs": "Contact Us",
