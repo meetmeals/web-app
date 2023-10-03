@@ -1,0 +1,127 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    max-height: calc(100vh - 15rem);
+    overflow-y: scroll;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-size: cover;
+        height: 20rem;
+
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+        }
+
+        &__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+
+            &__chef-name {
+                font-size: 1.6rem;
+                color: color.$ternary-white;
+            }
+
+            &__chef-logo {
+                &__img {
+                    width: 7rem;
+                    height: 7rem;
+                }
+            }
+        }
+    }
+
+    &__body {
+        &__package-info,
+        &__package-desc,
+        &__comments,
+        &__location {
+            background-color: color.$main-white;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 4px -2px #acacac;
+            padding: 0.5rem;
+        }
+
+        &__package-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-size: 1.4rem;
+            color: color.$main-green;
+            font-weight: bold;
+        }
+
+        &__package-desc {
+            padding: 1rem;
+
+            &__title {
+                text-align: center;
+                color: color.$black-600;
+                font-size: 1.4rem;
+                margin: 0 1rem;
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+                font-weight: bold;
+                border-bottom: 1px solid color.$ternary-white;
+            }
+        }
+
+        &__location {
+            &__map-address {
+                p {
+                    margin: 0;
+                }
+            }
+
+            &__address {
+                width: 80%;
+                margin: 1rem auto;
+                text-align: center;
+                font-weight: 1.2rem;
+                font-weight: bold;
+                color: color.$black-600;
+            }
+
+            &__routing {
+                width: 20rem;
+                height: 2.5rem;
+                margin: 1rem auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+                padding: 1rem 2rem;
+                background-color: color.$main-orange;
+                border-radius: layout.$border-radius-10;
+                color: color.$main-white;
+                font-weight: bold;
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    &__buy {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: color.$main-green;
+        height: 5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: color.$main-white;
+        font-weight: bold;
+        font-size: 1.6rem;
+    }
+}
