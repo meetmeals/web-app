@@ -17,7 +17,12 @@
         "imVegetarian": "Ik ben vegetariër",
         "imVegan": "Ik ben veganist",
         "reset": "Opnieuw instellen",
-        "apply": "Toepassen"
+        "apply": "Toepassen",
+        "showMore": "Laat meer zien",
+        "showLess": "Laat minder zien",
+        "buy": "Kopen",
+        "routing": "Routering",
+        "packageDetails": "Details"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",

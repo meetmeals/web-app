@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import BottomSidebar from 'components/bottom-sidebar';
 import MultiRangeSlider from 'components/multi-range-slider';
@@ -39,6 +40,7 @@ function List() {
     const { location, error } = useLocation();
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         async function filter() {
@@ -50,12 +52,12 @@ function List() {
                         offset: 0,
                         ...(!error &&
                             location.latitude && {
-                                customer_latitude: location.latitude,
-                            }),
+                            customer_latitude: location.latitude,
+                        }),
                         ...(!error &&
                             location.longitude && {
-                                customer_longitude: location.longitude,
-                            }),
+                            customer_longitude: location.longitude,
+                        }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -130,6 +132,13 @@ function List() {
         setFilterSectionOpen(false);
     }
 
+    function handlePackageClick(packageId: number) {
+        const filterPackage = packages.find(
+            (filterPackage) => filterPackage.id === packageId,
+        );
+        navigate(`/packages/${packageId}`, { state: filterPackage });
+    }
+
     let content = null;
     if (isLoading) {
         content = (
@@ -169,6 +178,7 @@ function List() {
                 distance,
                 isLoggedIn,
                 packageImageUrl: filterPackage.food_img,
+                handlePackageClick,
             };
             return <PackageCard key={filterPackage.id} {...props} />;
         });

@@ -8,3 +8,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+.leaflet-control-attribution.leaflet-control {
+    display: none;
+}

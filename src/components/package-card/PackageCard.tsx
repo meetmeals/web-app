@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { FaHeart, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './package-card.module.scss';
 
@@ -19,15 +18,11 @@ type PackageCardProps = {
     distance?: string;
     price: number;
     isLoggedIn: boolean;
+    handlePackageClick: (packageId: number) => void;
 };
 
 function PackageCard(props: PackageCardProps) {
-    const navigate = useNavigate();
     const { t } = useTranslation();
-
-    function handlePackageClick() {
-        navigate(`/packages/${props.packageId}`);
-    }
 
     function handleFavoriteClick(e: React.MouseEvent<SVGElement>) {
         e.stopPropagation();
@@ -37,7 +32,10 @@ function PackageCard(props: PackageCardProps) {
     const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL;
 
     return (
-        <div className={styles.container} onClick={handlePackageClick}>
+        <div
+            className={styles.container}
+            onClick={() => props.handlePackageClick(props.packageId)}
+        >
             <section
                 className={styles['container__header']}
                 style={{
