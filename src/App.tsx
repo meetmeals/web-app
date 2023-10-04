@@ -1,3 +1,4 @@
+import { Elements } from '@stripe/react-stripe-js';
 import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
@@ -8,8 +9,9 @@ import Explore from 'pages/explore/Explore';
 import List from 'pages/list/List';
 import NotFound from 'pages/not-found/NotFound';
 import PackageDetails from 'pages/package-details';
+import PaymentResult from 'pages/payment-result';
 import Profile from 'pages/profile/Profile';
-import { MOBILE_MAX_WIDTH, pages } from 'utilities/constants';
+import { MOBILE_MAX_WIDTH, pages, stripePromise } from 'utilities/constants';
 import { useWindowWidth } from 'utilities/hooks';
 import { setMobile } from 'stores/platform';
 
@@ -36,6 +38,14 @@ function App() {
                     <Route
                         path={pages.contactUs.path}
                         element={<ContactUs />}
+                    />
+                    <Route
+                        path={pages.paymentResult.path}
+                        element={
+                            <Elements stripe={stripePromise}>
+                                <PaymentResult />
+                            </Elements>
+                        }
                     />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
