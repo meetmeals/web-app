@@ -22,7 +22,15 @@
         "showLess": "Show less",
         "buy": "Buy",
         "routing": "Routing",
-        "packageDetails": "Details"
+        "packageDetails": "Details",
+        "processing": "Processing",
+        "checkout": "Checkout",
+        "payNow": "Pay Now",
+        "quantity": "Quantity",
+        "totalPrice": "Total Price",
+        "cancel": "Cancel",
+        "finalizeOrder": "Finalize Order",
+        "back": "Back"
     },
     "pages": {
         "contactUs": "Contact Us",
