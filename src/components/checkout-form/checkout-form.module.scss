@@ -1,0 +1,44 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    &__form {
+        padding: 2rem;
+
+        .DropdownItem {
+            color: black;
+        }
+
+        .RedirectText {
+            padding: 2rem;
+        }
+
+        &__btn-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 12rem;
+            height: 4rem;
+            line-height: 4rem;
+            border: none;
+            border-radius: layout.$border-radius-5;
+            color: color.$main-white;
+            background-color: color.$main-orange;
+            font-weight: bold;
+            font-size: 1.4rem;
+
+            &__content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
