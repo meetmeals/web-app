@@ -27,4 +27,9 @@ export const pages: { [key: string]: PageData } = {
         path: '/profile',
         transKey: 'pages.profile',
     },
+    paymentResult: {
+        descriptionTransKey: 'pages.paymentResult',
+        path: '/payment-result',
+        transKey: 'pages.paymentResult',
+    },
 };

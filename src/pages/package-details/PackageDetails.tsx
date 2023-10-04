@@ -1,17 +1,130 @@
+import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import classNames from 'classnames';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaClock, FaMinus, FaPlus } from 'react-icons/fa';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import ExpandableText from 'components/expandable-text/ExpandableText';
+import BottomSidebar from 'components/bottom-sidebar';
+import CheckoutForm from 'components/checkout-form';
+import ExpandableText from 'components/expandable-text';
+import LoadingSpinner from 'components/loading-spinner';
+import { AuthStep } from 'models/common';
+import { OrderSubmitResponseInterface } from 'models/orders';
+import { RootState } from 'stores';
+import { setAuthenticating } from 'stores/user';
+import apiClient from 'utilities/api-client';
+import { stripePromise } from 'utilities/constants';
 
 import styles from './package-details.module.scss';
 
+enum PurchaseStep {
+    Details,
+    Checkout,
+}
+
 function PackageDetails() {
+    const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
     const { state } = useLocation();
+    const [stripeClientSecret, setStripeClientSecret] =
+        React.useState<string>('');
+    const [isLoading, setLoading] = React.useState<boolean>(false);
+    const [purchaseStep, setPurchaseStep] = React.useState<PurchaseStep>(
+        PurchaseStep.Details,
+    );
+    const [shouldShowPurchase, setShowPurchase] =
+        React.useState<boolean>(false);
+    const [packageCount, setPackageCount] = React.useState<number>(1);
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    function handleBuy() {
+        setPurchaseStep(PurchaseStep.Details);
+        setShowPurchase(true);
+    }
+
+    function handlePackageCountChange(operation: string) {
+        setPackageCount((prev) => (operation === '-' ? prev - 1 : prev + 1));
+    }
+
+    function handleCancelOrder() {
+        setPackageCount(1);
+        setPurchaseStep(PurchaseStep.Details);
+        setShowPurchase(false);
+    }
+
+    async function handleNext() {
+        if (isLoading) return;
+
+        if (isLoggedIn) {
+            setLoading(true);
+            const orderSubmitResponse: OrderSubmitResponseInterface =
+                await apiClient.orders.orderSubmit(
+                    {
+                        package_id: state.id,
+                        package_count: packageCount,
+                        user_os: 'mac',
+                    },
+                    {
+                        Authorization: `Bearer ${token}`,
+                    },
+                );
+            switch (orderSubmitResponse.status) {
+                case 200:
+                    setStripeClientSecret(
+                        orderSubmitResponse.data.payment.client_secret,
+                    );
+                    setLoading(false);
+                    setPurchaseStep(PurchaseStep.Checkout);
+                    break;
+                case 400:
+                    break;
+                case 422:
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            dispatch(
+                setAuthenticating({
+                    authStep: AuthStep.LOGIN,
+                }),
+            );
+        }
+    }
+
+    function handleCancelCheckout() {
+        setPurchaseStep(PurchaseStep.Details);
+    }
 
     const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL;
+    let options: StripeElementsOptions = {};
+    let appearance: Appearance = {};
+    if (stripeClientSecret) {
+        appearance = {
+            theme: 'stripe',
+            variables: {
+                colorPrimary: '#015248',
+                colorText: '#eee',
+            },
+            rules: {
+                '.Input': {
+                    color: '#222',
+                },
+                '.RedirectText': {
+                    padding: '1rem',
+                },
+            },
+        };
+        options = {
+            clientSecret: stripeClientSecret,
+            appearance,
+        };
+    }
 
     return (
         <div className={styles.container}>
@@ -150,7 +263,184 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                     </a>
                 </div>
             </div>
-            <div className={styles['container__buy']}>{t('app.buy')}</div>
+            <div className={styles['container__buy']} onClick={handleBuy}>
+                {t('app.buy')}
+            </div>
+            {shouldShowPurchase && (
+                <BottomSidebar
+                    isOpen={shouldShowPurchase}
+                    setOpen={setShowPurchase}
+                    height={600}
+                >
+                    <div className={styles['container__bottom-sidebar']}>
+                        <p
+                            className={
+                                styles['container__bottom-sidebar__header']
+                            }
+                        >
+                            {purchaseStep === PurchaseStep.Details
+                                ? t('app.quantity')
+                                : t('app.checkout')}
+                        </p>
+                        {purchaseStep === PurchaseStep.Details ? (
+                            <div
+                                className={
+                                    styles[
+                                        'container__bottom-sidebar__quantity'
+                                    ]
+                                }
+                            >
+                                <div
+                                    className={
+                                        styles[
+                                            'container__bottom-sidebar__quantity__details'
+                                        ]
+                                    }
+                                >
+                                    <p
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__details__package-name'
+                                            ]
+                                        }
+                                    >
+                                        {state.PackageName}
+                                    </p>
+                                    <p
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__details__time'
+                                            ]
+                                        }
+                                    >
+                                        <FaClock size="20px" />
+                                        <span>
+                                            {t('app.tomorrow')}{' '}
+                                            {state.start_time} -{' '}
+                                            {state.end_time}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div
+                                    className={
+                                        styles[
+                                            'container__bottom-sidebar__quantity__separator'
+                                        ]
+                                    }
+                                />
+                                <div
+                                    className={
+                                        styles[
+                                            'container__bottom-sidebar__quantity__select'
+                                        ]
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__select__area'
+                                            ]
+                                        }
+                                    >
+                                        <section
+                                            className={classNames(
+                                                styles[
+                                                    'container__bottom-sidebar__quantity__select__area__btn'
+                                                ],
+                                                {
+                                                    [styles[
+                                                        'container__bottom-sidebar__quantity__select__area__btn--disabled'
+                                                    ]]: packageCount === 1,
+                                                },
+                                            )}
+                                            onClick={() =>
+                                                handlePackageCountChange('-')
+                                            }
+                                        >
+                                            <FaMinus />
+                                        </section>
+                                        <span
+                                            className={
+                                                styles[
+                                                    'container__bottom-sidebar__quantity__select__area__count'
+                                                ]
+                                            }
+                                        >
+                                            {packageCount}
+                                        </span>
+                                        <section
+                                            className={
+                                                styles[
+                                                    'container__bottom-sidebar__quantity__select__area__btn'
+                                                ]
+                                            }
+                                            onClick={() =>
+                                                handlePackageCountChange('+')
+                                            }
+                                        >
+                                            <FaPlus />
+                                        </section>
+                                    </div>
+                                    <p
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__select__total'
+                                            ]
+                                        }
+                                    >
+                                        {t('app.totalPrice')}:{' '}
+                                        {packageCount * state.main_price}
+                                    </p>
+                                </div>
+                                <div
+                                    className={
+                                        styles[
+                                            'container__bottom-sidebar__quantity__next'
+                                        ]
+                                    }
+                                >
+                                    <button
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__next__cancel'
+                                            ]
+                                        }
+                                        onClick={handleCancelOrder}
+                                    >
+                                        {t('app.cancel')}
+                                    </button>
+                                    <button
+                                        className={
+                                            styles[
+                                                'container__bottom-sidebar__quantity__next__ok'
+                                            ]
+                                        }
+                                        onClick={handleNext}
+                                    >
+                                        {isLoading ? (
+                                            <p>
+                                                <span>
+                                                    {t('app.processing')}
+                                                </span>
+                                                <LoadingSpinner />
+                                            </p>
+                                        ) : (
+                                            t('app.finalizeOrder')
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <Elements options={options} stripe={stripePromise}>
+                                <CheckoutForm
+                                    clientSecret={stripeClientSecret}
+                                    handleBackClick={handleCancelCheckout}
+                                />
+                            </Elements>
+                        )}
+                    </div>
+                </BottomSidebar>
+            )}
         </div>
     );
 }

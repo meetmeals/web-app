@@ -22,7 +22,15 @@
         "showLess": "Laat minder zien",
         "buy": "Kopen",
         "routing": "Routering",
-        "packageDetails": "Details"
+        "packageDetails": "Details",
+        "processing": "Verwerken",
+        "checkout": "Uitchecken",
+        "payNow": "Nu betalen",
+        "quantity": "Hoeveelheid",
+        "totalPrice": "Totale prijs",
+        "cancel": "Annuleren",
+        "finalizeOrder": "Bestelling afronden",
+        "back": "Rug"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
