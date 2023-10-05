@@ -10,10 +10,11 @@ import List from 'pages/list/List';
 import NotFound from 'pages/not-found/NotFound';
 import PackageDetails from 'pages/package-details';
 import PaymentResult from 'pages/payment-result';
-import Profile from 'pages/profile/Profile';
 import { MOBILE_MAX_WIDTH, pages, stripePromise } from 'utilities/constants';
 import { useWindowWidth } from 'utilities/hooks';
 import { setMobile } from 'stores/platform';
+import ProtectedRoute from 'components/protected-route/ProtectedRoute';
+import Account from 'pages/account/Account';
 
 function App() {
     const dispatch = useDispatch();
@@ -34,7 +35,6 @@ function App() {
                         <Route path=":packageId" element={<PackageDetails />} />
                         <Route path="" element={<List />} />
                     </Route>
-                    <Route path={pages.profile.path} element={<Profile />} />
                     <Route
                         path={pages.contactUs.path}
                         element={<ContactUs />}
@@ -47,6 +47,12 @@ function App() {
                             </Elements>
                         }
                     />
+                    <Route element={<ProtectedRoute />}>
+                        <Route
+                            path={pages.account.path}
+                            element={<Account />}
+                        />
+                    </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Layout>
