@@ -22,14 +22,14 @@ export const pages: { [key: string]: PageData } = {
         path: '/packages',
         transKey: 'pages.packages',
     },
-    profile: {
-        descriptionTransKey: 'pages.profileDescription',
-        path: '/profile',
-        transKey: 'pages.profile',
-    },
     paymentResult: {
-        descriptionTransKey: 'pages.paymentResult',
+        descriptionTransKey: 'pages.paymentResultDescription',
         path: '/payment-result',
         transKey: 'pages.paymentResult',
+    },
+    account: {
+        descriptionTransKey: 'pages.accountDescription',
+        path: '/account',
+        transKey: 'pages.account',
     },
 };
