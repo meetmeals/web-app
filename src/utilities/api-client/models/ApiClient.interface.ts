@@ -1,3 +1,4 @@
+import { AccountApiClientInterface } from './account';
 import { AuthApiClientInterface } from './auth';
 import { OrdersApiClientInterface } from './orders';
 import { PackagesApiClientInterface } from './packages';
@@ -12,4 +13,5 @@ export interface ApiClientInterface {
     auth: AuthApiClientInterface;
     packages: PackagesApiClientInterface;
     orders: OrdersApiClientInterface;
+    account: AccountApiClientInterface;
 }

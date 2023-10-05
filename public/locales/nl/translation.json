@@ -30,7 +30,12 @@
         "totalPrice": "Totale prijs",
         "cancel": "Annuleren",
         "finalizeOrder": "Bestelling afronden",
-        "back": "Rug"
+        "back": "Rug",
+        "account": "Rekening",
+        "profile": "Profiel",
+        "orders": "Bestellingen",
+        "favorites": "Favorieten",
+        "comments": "Opmerkingen"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
@@ -56,7 +61,8 @@
         "email": "E-mail",
         "emailPlaceholder": "Jouw email...",
         "submit": "Register",
-        "alreadyHaveAccount": "Heb je al een account?"
+        "alreadyHaveAccount": "Heb je al een account?",
+        "mobile": "Mobiel"
     },
     "login": {
         "welcomeBack": "Welkom terug",
@@ -101,5 +107,9 @@
     },
     "packages": {
         "notFound": "No package found :("
+    },
+    "account": {
+        "setProfile": "Profielfoto instellen",
+        "save": "Redden"
     }
 }

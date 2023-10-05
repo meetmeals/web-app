@@ -6,8 +6,10 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import LoadingSpinner from 'components/loading-spinner';
+import { RootState } from 'stores';
 import { STRIPE_RETURN_URL } from 'utilities/constants';
 
 import styles from './checkout-form.module.scss';
@@ -18,6 +20,7 @@ type CheckoutFormProps = {
 };
 
 function CheckoutForm(props: CheckoutFormProps) {
+    const { info } = useSelector((root: RootState) => root.user);
     const stripe = useStripe();
     const elements = useElements();
 
@@ -82,6 +85,11 @@ function CheckoutForm(props: CheckoutFormProps) {
 
     const paymentElementOptions: StripePaymentElementOptions = {
         layout: 'tabs',
+        defaultValues: {
+            billingDetails: {
+                name: `${info.fName} ${info.lName}`,
+            },
+        },
     };
 
     return (

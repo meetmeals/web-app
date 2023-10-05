@@ -28,6 +28,7 @@ enum PurchaseStep {
 
 function PackageDetails() {
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
+    const { language } = useSelector((root: RootState) => root.platform);
     const { state } = useLocation();
     const [stripeClientSecret, setStripeClientSecret] =
         React.useState<string>('');
@@ -123,6 +124,7 @@ function PackageDetails() {
         options = {
             clientSecret: stripeClientSecret,
             appearance,
+            locale: language === 'en' ? 'en' : 'nl',
         };
     }
 

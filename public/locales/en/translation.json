@@ -30,7 +30,12 @@
         "totalPrice": "Total Price",
         "cancel": "Cancel",
         "finalizeOrder": "Finalize Order",
-        "back": "Back"
+        "back": "Back",
+        "account": "Account",
+        "profile": "Profile",
+        "orders": "Orders",
+        "favorites": "Favorites",
+        "comments": "Comments"
     },
     "pages": {
         "contactUs": "Contact Us",
@@ -56,7 +61,8 @@
         "email": "Email",
         "emailPlaceholder": "Your email...",
         "submit": "Register",
-        "alreadyHaveAccount": "Already have an account?"
+        "alreadyHaveAccount": "Already have an account?",
+        "mobile": "Mobile"
     },
     "login": {
         "welcomeBack": "Welcome back",
@@ -101,5 +107,9 @@
     },
     "packages": {
         "notFound": "No package found :("
+    },
+    "account": {
+        "setProfile": "Set profile picture",
+        "save": "Save"
     }
 }
