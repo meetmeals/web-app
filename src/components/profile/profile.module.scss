@@ -1,0 +1,78 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    &__img-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &__img {
+            width: 13rem;
+            height: 13rem;
+            border-radius: 50%;
+        }
+
+        &__img-input {
+            height: 0;
+            visibility: hidden;
+        }
+
+        &__img-text {
+            font-size: 1.2rem;
+            color: color.$black-600;
+        }
+    }
+
+    &__form-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        padding: 2rem;
+
+        &__input {
+            width: 100%;
+            height: 4rem;
+            line-height: 4rem;
+            text-indent: 1rem;
+            color: color.$black-600;
+            border-radius: layout.$border-radius-5;
+            outline: none;
+            border: none;
+            font-weight: bold;
+
+            &--error {
+                border: 2px solid color.$error-red;
+            }
+        }
+
+        &__error {
+            align-self: flex-start;
+            margin-left: 1rem;
+            color: color.$error-red;
+        }
+
+        &__submit {
+            margin-top: 3rem;
+
+            &__btn {
+                width: 12rem;
+                height: 4rem;
+                background-color: color.$main-orange;
+                border: none;
+                color: color.$main-white;
+                font-size: 1.6rem;
+                font-weight: bold;
+                border-radius: layout.$border-radius-10;
+
+                &:disabled {
+                    pointer-events: none;
+                    background-color: color.$secondary-orange;
+                }
+            }
+        }
+    }
+}
