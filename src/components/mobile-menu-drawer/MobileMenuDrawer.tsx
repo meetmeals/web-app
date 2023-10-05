@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import AppRightsVersion from 'components/app-rights-version';
 import LanguagePicker from 'components/language-picker';
@@ -26,6 +26,7 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     function handleMenuClose() {
         props.setOpen(false);
@@ -173,29 +174,55 @@ function MobileMenuDrawer(props: MobileMenuDrawerProps) {
                 </section>
                 <section className={styles['container__content__more']}>
                     <LanguagePicker theme={ThemeEnum.GREEN} />
-                    <p
-                        className={classNames(
-                            styles['container__content__more__login'],
-                            {
-                                [styles[
-                                    'container__content__more__login--logout'
-                                ]]: isLoggedIn,
-                            },
-                        )}
-                        onClick={() => {
-                            handleMenuClose();
-                            if (isLoggedIn)
-                                dispatch(setLoggedIn({ isLoggedIn: false }));
-                            else
-                                dispatch(
-                                    setAuthenticating({
-                                        authStep: AuthStep.LOGIN,
-                                    }),
-                                );
-                        }}
+                    <div
+                        className={styles['container__content__more__account']}
                     >
-                        {isLoggedIn ? t('app.logout') : t('login.submit')}
-                    </p>
+                        {isLoggedIn && (
+                            <p
+                                className={
+                                    styles[
+                                        'container__content__more__account__account-btn'
+                                    ]
+                                }
+                                onClick={() => {
+                                    handleMenuClose();
+                                    navigate({
+                                        pathname: pages.account.path,
+                                        search: '?tab=profile',
+                                    });
+                                }}
+                            >
+                                {t('app.account')}
+                            </p>
+                        )}
+                        <p
+                            className={classNames(
+                                styles[
+                                    'container__content__more__account__login'
+                                ],
+                                {
+                                    [styles[
+                                        'container__content__more__account__login--logout'
+                                    ]]: isLoggedIn,
+                                },
+                            )}
+                            onClick={() => {
+                                handleMenuClose();
+                                if (isLoggedIn)
+                                    dispatch(
+                                        setLoggedIn({ isLoggedIn: false }),
+                                    );
+                                else
+                                    dispatch(
+                                        setAuthenticating({
+                                            authStep: AuthStep.LOGIN,
+                                        }),
+                                    );
+                            }}
+                        >
+                            {isLoggedIn ? t('app.logout') : t('login.submit')}
+                        </p>
+                    </div>
                 </section>
             </div>
             <AppRightsVersion />

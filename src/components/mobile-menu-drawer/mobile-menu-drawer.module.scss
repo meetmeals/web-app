@@ -71,17 +71,27 @@
             padding: 2rem 1rem;
             color: color.$ternary-white;
 
-            &__login {
-                padding: 1rem 2rem;
-                background-color: color.$ternary-white;
-                color: color.$main-green;
-                border-radius: layout.$border-radius-5;
-                font-size: 1.6rem;
-                font-weight: bold;
+            &__account {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 1rem;
 
-                &--logout {
-                    background-color: color.$main-orange;
-                    color: color.$main-white;
+                &__login,
+                &__account-btn {
+                    padding: 1rem 2rem;
+                    background-color: color.$ternary-white;
+                    color: color.$main-green;
+                    border-radius: layout.$border-radius-5;
+                    font-size: 1.6rem;
+                    font-weight: bold;
+                }
+
+                &__login {
+                    &--logout {
+                        background-color: color.$main-orange;
+                        color: color.$main-white;
+                    }
                 }
             }
         }
