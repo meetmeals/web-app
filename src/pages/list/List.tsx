@@ -13,29 +13,36 @@ import {
     FilterResponseInterface,
     PackageLikeResponseInterface,
     FilterPackage,
+    CustomerPreference,
 } from 'models/packages';
 import { RootState } from 'stores';
 import apiClient from 'utilities/api-client';
 import { ThemeColor } from 'utilities/constants';
 import { calculateDistance } from 'utilities/geometry';
+import { debounce } from 'utilities/helpers';
 import { useLocation } from 'utilities/hooks';
 
 import styles from './list.module.scss';
 
+const FETCH_LIMIT_SIZE = 25;
 const MIN_DELIVERY_RANGE = 0;
 const MAX_DELIVERY_RANGE = 95;
 
 function List() {
     const [packages, setPackages] = React.useState<Array<FilterPackage>>([]);
     const [isLoading, setLoading] = React.useState<boolean>(true);
+    const [currentPage, setCurrentPage] = React.useState<number>(0);
+    const [hasNextPage, setHasNextPage] = React.useState<boolean>(false);
     const [searchText, setSearchText] = React.useState<string>('');
+    const [filterTries, setFilterTries] = React.useState<number>(0);
     const [isFilterSectionOpen, setFilterSectionOpen] =
         React.useState<boolean>(false);
     const [deliveryTime, setDeliveryTime] = React.useState<{
         min: number;
         max: number;
     }>({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
-    const [vegType, setVegType] = React.useState<string>('');
+    const [customerPreference, setCustomerPreference] =
+        React.useState<CustomerPreference>(CustomerPreference.Other);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
     const { location, error } = useLocation();
 
@@ -48,16 +55,12 @@ function List() {
             const filterResponse: FilterResponseInterface =
                 await apiClient.packages.filter(
                     {
-                        limit: 100,
-                        offset: 0,
-                        ...(!error &&
-                            location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
-                        ...(!error &&
-                            location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                        limit: FETCH_LIMIT_SIZE,
+                        offset: currentPage * FETCH_LIMIT_SIZE,
+                        text_input: searchText,
+                        customer_preference: customerPreference,
+                        start_time: formatDeliveryTime(deliveryTime.min),
+                        end_time: formatDeliveryTime(deliveryTime.max),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -65,7 +68,11 @@ function List() {
                 );
             switch (filterResponse.status) {
                 case 200:
-                    setPackages(filterResponse.data);
+                    setPackages((prevPackages) => [
+                        ...prevPackages,
+                        ...filterResponse.data,
+                    ]);
+                    setHasNextPage(filterResponse.has_next_page);
                     setLoading(false);
                     break;
                 case 400:
@@ -78,7 +85,7 @@ function List() {
         }
         filter();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [token]);
+    }, [currentPage, filterTries, token]);
 
     async function handleFavoriteChange(packageId: number) {
         const packageLikeResponse: PackageLikeResponseInterface =
@@ -117,19 +124,22 @@ function List() {
             .padStart(2, '0')}`;
     }
 
-    function handleVegType(type: string) {
-        setVegType(type);
+    function handleVegType(type: CustomerPreference) {
+        setCustomerPreference(type);
     }
 
     function handleCancel() {
         // Reset search params
         setDeliveryTime({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
-        handleVegType('');
+        handleVegType(CustomerPreference.Other);
         setFilterSectionOpen(false);
     }
 
     function handleApply() {
         setFilterSectionOpen(false);
+        setFilterTries((prev) => prev + 1);
+        setPackages([]);
+        setCurrentPage(0);
     }
 
     function handlePackageClick(packageId: number) {
@@ -139,14 +149,32 @@ function List() {
         navigate(`/packages/${packageId}`, { state: filterPackage });
     }
 
+    function handleScroll(e: React.UIEvent<HTMLDivElement>) {
+        const { target } = e;
+        const div = target as HTMLDivElement;
+        if (
+            div.offsetHeight - (div.scrollHeight - div.scrollTop) < -200 ||
+            isLoading
+        )
+            return;
+        if (hasNextPage) setCurrentPage((prev) => prev + 1);
+    }
+
+    function handleTextInputBlur() {
+        setPackages([]);
+        setCurrentPage(0);
+        setFilterTries((prev) => prev + 1);
+    }
+
     let content = null;
-    if (isLoading) {
-        content = (
-            <p className={styles['container__loading']}>
-                {t('app.loading')} <span></span>
-            </p>
-        );
-    } else if (packages.length === 0) {
+    // if (isLoading) {
+    //     content = (
+    //         <p className={styles['container__loading']}>
+    //             {t('app.loading')} <span></span>
+    //         </p>
+    //     );
+    // }
+    if (packages.length === 0 && !isLoading) {
         content = (
             <p className={styles['container__loading']}>
                 {t('packages.notFound')}
@@ -188,7 +216,7 @@ function List() {
     const deliveryEndTime = formatDeliveryTime(deliveryTime.max);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onScroll={debounce(handleScroll)}>
             <div className={styles['container__filter']}>
                 <div className={styles['container__filter__search']}>
                     <input
@@ -198,6 +226,9 @@ function List() {
                         placeholder={t('app.search')}
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleTextInputBlur();
+                        }}
                     />
                     <FaSearch
                         size="24px"
@@ -308,10 +339,14 @@ function List() {
                                     {
                                         [styles[
                                             'container__bottom-sidebar__vegan__section__btn--selected'
-                                        ]]: vegType === 'vegetarian',
+                                        ]]:
+                                            customerPreference ===
+                                            CustomerPreference.Vegetarian,
                                     },
                                 )}
-                                onClick={() => handleVegType('vegetarian')}
+                                onClick={() =>
+                                    handleVegType(CustomerPreference.Vegetarian)
+                                }
                             >
                                 {t('app.imVegetarian')}
                             </button>
@@ -323,10 +358,14 @@ function List() {
                                     {
                                         [styles[
                                             'container__bottom-sidebar__vegan__section__btn--selected'
-                                        ]]: vegType === 'vegan',
+                                        ]]:
+                                            customerPreference ===
+                                            CustomerPreference.Vegan,
                                     },
                                 )}
-                                onClick={() => handleVegType('vegan')}
+                                onClick={() =>
+                                    handleVegType(CustomerPreference.Vegan)
+                                }
                             >
                                 {t('app.imVegan')}
                             </button>
