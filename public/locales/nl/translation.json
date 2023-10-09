@@ -35,7 +35,8 @@
         "profile": "Profiel",
         "orders": "Bestellingen",
         "favorites": "Favorieten",
-        "comments": "Opmerkingen"
+        "comments": "Opmerkingen",
+        "selectRouting": "Routebeschrijving via"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",

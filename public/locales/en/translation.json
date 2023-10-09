@@ -35,7 +35,8 @@
         "profile": "Profile",
         "orders": "Orders",
         "favorites": "Favorites",
-        "comments": "Comments"
+        "comments": "Comments",
+        "selectRouting": "Routing via..."
     },
     "pages": {
         "contactUs": "Contact Us",
