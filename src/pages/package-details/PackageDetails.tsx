@@ -15,9 +15,11 @@ import LoadingSpinner from 'components/loading-spinner';
 import { AuthStep } from 'models/common';
 import { OrderSubmitResponseInterface } from 'models/orders';
 import { RootState } from 'stores';
+import { Device } from 'stores/platform';
 import { setAuthenticating } from 'stores/user';
 import apiClient from 'utilities/api-client';
 import { stripePromise } from 'utilities/constants';
+import { getMapsLink, Map } from 'utilities/geometry';
 
 import styles from './package-details.module.scss';
 
@@ -28,7 +30,9 @@ enum PurchaseStep {
 
 function PackageDetails() {
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
-    const { language } = useSelector((root: RootState) => root.platform);
+    const { language, device } = useSelector(
+        (root: RootState) => root.platform,
+    );
     const { state } = useLocation();
     const [stripeClientSecret, setStripeClientSecret] =
         React.useState<string>('');
@@ -36,6 +40,7 @@ function PackageDetails() {
     const [purchaseStep, setPurchaseStep] = React.useState<PurchaseStep>(
         PurchaseStep.Details,
     );
+    const [shouldShowRouting, setShowRouting] = React.useState<boolean>(false);
     const [shouldShowPurchase, setShowPurchase] =
         React.useState<boolean>(false);
     const [packageCount, setPackageCount] = React.useState<number>(1);
@@ -128,6 +133,34 @@ function PackageDetails() {
         };
     }
 
+    const routingMedia = [
+        {
+            name: 'Google Maps',
+            link: getMapsLink(
+                device,
+                {
+                    latitude: state.lat as string,
+                    longitude: state.long as string,
+                },
+                Map.GoogleMaps,
+            ),
+            icon: '/img/icons/common/google-maps.png',
+        },
+        {
+            name: 'Waze',
+            link: getMapsLink(
+                device,
+                {
+                    latitude: state.lat as string,
+                    longitude: state.long as string,
+                },
+                Map.Waze,
+            ),
+            icon: '/img/icons/common/waze-white.png',
+        },
+    ];
+
+    console.log(routingMedia);
     return (
         <div className={styles.container}>
             <div
@@ -255,14 +288,83 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                             __html: state.restaurant_address,
                         }}
                     />
-                    <a
+                    <button
                         className={styles['container__body__location__routing']}
-                        href={`geo:${state.lat},${state.long}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        // href={`geo:${state.lat},${state.long}`}
+                        // target="_blank"
+                        // rel="noopener noreferrer"
+                        onClick={() => setShowRouting((prev) => !prev)}
                     >
                         {t('app.routing')}
-                    </a>
+                    </button>
+                    {shouldShowRouting && (
+                        <BottomSidebar
+                            isOpen={shouldShowRouting}
+                            setOpen={setShowRouting}
+                            height={600}
+                        >
+                            <div
+                                className={
+                                    styles['container__body__location__sidebar']
+                                }
+                            >
+                                <p
+                                    className={
+                                        styles[
+                                            'container__body__location__sidebar__header'
+                                        ]
+                                    }
+                                >
+                                    {t('app.selectRouting')}
+                                </p>
+                                <section
+                                    className={
+                                        styles[
+                                            'container__body__location__sidebar__medium'
+                                        ]
+                                    }
+                                >
+                                    {routingMedia.map((medium) => (
+                                        <p
+                                            key={medium.name}
+                                            className={
+                                                styles[
+                                                    'container__body__location__sidebar__medium__link'
+                                                ]
+                                            }
+                                            onClick={() =>
+                                                setShowRouting((prev) => !prev)
+                                            }
+                                        >
+                                            <img
+                                                alt="Routing medium icon"
+                                                className={
+                                                    styles[
+                                                        'container__body__location__sidebar__medium__link__img'
+                                                    ]
+                                                }
+                                                src={medium.icon}
+                                            />
+                                            <a
+                                                className={
+                                                    styles[
+                                                        'container__body__location__sidebar__medium__link__text'
+                                                    ]
+                                                }
+                                                href={medium.link}
+                                                {...(device === Device.PC && {
+                                                    target: '_blank',
+                                                    rel: 'noopener noreferrer',
+                                                })}
+                                            >
+                                                {medium.name}
+                                            </a>
+                                        </p>
+                                    ))}
+                                </section>
+                            </div>
+                        </BottomSidebar>
+                    )}
                 </div>
             </div>
             <div className={styles['container__buy']} onClick={handleBuy}>

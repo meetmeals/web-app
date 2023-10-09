@@ -1,6 +1,6 @@
 {
     "name": "web-app",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "private": true,
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.5",
@@ -27,6 +27,7 @@
         "react-router-dom": "^6.15.0",
         "react-scripts": "5.0.1",
         "typescript": "^4.4.2",
+        "ua-parser-js": "^1.0.36",
         "web-vitals": "^2.1.0",
         "yup": "^1.2.0"
     },
@@ -62,6 +63,7 @@
     "devDependencies": {
         "@types/leaflet": "^1.9.6",
         "@types/testing-library__jest-dom": "^5.14.9",
+        "@types/ua-parser-js": "^0.7.37",
         "@typescript-eslint/eslint-plugin": "^6.3.0",
         "@typescript-eslint/parser": "^6.3.0",
         "eslint": "^8.46.0",

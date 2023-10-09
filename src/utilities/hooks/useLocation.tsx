@@ -7,13 +7,13 @@ enum GeolocationError {
 }
 
 function useLocation() {
-    const [location, setLocation] = React.useState<Point>({
+    const [location, setLocation] = React.useState<Point<number>>({
         latitude: 0,
         longitude: 0,
     });
     const [error, setError] = React.useState<number>(0);
 
-    function onChange({ coords }: { coords: Point }) {
+    function onChange({ coords }: { coords: Point<number> }) {
         setLocation({ latitude: coords.latitude, longitude: coords.longitude });
     }
 

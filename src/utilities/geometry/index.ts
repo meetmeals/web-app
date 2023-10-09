@@ -1,6 +1,8 @@
-export type Point = {
-    latitude: number;
-    longitude: number;
+import { Device } from 'stores/platform';
+
+export type Point<T> = {
+    latitude: T;
+    longitude: T;
 };
 
 export enum DistanceUnit {
@@ -13,15 +15,15 @@ function convertDegreesToRadius(degrees: number) {
 }
 
 export function calculateDistance(
-    point1: Point,
-    point2: Point,
+    point1: Point<number>,
+    point2: Point<number>,
     distanceUnit = DistanceUnit.KM,
 ) {
-    const point1InRadius: Point = {
+    const point1InRadius: Point<number> = {
         latitude: convertDegreesToRadius(point1.latitude),
         longitude: convertDegreesToRadius(point1.longitude),
     };
-    const point2InRadius: Point = {
+    const point2InRadius: Point<number> = {
         latitude: convertDegreesToRadius(point2.latitude),
         longitude: convertDegreesToRadius(point2.longitude),
     };
@@ -37,4 +39,30 @@ export function calculateDistance(
     const c = 2 * Math.asin(Math.sqrt(a));
 
     return c * distanceUnit;
+}
+
+export enum Map {
+    GoogleMaps,
+    Waze,
+}
+
+export function getMapsLink(
+    device: Device,
+    point: Point<string>,
+    map: Map,
+): string {
+    if (map == Map.GoogleMaps) {
+        switch (device) {
+            case Device.Android:
+                return `geo:${point.latitude},${point.longitude}`;
+            case Device.iOS:
+                return `comgooglemaps://?q=${point.latitude},${point.longitude}`;
+            default:
+                return `https://maps.google.com/?q=${point.latitude},${point.longitude}`;
+        }
+    } else if (map === Map.Waze) {
+        return `https://waze.com/live-map/directions?to=ll.${point.latitude},${point.longitude}`;
+    }
+    // [TODO]: Add other map providers
+    return '';
 }

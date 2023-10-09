@@ -1,13 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import UAParser from 'ua-parser-js';
 
 import { PlatformEnum } from 'models/local-storage';
 import { DEFAULT_LANGUAGE, MOBILE_MAX_WIDTH } from 'utilities/constants';
+
+export enum Device {
+    Android,
+    iOS,
+    PC,
+}
 
 type PlatformState = {
     countdownTimer: number;
     isMobile: boolean;
     language: string;
     isMobileDrawerOpen: boolean;
+    device: Device;
 };
 
 const countdownTimer = Number(
@@ -17,11 +25,19 @@ const isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
 const platformLanguage =
     localStorage.getItem(PlatformEnum.LANGUAGE) || DEFAULT_LANGUAGE;
 
+const parser = new UAParser(window.navigator.userAgent);
+let device: Device;
+const osName = parser.getOS().name?.toLowerCase();
+if (osName?.includes('android')) device = Device.Android;
+else if (osName?.includes('ios')) device = Device.iOS;
+device = Device.PC;
+
 const initialState: PlatformState = {
     countdownTimer,
     isMobile,
     language: platformLanguage,
     isMobileDrawerOpen: false,
+    device,
 };
 
 const platformSlice = createSlice({
