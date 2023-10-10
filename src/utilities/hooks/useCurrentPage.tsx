@@ -16,6 +16,8 @@ function useCurrentPage() {
             setCurrentPage(pages.packages.transKey);
         if (path.includes(pages.contactUs.path))
             setCurrentPage(pages.contactUs.transKey);
+        if (path.includes(pages.account.path))
+            setCurrentPage(pages.account.transKey);
     }, [location]);
 
     return currentPage;
