@@ -37,12 +37,12 @@ function Explore() {
                 await apiClient.packages.surfing({
                     ...(!error &&
                         location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
+                        customer_latitude: location.latitude,
+                    }),
                     ...(!error &&
                         location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                        customer_longitude: location.longitude,
+                    }),
                 });
             switch (surfingResonse.status) {
                 case 200:
