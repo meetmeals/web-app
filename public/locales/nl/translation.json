@@ -75,6 +75,7 @@
     "nationalities": {
         "all": "All",
         "american": "Amerikaans",
+        "cakeAndPastry": "Taart & Gebak",
         "chinese": "Chinese",
         "indian": "Indisch",
         "indonesian": "Indonesisch",
@@ -85,7 +86,8 @@
         "persian": "Perzisch",
         "polish": "Pools",
         "surinamese": "Surinaams",
-        "turkish": "Turks"
+        "turkish": "Turks",
+        "moreCuisines": "Meer keukens"
     },
     "otp": {
         "title": "Voer de code in die naar uw e-mailadres is verzonden",
@@ -112,5 +114,13 @@
     "account": {
         "setProfile": "Profielfoto instellen",
         "save": "Redden"
+    },
+    "toast": {
+        "login": "Je bent ingelogd!",
+        "logout": "Je bent uitgelogd!",
+        "likedFromPackages": "Toegevoegd aan je",
+        "dislikedFromPackages": "Verwijderd uit je",
+        "likedFromFavorites": "Toegevoegd aan je favorieten!",
+        "dislikedFromFavorites": "Verwijderd uit je favorieten!"
     }
 }

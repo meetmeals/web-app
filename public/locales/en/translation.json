@@ -75,6 +75,7 @@
     "nationalities": {
         "all": "All",
         "american": "American",
+        "cakeAndPastry": "Cake & Pastry",
         "chinese": "Chinese",
         "indian": "Indian",
         "indonesian": "Indonesian",
@@ -85,7 +86,8 @@
         "persian": "Persian",
         "polish": "Polish",
         "surinamese": "Surinamese",
-        "turkish": "Turkish"
+        "turkish": "Turkish",
+        "moreCuisines": "More Cuisines"
     },
     "otp": {
         "title": "Please enter the code sent to your Email",
@@ -112,5 +114,13 @@
     "account": {
         "setProfile": "Set profile picture",
         "save": "Save"
+    },
+    "toast": {
+        "login": "You're logged in!",
+        "logout": "You're logged out!",
+        "likedFromPackages": "Added to your",
+        "dislikedFromPackages": "Removed from your",
+        "likedFromFavorites": "Added to your favorites!",
+        "dislikedFromFavorites": "Removed from your favorites!"
     }
 }
