@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaSearch, FaFilter } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import BottomSidebar from 'components/bottom-sidebar';
+import LoadingOverlay from 'components/loading-overlay';
 import MultiRangeSlider from 'components/multi-range-slider';
 import NationalityPicker from 'components/nationality-picker';
 import PackageCard from 'components/package-card';
@@ -16,6 +17,7 @@ import {
     CustomerPreference,
 } from 'models/packages';
 import { RootState } from 'stores';
+import { setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
 import { ThemeColor } from 'utilities/constants';
 import { calculateDistance } from 'utilities/geometry';
@@ -31,6 +33,8 @@ const MAX_DELIVERY_RANGE = 95;
 function List() {
     const [packages, setPackages] = React.useState<Array<FilterPackage>>([]);
     const [isLoading, setLoading] = React.useState<boolean>(true);
+    const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
+        React.useState<boolean>(false);
     const [currentPage, setCurrentPage] = React.useState<number>(0);
     const [hasNextPage, setHasNextPage] = React.useState<boolean>(false);
     const [searchText, setSearchText] = React.useState<string>('');
@@ -48,6 +52,7 @@ function List() {
 
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         async function filter() {
@@ -61,6 +66,14 @@ function List() {
                         customer_preference: customerPreference,
                         start_time: formatDeliveryTime(deliveryTime.min),
                         end_time: formatDeliveryTime(deliveryTime.max),
+                        ...(!error &&
+                            location.latitude && {
+                            customer_latitude: location.latitude,
+                        }),
+                        ...(!error &&
+                            location.longitude && {
+                            customer_longitude: location.longitude,
+                        }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -88,20 +101,30 @@ function List() {
     }, [currentPage, filterTries, token]);
 
     async function handleFavoriteChange(packageId: number) {
+        setFavoriteChangeLoading(true);
         const packageLikeResponse: PackageLikeResponseInterface =
             await apiClient.packages.packageLike(
                 { package_id: packageId },
                 { Authorization: `Bearer ${token}` },
             );
+        setFavoriteChangeLoading(false);
         switch (packageLikeResponse.status) {
             case 200:
                 setPackages((prev) =>
                     prev.map((filterPackage: FilterPackage) => {
                         if (filterPackage.id !== packageId)
                             return filterPackage;
+                        const isLike = filterPackage.is_like === 0 ? 1 : 0;
+                        dispatch(
+                            setToast({
+                                toast: isLike
+                                    ? Toast.LikePackageFromPackages
+                                    : Toast.DislikePackageFromPackages,
+                            }),
+                        );
                         return {
                             ...filterPackage,
-                            is_like: filterPackage.is_like === 0 ? 1 : 0,
+                            is_like: isLike,
                         };
                     }),
                 );
@@ -217,6 +240,7 @@ function List() {
 
     return (
         <div className={styles.container} onScroll={debounce(handleScroll)}>
+            {isFavoriteChangeLoading && <LoadingOverlay />}
             <div className={styles['container__filter']}>
                 <div className={styles['container__filter__search']}>
                     <input
