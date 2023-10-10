@@ -4,6 +4,16 @@ import { AuthStep, UserInterface } from 'models/common';
 import { UserEnum } from 'models/local-storage';
 import { DEFAULT_NATIONALITY } from 'utilities/constants';
 
+export enum Toast {
+    Login,
+    Logout,
+    LikePackageFromPackages,
+    DislikePackageFromPackages,
+    LikePackageFromFavorites,
+    DislikePackageFromFavorites,
+    None,
+}
+
 type UserState = {
     authenticationStep: AuthStep;
     selectedNationality: string;
@@ -11,6 +21,7 @@ type UserState = {
     isLoggedIn: boolean;
     token: string;
     info: UserInterface;
+    toast: Toast;
 };
 
 const selectedNationality =
@@ -29,6 +40,7 @@ const initialState: UserState = {
     isLoggedIn,
     token,
     info,
+    toast: Toast.None,
 };
 
 const userSlice = createSlice({
@@ -71,9 +83,11 @@ const userSlice = createSlice({
             if (action.payload.token) {
                 state.token = action.payload.token;
                 localStorage.setItem(UserEnum.TOKEN, action.payload.token);
+                state.toast = Toast.Login;
             } else {
                 state.token = '';
                 localStorage.removeItem(UserEnum.TOKEN);
+                state.toast = Toast.Logout;
             }
             if (action.payload.info) {
                 state.info = action.payload.info;
@@ -86,6 +100,9 @@ const userSlice = createSlice({
                 localStorage.removeItem(UserEnum.INFO);
             }
         },
+        setToast: (state, action: PayloadAction<{ toast: Toast }>) => {
+            state.toast = action.payload.toast;
+        },
     },
 });
 
@@ -94,5 +111,6 @@ export const {
     setSelectedNationality,
     setTempEmail,
     setLoggedIn,
+    setToast,
 } = userSlice.actions;
 export default userSlice.reducer;
