@@ -1,0 +1,29 @@
+@use 'styles/colors.scss' as color;
+
+.container {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 15rem);
+
+    &__row {
+        margin-bottom: 2rem;
+
+        &__header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: color.$black-600;
+            text-transform: capitalize;
+        }
+
+        &__body {
+            display: flex;
+            flex-wrap: nowrap;
+            max-width: 95%;
+            overflow-x: scroll;
+            margin: 0 auto;
+            white-space: nowrap;
+            gap: 1.5rem;
+            padding: 0.5rem 0;
+        }
+    }
+}

@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Header from 'components/header/Header';
 import Layout from 'components/layout/Layout';
+import Toast from 'components/toast/Toast';
 import ContactUs from 'pages/contact-us/ContactUs';
 import Explore from 'pages/explore/Explore';
 import List from 'pages/list/List';
@@ -56,6 +57,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Layout>
+            <Toast />
         </>
     );
 }

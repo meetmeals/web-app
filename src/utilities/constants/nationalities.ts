@@ -1,6 +1,6 @@
 type NationalityType = {
     translationKey: string;
-    index: number;
+    index: string;
     icon: string;
 };
 
@@ -9,67 +9,77 @@ export const DEFAULT_NATIONALITY = 'all';
 export const nationalities: NationalityType[] = [
     {
         translationKey: 'all',
-        index: 0,
+        index: '0',
         icon: 'all.svg',
     },
     {
         translationKey: 'american',
-        index: 1,
+        index: '1',
         icon: 'american.svg',
     },
     {
+        translationKey: 'cakeAndPastry',
+        index: '2',
+        icon: 'cakeAndPastry.svg',
+    },
+    {
         translationKey: 'chinese',
-        index: 2,
+        index: '3',
         icon: 'chinese.svg',
     },
     {
         translationKey: 'indian',
-        index: 3,
+        index: '4',
         icon: 'indian.svg',
     },
     {
         translationKey: 'indonesian',
-        index: 4,
+        index: '5',
         icon: 'indonesian.svg',
     },
     {
         translationKey: 'italian',
-        index: 5,
+        index: '6',
         icon: 'italian.svg',
     },
     {
         translationKey: 'mediterranean',
-        index: 6,
+        index: '7',
         icon: 'mediterranean.svg',
     },
     {
         translationKey: 'mexican',
-        index: 7,
+        index: '8',
         icon: 'mexican.svg',
     },
     {
         translationKey: 'moroccan',
-        index: 8,
+        index: '9',
         icon: 'moroccan.svg',
     },
     {
         translationKey: 'persian',
-        index: 9,
+        index: '10',
         icon: 'persian.svg',
     },
     {
         translationKey: 'polish',
-        index: 10,
+        index: '11',
         icon: 'polish.svg',
     },
     {
         translationKey: 'surinamese',
-        index: 11,
+        index: '12',
         icon: 'surinamese.svg',
     },
     {
         translationKey: 'turkish',
-        index: 12,
+        index: '13',
         icon: 'turkish.svg',
+    },
+    {
+        translationKey: 'moreCuisines',
+        index: '14',
+        icon: 'moreCuisines.svg',
     },
 ];

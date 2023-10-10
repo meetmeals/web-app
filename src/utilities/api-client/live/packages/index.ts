@@ -11,6 +11,7 @@ const options: PackagesApiClientOptions = {
         filter: packagesBaseUrl + '/filter',
         surfing: packagesBaseUrl + '/surfing',
         packageLike: packagesBaseUrl + '/package-like',
+        favorites: packagesBaseUrl + '/package-user-like',
     },
 };
 

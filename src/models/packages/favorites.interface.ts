@@ -1,11 +1,6 @@
 import { ApiResponse } from 'models/common';
 
-export interface SurfingRequestInterface {
-    customer_latitude?: number;
-    customer_longitude?: number;
-}
-
-export interface SurfingPackageItem {
+export interface FavoritePackage {
     fa_title: string;
     en_title: string;
     id: number;
@@ -21,7 +16,7 @@ export interface SurfingPackageItem {
     logo: string;
     ready_to_eat: number;
     offset_time: string;
-    commission: number;
+    commission: string;
     restaurant_desc: string;
     restaurant_id: number;
     diet_preference_id: number;
@@ -45,15 +40,16 @@ export interface SurfingPackageItem {
     package_finished_time: string;
     distance: number;
     user_like_package: number;
+    is_like: number;
+    package_id: number;
 }
 
-export interface SurfingPackage {
-    package_type_id: string;
-    package_type_name: string;
-    packages: Array<SurfingPackageItem>;
+export interface FavoritesRequestInterface {
+    customer_latitude?: number;
+    customer_longitude?: number;
 }
 
-export interface SurfingResponseInterface extends ApiResponse {
-    data: Array<SurfingPackage>;
+export interface FavoritesResponseInterface extends ApiResponse {
+    data: Array<FavoritePackage>;
     message: string;
 }

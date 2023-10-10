@@ -80,6 +80,10 @@
             color: color.$main-green;
             font-size: 1.4rem;
             font-weight: bold;
+
+            &--shrink {
+                align-self: flex-start;
+            }
         }
     }
 }
