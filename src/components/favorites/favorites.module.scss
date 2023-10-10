@@ -1,0 +1,45 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    overflow-y: auto;
+    max-height: calc(100vh - 25rem);
+
+    &__loading {
+        width: 80%;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: bold;
+        padding: 1rem;
+        color: color.$black-600;
+
+        & span {
+            display: inline-block;
+            width: 3rem;
+            text-align: start;
+        }
+
+        & span:before {
+            animation: dots 1s linear infinite;
+            content: '';
+        }
+    }
+}
+
+@keyframes dots {
+    0%,
+    20% {
+        content: '.';
+    }
+    40% {
+        content: '..';
+    }
+    60% {
+        content: '...';
+    }
+    90%,
+    100% {
+        content: '';
+    }
+}
