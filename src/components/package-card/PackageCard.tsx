@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { FaHeart, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 
@@ -19,6 +20,7 @@ type PackageCardProps = {
     price: number;
     isLoggedIn: boolean;
     handlePackageClick: (packageId: number) => void;
+    shouldShrinkView?: boolean;
 };
 
 function PackageCard(props: PackageCardProps) {
@@ -116,7 +118,15 @@ function PackageCard(props: PackageCardProps) {
                         )}
                     </p>
                 </section>
-                <p className={styles['container__body__package-price']}>
+                <p
+                    className={classNames(
+                        styles['container__body__package-price'],
+                        {
+                            [styles['container__body__package-price--shrink']]:
+                                props.shouldShrinkView,
+                        },
+                    )}
+                >
                     &euro; {props.price}
                 </p>
             </section>
