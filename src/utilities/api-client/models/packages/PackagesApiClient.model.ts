@@ -1,5 +1,7 @@
 import { HttpMethodsEnum, MimeTypesEnum } from 'models/api';
 import {
+    FavoritesRequestInterface,
+    FavoritesResponseInterface,
     FilterRequestInterface,
     FilterResponseInterface,
     PackageLikeRequestInterface,
@@ -104,6 +106,37 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
             fetch(endpoint, requestOptions)
                 .then((response) => response.json())
                 .then((result: PackageLikeResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `PackagesApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
+    }
+    favorites(
+        body: FavoritesRequestInterface,
+        headers: object,
+    ): Promise<FavoritesResponseInterface> {
+        return new Promise<FavoritesResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.favorites;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.POST,
+                headers: Object.assign(headers, {
+                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
+                }),
+                body: JSON.stringify(body),
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: FavoritesResponseInterface) => {
                     if (!this.mockDelay) resolve(result);
                     else
                         setTimeout(() => {

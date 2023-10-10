@@ -6,6 +6,7 @@ export interface PackagesApiClientEndpoints {
     filter: string;
     surfing: string;
     packageLike: string;
+    favorites: string;
 }
 
 /**

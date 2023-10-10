@@ -1,4 +1,6 @@
 import {
+    FavoritesRequestInterface,
+    FavoritesResponseInterface,
     FilterRequestInterface,
     FilterResponseInterface,
     PackageLikeRequestInterface,
@@ -23,4 +25,8 @@ export interface PackagesApiClientInterface {
         body: PackageLikeRequestInterface,
         headers: object,
     ) => Promise<PackageLikeResponseInterface>;
+    favorites: (
+        body: FavoritesRequestInterface,
+        headers: object,
+    ) => Promise<FavoritesResponseInterface>;
 }
