@@ -122,5 +122,15 @@
         "dislikedFromPackages": "Removed from your",
         "likedFromFavorites": "Added to your favorites!",
         "dislikedFromFavorites": "Removed from your favorites!"
+    },
+    "contactUs": {
+        "header": "How we can help you?",
+        "selectIssue": "What is the issue?",
+        "issue": "Issue",
+        "chooseProblem": "Please choose a subject.",
+        "problemTextTitle": "Any comment/consideration",
+        "problemTextPlaceholder": "Comments",
+        "addFiles": "Add images",
+        "send": "Send"
     }
 }

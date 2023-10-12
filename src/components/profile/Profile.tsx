@@ -140,6 +140,7 @@ function Profile() {
                         }
                         name="profilePicture"
                         type="file"
+                        accept="image/*"
                         onChange={handleFileChange}
                         ref={imgUploadInputRef}
                     />

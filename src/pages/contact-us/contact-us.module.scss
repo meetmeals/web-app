@@ -1,0 +1,176 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 15rem);
+    color: color.$black-600;
+
+    &__header {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+        font-weight: bold;
+    }
+
+    &__form {
+        &__issue,
+        &__problem,
+        &__email {
+            width: 100%;
+            min-height: 3rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 1rem 0;
+
+            &__p {
+                display: flex;
+                align-items: center;
+                font-size: 1.4rem;
+                background-color: color.$main-orange;
+                color: color.$ternary-white;
+                border-radius: layout.$border-radius-5;
+                min-height: 3rem;
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+
+        &__email {
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            &__input {
+                border: none;
+                outline: none;
+                text-indent: 1rem;
+                color: color.$black-600;
+                width: 100%;
+                line-height: 3.5rem;
+                font-size: 1.2rem;
+                border-radius: layout.$border-radius-5;
+
+                &--error {
+                    border: 1px solid color.$error-red;
+                }
+            }
+
+            &__error {
+                padding-left: 1rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: color.$error-red;
+            }
+        }
+
+        &__files,
+        &__text-area {
+            margin: 2rem 0;
+
+            &__header {
+                font-size: 1.4rem;
+                font-weight: bold;
+                margin-bottom: 1rem;
+            }
+        }
+
+        &__files {
+            &__body {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: flex-start;
+                gap: 0.7rem;
+            }
+        }
+
+        &__text-area {
+            &__el {
+                resize: none;
+                width: 90%;
+                margin: 0 auto;
+                border: none;
+                outline: none;
+                padding: 1rem 0.7rem;
+                border-radius: layout.$border-radius-5;
+            }
+
+            &__remaining {
+                float: right;
+                padding: 1rem 2rem;
+            }
+        }
+
+        &__submit {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &__btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 12rem;
+                height: 4rem;
+                background-color: color.$main-green;
+                border: none;
+                color: color.$main-white;
+                font-size: 1.6rem;
+                font-weight: bold;
+                border-radius: layout.$border-radius-10;
+
+                &:disabled {
+                    pointer-events: none;
+                    background-color: color.$green-100;
+                }
+            }
+        }
+    }
+
+    &__bottom-sidebar {
+        &__header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: color.$secondary-white;
+            padding-bottom: 1rem;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid color.$secondary-white;
+        }
+
+        &__issue,
+        &__problem {
+            &__list {
+                width: 90%;
+                margin: 2rem auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 1rem;
+
+                &__item {
+                    display: flex;
+                    align-items: center;
+                    color: color.$black-600;
+                    background-color: color.$ternary-white;
+                    font-size: 1.2rem;
+                    min-height: 2.5rem;
+                    border-radius: layout.$border-radius-5;
+                    width: 90%;
+                    padding: 0.5rem 1rem;
+
+                    &--selected {
+                        background-color: color.$main-orange;
+                        color: color.$ternary-white;
+                    }
+                }
+            }
+        }
+    }
+}
