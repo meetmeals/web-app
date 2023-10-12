@@ -1,5 +1,6 @@
 import { AccountApiClientInterface } from './account';
 import { AuthApiClientInterface } from './auth';
+import { ConstantTextApiClientInterface } from './constant-text';
 import { OrdersApiClientInterface } from './orders';
 import { PackagesApiClientInterface } from './packages';
 import { ProductsApiClientInterface } from './products';
@@ -14,4 +15,5 @@ export interface ApiClientInterface {
     packages: PackagesApiClientInterface;
     orders: OrdersApiClientInterface;
     account: AccountApiClientInterface;
+    constantText: ConstantTextApiClientInterface;
 }

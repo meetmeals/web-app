@@ -4,6 +4,7 @@ import { authApiClient } from './auth';
 import { packagesApiClient } from './packages';
 import { ordersApiClient } from './orders';
 import { accountApiClient } from './account';
+import { constantTextApiClient } from './constant-text';
 
 export const apiLiveClient: ApiClientInterface = {
     auth: authApiClient,
@@ -11,4 +12,5 @@ export const apiLiveClient: ApiClientInterface = {
     packages: packagesApiClient,
     orders: ordersApiClient,
     account: accountApiClient,
+    constantText: constantTextApiClient,
 };
