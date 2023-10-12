@@ -135,8 +135,8 @@ function ContactUs() {
                     >
                         {issueTitleId > 0
                             ? helpText?.help_title.find(
-                                  (issue) => issue.id === issueTitleId,
-                              )?.text
+                                (issue) => issue.id === issueTitleId,
+                            )?.text
                             : t('contactUs.selectIssue')}
                     </p>
                     <BottomSidebar
@@ -199,12 +199,12 @@ function ContactUs() {
                         >
                             {problemId > 0
                                 ? helpText?.help_title
-                                      .find(
-                                          (issue) => issue.id === issueTitleId,
-                                      )
-                                      ?.subject.find(
-                                          (subject) => subject.id === problemId,
-                                      )?.fa_title
+                                    .find(
+                                        (issue) => issue.id === issueTitleId,
+                                    )
+                                    ?.subject.find(
+                                        (subject) => subject.id === problemId,
+                                    )?.fa_title
                                 : t('contactUs.chooseProblem')}
                         </p>
                         <BottomSidebar
