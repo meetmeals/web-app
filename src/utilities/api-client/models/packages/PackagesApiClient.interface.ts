@@ -20,6 +20,7 @@ export interface PackagesApiClientInterface {
     ) => Promise<FilterResponseInterface>;
     surfing: (
         body: SurfingRequestInterface,
+        headers: object,
     ) => Promise<SurfingResponseInterface>;
     packageLike: (
         body: PackageLikeRequestInterface,

@@ -34,16 +34,19 @@ function Explore() {
     React.useEffect(() => {
         async function surfing() {
             const surfingResonse: SurfingResponseInterface =
-                await apiClient.packages.surfing({
-                    ...(!error &&
-                        location.latitude && {
-                        customer_latitude: location.latitude,
-                    }),
-                    ...(!error &&
-                        location.longitude && {
-                        customer_longitude: location.longitude,
-                    }),
-                });
+                await apiClient.packages.surfing(
+                    {
+                        ...(!error &&
+                            location.latitude && {
+                                customer_latitude: location.latitude,
+                            }),
+                        ...(!error &&
+                            location.longitude && {
+                                customer_longitude: location.longitude,
+                            }),
+                    },
+                    { Authorization: `Bearer ${token}` },
+                );
             switch (surfingResonse.status) {
                 case 200:
                     setPackages(surfingResonse.data);
@@ -80,8 +83,7 @@ function Explore() {
                                     if (surfingPackageItem.id !== packageId)
                                         return surfingPackageItem;
                                     const isLike =
-                                        surfingPackageItem.user_like_package ===
-                                        0
+                                        surfingPackageItem.is_like === 0
                                             ? 1
                                             : 0;
                                     dispatch(
@@ -93,7 +95,7 @@ function Explore() {
                                     );
                                     return {
                                         ...surfingPackageItem,
-                                        user_like_package: isLike,
+                                        is_like: isLike,
                                     };
                                 },
                             ),
@@ -179,7 +181,7 @@ function Explore() {
                                         }
                                         const props = {
                                             isFavorite:
-                                                surfingPackageItem.user_like_package,
+                                                surfingPackageItem.is_like,
                                             setFavorite: handleFavoriteChange,
                                             packageTitle:
                                                 surfingPackageItem.PackageName,

@@ -44,7 +44,7 @@ export interface SurfingPackageItem {
     status: number;
     package_finished_time: string;
     distance: number;
-    user_like_package: number;
+    is_like: number;
 }
 
 export interface SurfingPackage {
