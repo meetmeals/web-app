@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import LoadingOverlay from 'components/loading-overlay';
 import PackageCard from 'components/package-card';
+import { NullableString } from 'models/common';
 import {
     FavoritePackage,
     FavoritesResponseInterface,
@@ -14,6 +15,7 @@ import { RootState } from 'stores';
 import { setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
 import { calculateDistance } from 'utilities/geometry';
+import { debounce } from 'utilities/helpers';
 import { useLocation } from 'utilities/hooks';
 
 import styles from './favorites.module.scss';
@@ -21,6 +23,8 @@ import styles from './favorites.module.scss';
 function Favorites() {
     const [packages, setPackages] = React.useState<Array<FavoritePackage>>([]);
     const [isLoading, setLoading] = React.useState<boolean>(true);
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [hasNextPage, setHasNextPage] = React.useState<NullableString>('yes');
     const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
         React.useState<boolean>(false);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
@@ -38,23 +42,25 @@ function Favorites() {
                     {
                         ...(!error &&
                             location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
+                                customer_latitude: location.latitude,
+                            }),
                         ...(!error &&
                             location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                                customer_longitude: location.longitude,
+                            }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
                     },
+                    currentPage,
                 );
             switch (favoritesResponse.status) {
                 case 200:
                     setPackages((prevPackages) => [
                         ...prevPackages,
-                        ...favoritesResponse.data,
+                        ...favoritesResponse.data.data,
                     ]);
+                    setHasNextPage(favoritesResponse.data.next_page_url);
                     setLoading(false);
                     break;
                 case 400:
@@ -67,7 +73,7 @@ function Favorites() {
         }
         fetchFavorites();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [token]);
+    }, [currentPage, token]);
 
     async function handleFavoriteChange(packageId: number) {
         setFavoriteChangeLoading(true);
@@ -96,6 +102,17 @@ function Favorites() {
             default:
                 break;
         }
+    }
+
+    function handleScroll(e: React.UIEvent<HTMLDivElement>) {
+        const { target } = e;
+        const div = target as HTMLDivElement;
+        if (
+            div.offsetHeight - (div.scrollHeight - div.scrollTop) < -200 ||
+            isLoading
+        )
+            return;
+        if (hasNextPage) setCurrentPage((prev) => prev + 1);
     }
 
     function handlePackageClick(packageId: number) {
@@ -144,7 +161,7 @@ function Favorites() {
         });
     }
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onScroll={debounce(handleScroll)}>
             {isFavoriteChangeLoading && <LoadingOverlay />}
             {content}
         </div>

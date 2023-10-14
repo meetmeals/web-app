@@ -29,5 +29,6 @@ export interface PackagesApiClientInterface {
     favorites: (
         body: FavoritesRequestInterface,
         headers: object,
+        page: number,
     ) => Promise<FavoritesResponseInterface>;
 }
