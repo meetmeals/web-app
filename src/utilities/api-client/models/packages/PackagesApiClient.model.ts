@@ -60,14 +60,17 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
         });
     }
 
-    surfing(body: SurfingRequestInterface): Promise<SurfingResponseInterface> {
+    surfing(
+        body: SurfingRequestInterface,
+        headers: object,
+    ): Promise<SurfingResponseInterface> {
         return new Promise<SurfingResponseInterface>((resolve) => {
             const endpoint = this.endpoints.surfing;
             const requestOptions: RequestInit = {
                 method: HttpMethodsEnum.POST,
-                headers: {
+                headers: Object.assign(headers, {
                     'Content-Type': MimeTypesEnum.APPLICATION_JSON,
-                },
+                }),
                 body: JSON.stringify(body),
             };
 
