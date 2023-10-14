@@ -126,9 +126,10 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
     favorites(
         body: FavoritesRequestInterface,
         headers: object,
+        page: number,
     ): Promise<FavoritesResponseInterface> {
         return new Promise<FavoritesResponseInterface>((resolve) => {
-            const endpoint = this.endpoints.favorites;
+            const endpoint = this.endpoints.favorites + `?page=${page}`;
             const requestOptions: RequestInit = {
                 method: HttpMethodsEnum.POST,
                 headers: Object.assign(headers, {

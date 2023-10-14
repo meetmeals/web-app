@@ -1,4 +1,4 @@
-import { ApiResponse } from 'models/common';
+import { ApiResponse, NullableString } from 'models/common';
 
 export interface FavoritePackage {
     fa_title: string;
@@ -50,6 +50,19 @@ export interface FavoritesRequestInterface {
 }
 
 export interface FavoritesResponseInterface extends ApiResponse {
-    data: Array<FavoritePackage>;
+    data: {
+        current_page: number;
+        first_page_url: string;
+        from: number;
+        last_page: string;
+        last_page_url: string;
+        next_page_url: NullableString;
+        path: string;
+        per_page: number;
+        prev_page_url: NullableString;
+        to: number;
+        totall: number;
+        data: Array<FavoritePackage>;
+    };
     message: string;
 }
