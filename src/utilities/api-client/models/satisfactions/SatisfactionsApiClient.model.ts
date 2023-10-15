@@ -20,7 +20,7 @@ import {
  * @description Implements the SatisfactionsApiClientInterface
  */
 export class SatisfactionsApiClientModel
-    implements SatisfactionsApiClientInterface
+implements SatisfactionsApiClientInterface
 {
     private readonly endpoints!: SatisfactionsApiClientEndpoints;
     private readonly mockDelay: number = 0;

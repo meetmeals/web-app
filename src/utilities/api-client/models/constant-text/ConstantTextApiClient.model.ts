@@ -12,7 +12,7 @@ import {
  * @description Implements the ConstantTextApiClientInterface
  */
 export class ConstantTextApiClientModel
-    implements ConstantTextApiClientInterface
+implements ConstantTextApiClientInterface
 {
     private readonly endpoints!: ConstantTextApiClientEndpoints;
     private readonly mockDelay: number = 0;
