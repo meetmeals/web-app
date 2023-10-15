@@ -1,4 +1,5 @@
 export type NullableString = string | null;
+export type NullableNumber = number | null;
 
 export enum AuthStep {
     LOGIN = 'login',
