@@ -113,6 +113,7 @@
     },
     "account": {
         "setProfile": "Set profile picture",
+        "changeProfile": "Change profile picture",
         "save": "Save"
     },
     "toast": {
@@ -121,7 +122,9 @@
         "likedFromPackages": "Added to your",
         "dislikedFromPackages": "Removed from your",
         "likedFromFavorites": "Added to your favorites!",
-        "dislikedFromFavorites": "Removed from your favorites!"
+        "dislikedFromFavorites": "Removed from your favorites!",
+        "profileUpdated": "Profile updated!",
+        "saveCustomerContact": "Issue has been registered."
     },
     "contactUs": {
         "header": "How we can help you?",
@@ -132,5 +135,28 @@
         "problemTextPlaceholder": "Comments",
         "addFiles": "Add images",
         "send": "Send"
+    },
+    "orders": {
+        "new": "New Orders",
+        "history": "History",
+        "notFound": "No orders found :(",
+        "orderDetails": {
+            "orderStatus": "Order Status",
+            "price": "Price",
+            "needHelp": "Need help?",
+            "yourScore": "Your Score",
+            "rate": "Your Comments",
+            "foodQuality": "Food Quality",
+            "foodVolume": "Food Volume",
+            "sellerEncounter": "Seller Encounter",
+            "totalSatisfaction": "Total Satisfaction",
+            "comments": "Comments",
+            "rateHeader": "How was your order?",
+            "send": "Submit"
+        }
+    },
+    "comments": {
+        "price": "Price",
+        "orderNumber": "Order Number"
     }
 }

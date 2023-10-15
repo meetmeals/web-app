@@ -113,6 +113,7 @@
     },
     "account": {
         "setProfile": "Profielfoto instellen",
+        "changeProfile": "Profielfoto veranderen",
         "save": "Redden"
     },
     "toast": {
@@ -121,7 +122,9 @@
         "likedFromPackages": "Toegevoegd aan je",
         "dislikedFromPackages": "Verwijderd uit je",
         "likedFromFavorites": "Toegevoegd aan je favorieten!",
-        "dislikedFromFavorites": "Verwijderd uit je favorieten!"
+        "dislikedFromFavorites": "Verwijderd uit je favorieten!",
+        "profileUpdated": "Profiel geüpdatet!",
+        "saveCustomerContact": "Issue has been registered."
     },
     "contactUs": {
         "header": "Hoe kunnen wij u helpen?",
@@ -132,5 +135,28 @@
         "problemTextPlaceholder": "Opmerkingen",
         "addFiles": "Afbeeldingen toevoegen",
         "send": "Versturen"
+    },
+    "orders": {
+        "new": "Nieuwe bevelen",
+        "history": "Geschiedenis",
+        "notFound": "Geen bestellingen gevonden :(",
+        "orderDetails": {
+            "orderStatus": "Bestelstatus",
+            "price": "Prijs",
+            "needHelp": "Hulp nodig?",
+            "yourScore": "Jouw score",
+            "rate": "Jouw reacties",
+            "foodQuality": "Voedselkwaliteit",
+            "foodVolume": "Voedselvolume",
+            "sellerEncounter": "Ontmoeting met verkoper",
+            "totalSatisfaction": "Totale tevredenheid",
+            "comments": "Opmerkingen",
+            "rateHeader": "Hoe was je bestelling?",
+            "send": "Indienen"
+        }
+    },
+    "comments": {
+        "price": "Prijs",
+        "orderNumber": "Bestellingsnummer"
     }
 }
