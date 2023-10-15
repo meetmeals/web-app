@@ -1,0 +1,89 @@
+@use 'styles/colors.scss' as color;
+
+.container {
+    padding-top: 3rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 25rem);
+
+    &__comment {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: color.$main-white;
+        margin-bottom: 4rem;
+        padding: 0 2rem;
+        box-shadow: 0 4px 4px -2px #acacac;
+
+        &__top {
+            section {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                position: relative;
+                top: -3rem;
+
+                img {
+                    width: 9rem;
+                    height: 9rem;
+                }
+
+                span {
+                    font-size: 1.6rem;
+                    color: color.$black-600;
+                }
+            }
+        }
+
+        &__middle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: color.$black-600;
+
+            &__right {
+                font-size: 1.2rem;
+            }
+
+            &__left {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 1rem;
+                font-size: 1.2rem;
+
+                section {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    gap: 1rem;
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            p {
+                color: color.$black-600;
+                font-size: 1.1rem;
+                line-height: 1.2rem;
+            }
+        }
+
+        &__separator {
+            width: 100%;
+            border: 1px solid color.$secondary-white;
+            margin: 1rem 0;
+        }
+    }
+}

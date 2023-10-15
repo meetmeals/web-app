@@ -1,0 +1,40 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+    border-radius: layout.$border-radius-5;
+    box-shadow: 2px 1px 5px 2px #acacac;
+    margin-top: 1.5rem;
+    background-color: #fff;
+    align-items: space-between;
+
+    &__package-img {
+        padding: 1rem 2rem;
+
+        &__img {
+            width: 9rem;
+            height: 9rem;
+        }
+    }
+
+    &__order-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: flex-start;
+
+        &__chef {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: color.$black-600;
+        }
+
+        &__status {
+            font-size: 1.4rem;
+            color: color.$black-400;
+        }
+    }
+}

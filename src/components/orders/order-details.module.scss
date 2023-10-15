@@ -1,0 +1,201 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    &__order-status {
+        background-color: color.$main-white;
+        box-shadow: 0 4px 4px -2px #acacac;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        h2 {
+            font-size: 1.8rem;
+            color: color.$black-600;
+        }
+
+        p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            span {
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    &__order-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        background-color: color.$main-white;
+        box-shadow: 0 4px 4px -2px #acacac;
+        padding: 2rem 1rem;
+
+        p {
+            font-size: 1.2rem;
+            color: color.$black-400;
+        }
+
+        &__package {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            &__name {
+                font-weight: bold;
+            }
+
+            &__count {
+                background-color: color.$main-yellow;
+                padding: 0.5rem;
+                min-width: 2rem;
+                border-radius: layout.$border-radius-5;
+                text-align: center;
+            }
+        }
+
+        &__need-help {
+            width: 100%;
+            border-top: 1px solid color.$ternary-white;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: color.$black-900;
+
+            button {
+                border: 2px solid color.$black-600;
+                border-radius: layout.$border-radius-10;
+                background-color: inherit;
+                padding: 1rem 2rem;
+            }
+        }
+    }
+
+    &__rating {
+        margin-top: 2rem;
+        background-color: color.$main-white;
+        box-shadow: 0 4px 4px -2px #acacac;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+
+        p {
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-bottom: 1px solid color.$ternary-white;
+            padding-bottom: 1rem;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        button {
+            border: none;
+            border-radius: layout.$border-radius-5;
+            padding: 1rem 2rem;
+            background-color: color.$main-green;
+            color: color.$main-white;
+        }
+    }
+
+    &__bottom-sidebar {
+        &__separator {
+            width: 80%;
+            height: 1px;
+            background-color: color.$secondary-white;
+            margin: 2rem auto;
+        }
+
+        &__header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: color.$secondary-white;
+            padding-bottom: 1rem;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid color.$secondary-white;
+        }
+
+        &__rating {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+
+            section {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                p {
+                    font-size: 1.3rem;
+                    color: color.$ternary-white;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        &__comments {
+            textarea {
+                display: block;
+                margin: 0 auto;
+                resize: none;
+                width: 80%;
+                border: none;
+                outline: none;
+                padding: 1rem 0.7rem;
+                border-radius: layout.$border-radius-5;
+            }
+        }
+
+        &__submit {
+            margin-top: 2rem;
+            border-top: 1px solid color.$secondary-white;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            p {
+                font-size: 1.2rem;
+                color: color.$error-red;
+            }
+
+            button {
+                border: none;
+                border-radius: layout.$border-radius-5;
+                height: 4rem;
+                min-width: 12rem;
+                padding: 0 2rem;
+                background-color: color.$main-orange;
+                color: color.$main-white;
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+        }
+    }
+}

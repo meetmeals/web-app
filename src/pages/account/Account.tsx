@@ -46,7 +46,7 @@ function Account() {
         }
 
         const idx = tabs.map((tab) => tab.tab).indexOf(tab as AccountTabs);
-        if (idx > 0) setActiveTab(tabs[idx].tab);
+        if (idx >= 0) setActiveTab(tabs[idx].tab);
     }, [searchParams, setSearchParams]);
 
     function handleTabChange(tab: AccountTabs) {
