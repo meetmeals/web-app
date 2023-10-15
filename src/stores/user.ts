@@ -11,6 +11,8 @@ export enum Toast {
     DislikePackageFromPackages,
     LikePackageFromFavorites,
     DislikePackageFromFavorites,
+    ProfileUpdated,
+    SaveCustomerContact,
     None,
 }
 

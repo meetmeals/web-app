@@ -75,6 +75,12 @@ function Toast() {
         case ToastType.DislikePackageFromFavorites:
             content = <p>{t('toast.dislikedFromFavorites')}</p>;
             break;
+        case ToastType.ProfileUpdated:
+            content = <p>{t('toast.profileUpdated')}</p>;
+            break;
+        case ToastType.SaveCustomerContact:
+            content = <p>{t('toast.saveCustomerContact')}</p>;
+            break;
     }
 
     return (
