@@ -1,0 +1,36 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
+.container {
+    &__choose-type {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        &__btn {
+            border: none;
+            font-size: 1.6rem;
+            color: color.$black-600;
+            border-radius: layout.$border-radius-5;
+            min-width: 10rem;
+            height: 3rem;
+
+            &--active {
+                background-color: color.$main-orange;
+                color: color.$secondary-white;
+            }
+        }
+    }
+
+    &__content {
+        overflow-y: auto;
+        max-height: calc(100vh - 30rem);
+    }
+
+    &__not-found {
+        text-align: center;
+        font-size: 1.8rem;
+        line-height: 2rem;
+    }
+}

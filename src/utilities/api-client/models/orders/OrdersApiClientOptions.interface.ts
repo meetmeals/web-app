@@ -4,6 +4,9 @@
  */
 export interface OrdersApiClientEndpoints {
     orderSubmit: string;
+    orderNewList: string;
+    orderOldList: string;
+    orderDetail: string;
 }
 
 /**

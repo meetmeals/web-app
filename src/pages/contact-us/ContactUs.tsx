@@ -2,13 +2,14 @@ import classNames from 'classnames';
 import { TFunction } from 'i18next';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import BottomSidebar from 'components/bottom-sidebar';
 import LoadingSpinner from 'components/loading-spinner';
 import { ConstantTextResponseData } from 'models/constant-text';
 import { RootState } from 'stores';
+import { setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
 
 import styles from './contact-us.module.scss';
@@ -37,15 +38,18 @@ function ContactUs() {
     const [isSaveLoading, setSaveLoading] = React.useState<boolean>(false);
     const [hasFormChanged, setFormChanged] = React.useState<boolean>(false);
 
-    const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
-
+    const { isLoggedIn, info } = useSelector((root: RootState) => root.user);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const problemFile1Ref = React.useRef<HTMLInputElement>(null);
+    const problemFile2Ref = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         async function fetchConstantText() {
-            const constantTextResponse = await apiClient.constantText.default({
-                Authorization: `Bearer ${token}`,
-            });
+            const constantTextResponse = await apiClient.constantText.default(
+                {},
+            );
             switch (constantTextResponse.status) {
                 case 200:
                     setHelpText(constantTextResponse.data);
@@ -53,7 +57,7 @@ function ContactUs() {
             }
         }
         fetchConstantText();
-    }, [token]);
+    }, []);
 
     React.useEffect(() => {
         setFormChanged(
@@ -61,12 +65,37 @@ function ContactUs() {
         );
     }, [issueTitleId, problemId, emailError]);
 
-    function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (isSaveLoading) return;
-        const formData = new FormData(e.currentTarget);
-        console.log(formData.get('firstName'));
         setSaveLoading(true);
+        try {
+            const formData = new FormData(e.currentTarget);
+            formData.append('issue_title_id', issueTitleId.toString());
+            formData.append('problem_id', problemId.toString());
+            formData.append('problem_text', problemText);
+            formData.append('email', isLoggedIn ? info.email! : email);
+            const saveCustomerContactResponse =
+                await apiClient.contactUs.saveCustomerContact(formData);
+            switch (saveCustomerContactResponse.status) {
+                case 200:
+                    dispatch(setToast({ toast: Toast.SaveCustomerContact }));
+                    // Reset form
+                    if (problemFile1Ref.current)
+                        problemFile1Ref.current.value = '';
+                    if (problemFile2Ref.current)
+                        problemFile2Ref.current.value = '';
+                    setIssueTitleId(-1);
+                    setProblemId(-1);
+                    setProblemText('');
+                    if (!isLoggedIn) setEmail('');
+                    break;
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setSaveLoading(false);
+        }
     }
 
     let submitBtnContent: JSX.Element | string;
@@ -272,11 +301,13 @@ function ContactUs() {
                     </h3>
                     <section className={styles['container__form__files__body']}>
                         <input
+                            ref={problemFile1Ref}
                             type="file"
                             accept="image/*"
                             name="problem_file1"
                         />
                         <input
+                            ref={problemFile2Ref}
                             type="file"
                             accept="image/*"
                             name="problem_file2"
@@ -317,7 +348,11 @@ function ContactUs() {
                                 ]]: isSaveLoading,
                             },
                         )}
-                        disabled={!hasFormChanged}
+                        disabled={
+                            !hasFormChanged ||
+                            (!isLoggedIn &&
+                                (email.length === 0 || emailError.length > 0))
+                        }
                     >
                         {submitBtnContent}
                     </button>

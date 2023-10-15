@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LoadingSpinner from 'components/loading-spinner/LoadingSpinner';
 import { ProfileUser, UserProfileResponseInterface } from 'models/account';
 import { RootState } from 'stores';
+import { setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
 
 import styles from './profile.module.scss';
+import LoadingOverlay from 'components/loading-overlay/LoadingOverlay';
 
 function Profile() {
     const [user, setUser] = React.useState<ProfileUser>();
@@ -17,20 +19,21 @@ function Profile() {
         '/img/icons/common/upload-profile.png',
     );
     const [form, setForm] = React.useState({
-        firstName: '',
-        lastName: '',
+        fName: '',
+        lName: '',
         mobile: '',
     });
     const [hasFormChanged, setFormChanged] = React.useState<boolean>(false);
-    // const [isLoading, setLoading] = React.useState<boolean>(false);
+    const [isLoading, setLoading] = React.useState<boolean>(true);
     const [isSaveLoading, setSaveLoading] = React.useState<boolean>(false);
     const [formError, setFormError] = React.useState<{
-        firstName: string;
-        lastName: string;
-    }>({ firstName: '', lastName: '' });
+        fName: string;
+        lName: string;
+    }>({ fName: '', lName: '' });
     const { token } = useSelector((root: RootState) => root.user);
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const imgUploadInputRef = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
@@ -42,6 +45,7 @@ function Profile() {
             switch (profileResponse.status) {
                 case 200:
                     setUser(profileResponse.user);
+                    setLoading(false);
                     break;
                 case 401:
                     // [TODO]: Log out user
@@ -54,17 +58,20 @@ function Profile() {
     React.useEffect(() => {
         if (user?.fName && user?.lName)
             setForm({
-                firstName: user?.fName,
-                lastName: user?.lName,
+                fName: user?.fName,
+                lName: user?.lName,
                 mobile: user?.mobile || '',
             });
         // eslint-disable-next-line no-useless-escape
         if (user?.userImage && user.userImage !== null)
-            setProfilePictureSrc(user?.userImage);
+            setProfilePictureSrc(
+                process.env.REACT_APP_ASSETS_BASE_URL + user?.userImage,
+            );
     }, [user]);
 
     function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log(file);
+        // [TODO]: Restrict file upload size
+        console.warn(file);
         if (e.target.files?.length) {
             setFile(e.target.files[0]);
             setProfilePictureSrc(URL.createObjectURL(e.target.files[0]));
@@ -78,39 +85,55 @@ function Profile() {
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-        if (e.target.name === 'firstName')
+        if (e.target.name === 'fName')
             if (e.target.value.length === 0)
                 setFormError((prev) => ({
                     ...prev,
-                    firstName: 'register.firstNameRequired',
+                    fName: 'register.firstNameRequired',
                 }));
-            else setFormError((prev) => ({ ...prev, firstName: '' }));
+            else setFormError((prev) => ({ ...prev, fName: '' }));
 
-        if (e.target.name === 'lastName')
+        if (e.target.name === 'lName')
             if (e.target.value.length === 0)
                 setFormError((prev) => ({
                     ...prev,
-                    lastName: 'register.lastNameRequired',
+                    lName: 'register.lastNameRequired',
                 }));
-            else setFormError((prev) => ({ ...prev, lastName: '' }));
+            else setFormError((prev) => ({ ...prev, lName: '' }));
 
         setFormChanged(true);
     }
 
-    function handleProfileSave(e: React.FormEvent<HTMLFormElement>) {
+    async function handleProfileSave(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (isSaveLoading) return;
-        const formData = new FormData(e.currentTarget);
-        console.log(formData.get('firstName'));
-        console.log(formData.get('lastName'));
-        console.log(formData.get('mobile'));
-        console.log(formData.get('profilePicture'));
         setSaveLoading(true);
+        try {
+            const formData = new FormData(e.currentTarget);
+            console.log(formData);
+            const editProfileResponse = await apiClient.account.editProfile(
+                formData,
+                { Authorization: `Bearer ${token}` },
+            );
+            switch (editProfileResponse.status) {
+                case 200:
+                    dispatch(setToast({ toast: Toast.ProfileUpdated }));
+                    break;
+                case 401:
+                    break;
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setFormChanged(false);
+            setSaveLoading(false);
+        }
     }
 
     // eslint-disable-next-line no-useless-escape
     const hasProfilePicture = user?.userImage && user.userImage !== null;
 
+    if (isLoading) return <LoadingOverlay />;
     let submitBtnContent: JSX.Element | string;
     if (isSaveLoading) {
         submitBtnContent = (
@@ -138,7 +161,7 @@ function Profile() {
                         className={
                             styles['container__img-container__img-input']
                         }
-                        name="profilePicture"
+                        name="userImage"
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}
@@ -157,15 +180,15 @@ function Profile() {
                             {
                                 [styles[
                                     'container__form-container__input--error'
-                                ]]: formError.firstName,
+                                ]]: formError.fName,
                             },
                         )}
-                        name="firstName"
+                        name="fName"
                         placeholder={t('register.firstName')}
-                        value={form.firstName}
+                        value={form.fName}
                         onChange={handleInputChange}
                     />
-                    {formError.firstName && (
+                    {formError.fName && (
                         <p
                             className={
                                 styles['container__form-container__error']
@@ -180,15 +203,15 @@ function Profile() {
                             {
                                 [styles[
                                     'container__form-container__input--error'
-                                ]]: formError.lastName,
+                                ]]: formError.lName,
                             },
                         )}
-                        name="lastName"
+                        name="lName"
                         placeholder={t('register.lastName')}
-                        value={form.lastName}
+                        value={form.lName}
                         onChange={handleInputChange}
                     />
-                    {formError.lastName && (
+                    {formError.lName && (
                         <p
                             className={
                                 styles['container__form-container__error']
@@ -221,8 +244,8 @@ function Profile() {
                             )}
                             disabled={
                                 !hasFormChanged ||
-                                formError.firstName.length !== 0 ||
-                                formError.lastName.length !== 0
+                                formError.fName.length !== 0 ||
+                                formError.lName.length !== 0
                             }
                         >
                             {submitBtnContent}

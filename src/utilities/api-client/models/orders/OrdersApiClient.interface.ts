@@ -1,5 +1,10 @@
-import { OrderSubmitResponseInterface } from 'models/orders';
-import { OrderSubmitRequestInterface } from 'models/orders';
+import {
+    OrdersResponseInterface,
+    OrderSubmitResponseInterface,
+    OrderSubmitRequestInterface,
+    OrderDetailsRequestInterface,
+    OrderDetailsResponseInterface,
+} from 'models/orders';
 
 /**
  * @name OrdersApiClientInterface
@@ -10,4 +15,16 @@ export interface OrdersApiClientInterface {
         body: OrderSubmitRequestInterface,
         headers: object,
     ) => Promise<OrderSubmitResponseInterface>;
+    orderNewList: (
+        headers: object,
+        page: number,
+    ) => Promise<OrdersResponseInterface>;
+    orderOldList: (
+        headers: object,
+        page: number,
+    ) => Promise<OrdersResponseInterface>;
+    orderDetail: (
+        body: OrderDetailsRequestInterface,
+        headers: object,
+    ) => Promise<OrderDetailsResponseInterface>;
 }

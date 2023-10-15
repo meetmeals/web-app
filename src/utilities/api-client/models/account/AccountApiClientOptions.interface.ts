@@ -4,9 +4,7 @@
  */
 export interface AccountApiClientEndpoints {
     profile: string;
-    orders: string;
-    favorites: string;
-    comments: string;
+    editProfile: string;
 }
 
 /**

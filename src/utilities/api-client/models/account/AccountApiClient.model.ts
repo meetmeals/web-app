@@ -1,4 +1,7 @@
-import { UserProfileResponseInterface } from 'models/account';
+import {
+    EditProfileResponseInterface,
+    UserProfileResponseInterface,
+} from 'models/account';
 import { HttpMethodsEnum, MimeTypesEnum } from 'models/api';
 
 import { AccountApiClientInterface } from './AccountApiClient.interface';
@@ -48,13 +51,33 @@ export class AccountApiClientModel implements AccountApiClientInterface {
         });
     }
 
-    orders(body: object): Promise<object> {
-        return new Promise((resolve) => resolve(body));
-    }
-    favorites(body: object): Promise<object> {
-        return new Promise((resolve) => resolve(body));
-    }
-    comments(body: object): Promise<object> {
-        return new Promise((resolve) => resolve(body));
+    editProfile(
+        body: FormData,
+        headers: object,
+    ): Promise<EditProfileResponseInterface> {
+        return new Promise<EditProfileResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.editProfile;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.POST,
+                headers: headers as HeadersInit,
+                body,
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: EditProfileResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `AccountApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
     }
 }

@@ -127,7 +127,7 @@ function PackageCard(props: PackageCardProps) {
                         },
                     )}
                 >
-                    &euro; {props.price}
+                    &euro;{props.price}
                 </p>
             </section>
         </div>
