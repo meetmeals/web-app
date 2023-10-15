@@ -1,37 +1,41 @@
 import { HttpMethodsEnum, MimeTypesEnum } from 'models/api';
 import {
-    OrdersResponseInterface,
-    OrderSubmitRequestInterface,
-    OrderSubmitResponseInterface,
-    OrderDetailsRequestInterface,
-    OrderDetailsResponseInterface,
-} from 'models/orders';
+    SatisfactionDescRequestInterface,
+    SatisfactionDescResponseInterface,
+    SatisfactionDetailRequestInterface,
+    SatisfactionDetailResponseInterface,
+    SatisfactionListResponseInterface,
+    SatisfactionTotalRequestInterface,
+    SatisfactionTotalResponseInterface,
+} from 'models/satisfactions';
 
-import { OrdersApiClientInterface } from './OrdersApiClient.interface';
+import { SatisfactionsApiClientInterface } from './SatisfactionsApiClient.interface';
 import {
-    OrdersApiClientEndpoints,
-    OrdersApiClientOptions,
-} from './OrdersApiClientOptions.interface';
+    SatisfactionsApiClientEndpoints,
+    SatisfactionsApiClientOptions,
+} from './SatisfactionsApiClientOptions.interface';
 
 /**
- * @name OrdersApiClientModel
- * @description Implements the OrdersApiClientInterface
+ * @name SatisfactionsApiClientModel
+ * @description Implements the SatisfactionsApiClientInterface
  */
-export class OrdersApiClientModel implements OrdersApiClientInterface {
-    private readonly endpoints!: OrdersApiClientEndpoints;
+export class SatisfactionsApiClientModel
+    implements SatisfactionsApiClientInterface
+{
+    private readonly endpoints!: SatisfactionsApiClientEndpoints;
     private readonly mockDelay: number = 0;
 
-    constructor(options: OrdersApiClientOptions) {
+    constructor(options: SatisfactionsApiClientOptions) {
         this.endpoints = options.endpoints;
         if (options.mockDelay) this.mockDelay = options.mockDelay;
     }
 
-    orderSubmit(
-        body: OrderSubmitRequestInterface,
+    satisfactionDetail(
+        body: SatisfactionDetailRequestInterface,
         headers: object,
-    ): Promise<OrderSubmitResponseInterface> {
-        return new Promise<OrderSubmitResponseInterface>((resolve) => {
-            const endpoint = this.endpoints.orderSubmit;
+    ): Promise<SatisfactionDetailResponseInterface> {
+        return new Promise<SatisfactionDetailResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.satisfactionDetail;
             const requestOptions: RequestInit = {
                 method: HttpMethodsEnum.POST,
                 headers: Object.assign(headers, {
@@ -42,7 +46,7 @@ export class OrdersApiClientModel implements OrdersApiClientInterface {
 
             fetch(endpoint, requestOptions)
                 .then((response) => response.json())
-                .then((result: OrderSubmitResponseInterface) => {
+                .then((result: SatisfactionDetailResponseInterface) => {
                     if (!this.mockDelay) resolve(result);
                     else
                         setTimeout(() => {
@@ -51,81 +55,19 @@ export class OrdersApiClientModel implements OrdersApiClientInterface {
                 })
                 .catch((error) => {
                     console.error(
-                        `OrdersApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        `SatisfactionsApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
                         error,
                     );
                 });
         });
     }
 
-    orderNewList(
+    satisfactionTotal(
+        body: SatisfactionTotalRequestInterface,
         headers: object,
-        page: number,
-    ): Promise<OrdersResponseInterface> {
-        return new Promise<OrdersResponseInterface>((resolve) => {
-            const endpoint = this.endpoints.orderNewList + `?page=${page}`;
-            const requestOptions: RequestInit = {
-                method: HttpMethodsEnum.GET,
-                headers: Object.assign(headers, {
-                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
-                }),
-            };
-
-            fetch(endpoint, requestOptions)
-                .then((response) => response.json())
-                .then((result: OrdersResponseInterface) => {
-                    if (!this.mockDelay) resolve(result);
-                    else
-                        setTimeout(() => {
-                            resolve(result);
-                        }, this.mockDelay);
-                })
-                .catch((error) => {
-                    console.error(
-                        `OrdersApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
-                        error,
-                    );
-                });
-        });
-    }
-
-    orderOldList(
-        headers: object,
-        page: number,
-    ): Promise<OrdersResponseInterface> {
-        return new Promise<OrdersResponseInterface>((resolve) => {
-            const endpoint = this.endpoints.orderOldList + `?page=${page}`;
-            const requestOptions: RequestInit = {
-                method: HttpMethodsEnum.GET,
-                headers: Object.assign(headers, {
-                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
-                }),
-            };
-
-            fetch(endpoint, requestOptions)
-                .then((response) => response.json())
-                .then((result: OrdersResponseInterface) => {
-                    if (!this.mockDelay) resolve(result);
-                    else
-                        setTimeout(() => {
-                            resolve(result);
-                        }, this.mockDelay);
-                })
-                .catch((error) => {
-                    console.error(
-                        `OrdersApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
-                        error,
-                    );
-                });
-        });
-    }
-
-    orderDetail(
-        body: OrderDetailsRequestInterface,
-        headers: object,
-    ): Promise<OrderDetailsResponseInterface> {
-        return new Promise<OrderDetailsResponseInterface>((resolve) => {
-            const endpoint = this.endpoints.orderDetail;
+    ): Promise<SatisfactionTotalResponseInterface> {
+        return new Promise<SatisfactionTotalResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.satisfactionTotal;
             const requestOptions: RequestInit = {
                 method: HttpMethodsEnum.POST,
                 headers: Object.assign(headers, {
@@ -136,7 +78,7 @@ export class OrdersApiClientModel implements OrdersApiClientInterface {
 
             fetch(endpoint, requestOptions)
                 .then((response) => response.json())
-                .then((result: OrderDetailsResponseInterface) => {
+                .then((result: SatisfactionTotalResponseInterface) => {
                     if (!this.mockDelay) resolve(result);
                     else
                         setTimeout(() => {
@@ -145,7 +87,70 @@ export class OrdersApiClientModel implements OrdersApiClientInterface {
                 })
                 .catch((error) => {
                     console.error(
-                        `OrdersApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        `SatisfactionsApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
+    }
+
+    satisfactionDesc(
+        body: SatisfactionDescRequestInterface,
+        headers: object,
+    ): Promise<SatisfactionDescResponseInterface> {
+        return new Promise<SatisfactionDescResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.satisfactionDesc;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.GET,
+                headers: Object.assign(headers, {
+                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
+                }),
+                body: JSON.stringify(body),
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: SatisfactionDescResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `SatisfactionsApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
+    }
+
+    satisfactionList(
+        headers: object,
+        page: number,
+    ): Promise<SatisfactionListResponseInterface> {
+        return new Promise<SatisfactionListResponseInterface>((resolve) => {
+            const endpoint = this.endpoints.satisfactionList + `?page=${page}`;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.POST,
+                headers: Object.assign(headers, {
+                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
+                }),
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: SatisfactionListResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `SatisfactionsApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
                         error,
                     );
                 });

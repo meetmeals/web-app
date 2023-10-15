@@ -1,4 +1,7 @@
-import { UserProfileResponseInterface } from 'models/account';
+import {
+    EditProfileResponseInterface,
+    UserProfileResponseInterface,
+} from 'models/account';
 
 /**
  * @name AccountApiClientInterface
@@ -6,7 +9,8 @@ import { UserProfileResponseInterface } from 'models/account';
  */
 export interface AccountApiClientInterface {
     profile: (headers: object) => Promise<UserProfileResponseInterface>;
-    orders: (body: object) => Promise<object>;
-    favorites: (body: object) => Promise<object>;
-    comments: (body: object) => Promise<object>;
+    editProfile: (
+        body: FormData,
+        headers: object,
+    ) => Promise<EditProfileResponseInterface>;
 }

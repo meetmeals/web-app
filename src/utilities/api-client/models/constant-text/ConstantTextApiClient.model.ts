@@ -1,5 +1,6 @@
 import { HttpMethodsEnum, MimeTypesEnum } from 'models/api';
 import { ConstantTextResponseInterface } from 'models/constant-text';
+
 import { ConstantTextApiClientInterface } from './ConstantTextApiClient.interface';
 import {
     ConstantTextApiClientEndpoints,
@@ -11,7 +12,7 @@ import {
  * @description Implements the ConstantTextApiClientInterface
  */
 export class ConstantTextApiClientModel
-implements ConstantTextApiClientInterface
+    implements ConstantTextApiClientInterface
 {
     private readonly endpoints!: ConstantTextApiClientEndpoints;
     private readonly mockDelay: number = 0;
@@ -25,7 +26,7 @@ implements ConstantTextApiClientInterface
         return new Promise<ConstantTextResponseInterface>((resolve) => {
             const endpoint = this.endpoints.default;
             const requestOptions: RequestInit = {
-                method: HttpMethodsEnum.POST,
+                method: HttpMethodsEnum.GET,
                 headers: Object.assign(headers, {
                     'Content-Type': MimeTypesEnum.APPLICATION_JSON,
                 }),

@@ -5,6 +5,8 @@ import { packagesApiClient } from './packages';
 import { ordersApiClient } from './orders';
 import { accountApiClient } from './account';
 import { constantTextApiClient } from './constant-text';
+import { satisfactionsApiClient } from './satisfactions';
+import { contactUsApiClient } from './contact-us';
 
 export const apiMockClient: ApiClientInterface = {
     auth: authApiClient,
@@ -13,4 +15,6 @@ export const apiMockClient: ApiClientInterface = {
     orders: ordersApiClient,
     account: accountApiClient,
     constantText: constantTextApiClient,
+    satisfactions: satisfactionsApiClient,
+    contactUs: contactUsApiClient,
 };
