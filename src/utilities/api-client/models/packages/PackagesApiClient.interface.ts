@@ -3,6 +3,7 @@ import {
     FavoritesResponseInterface,
     FilterRequestInterface,
     FilterResponseInterface,
+    PackageInfoResponseInterface,
     PackageLikeRequestInterface,
     PackageLikeResponseInterface,
     SurfingRequestInterface,
@@ -31,4 +32,8 @@ export interface PackagesApiClientInterface {
         headers: object,
         page: number,
     ) => Promise<FavoritesResponseInterface>;
+    packageInfo: (
+        packageId: string,
+        headers?: object,
+    ) => Promise<PackageInfoResponseInterface>;
 }

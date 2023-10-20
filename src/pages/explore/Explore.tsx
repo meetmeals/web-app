@@ -22,6 +22,7 @@ import styles from './explore.module.scss';
 
 function Explore() {
     const [packages, setPackages] = React.useState<Array<SurfingPackage>>([]);
+    const [isLoading, setLoading] = React.useState<boolean>(true);
     const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
         React.useState<boolean>(false);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
@@ -33,30 +34,36 @@ function Explore() {
 
     React.useEffect(() => {
         async function surfing() {
-            const surfingResonse: SurfingResponseInterface =
-                await apiClient.packages.surfing(
-                    {
-                        ...(!error &&
-                            location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
-                        ...(!error &&
-                            location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
-                    },
-                    { Authorization: `Bearer ${token}` },
-                );
-            switch (surfingResonse.status) {
-                case 200:
-                    setPackages(surfingResonse.data);
-                    break;
-                case 400:
-                    break;
-                case 422:
-                    break;
-                default:
-                    break;
+            try {
+                const surfingResonse: SurfingResponseInterface =
+                    await apiClient.packages.surfing(
+                        {
+                            ...(!error &&
+                                location.latitude && {
+                                customer_latitude: location.latitude,
+                            }),
+                            ...(!error &&
+                                location.longitude && {
+                                customer_longitude: location.longitude,
+                            }),
+                        },
+                        { Authorization: `Bearer ${token}` },
+                    );
+                switch (surfingResonse.status) {
+                    case 200:
+                        setPackages(surfingResonse.data);
+                        break;
+                    case 400:
+                        break;
+                    case 422:
+                        break;
+                    default:
+                        break;
+                }
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                setLoading(false);
             }
         }
         surfing();
@@ -132,6 +139,8 @@ function Explore() {
             navigate(`/packages/${packageId}`, { state: surfingPackage });
     }
 
+    if (isLoading) return <LoadingOverlay />;
+
     return (
         <div className={styles.container}>
             {isFavoriteChangeLoading && <LoadingOverlay />}
@@ -148,7 +157,7 @@ function Explore() {
                             className={styles['container__row']}
                         >
                             <h2 className={styles['container__row__header']}>
-                                {t(packageTypeTransKey)}
+                                {t(`nationalities.${packageTypeTransKey}`)}
                             </h2>
                             <div className={styles['container__row__body']}>
                                 {surfingPackage.packages.map(
@@ -186,8 +195,8 @@ function Explore() {
                                             packageTitle:
                                                 surfingPackageItem.PackageName,
                                             price: surfingPackageItem.main_price,
-                                            topBadgeType: '',
-                                            topBadgeText: '',
+                                            topBadgeType:
+                                                surfingPackageItem.status.toString(),
                                             chefLogoUrl:
                                                 surfingPackageItem.logo,
                                             chefTitle:

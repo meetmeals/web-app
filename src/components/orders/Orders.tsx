@@ -14,6 +14,7 @@ import Order from './Order';
 import OrderDetails from './OrderDetails';
 
 import styles from './orders.module.scss';
+import LoadingOverlay from 'components/loading-overlay/LoadingOverlay';
 
 enum OrderType {
     Old,
@@ -35,7 +36,7 @@ function Orders() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     React.useEffect(() => {
-        async function fetchFavorites() {
+        async function fetchOrders() {
             setLoading(true);
             const ordersResponse: OrdersResponseInterface =
                 await apiClient.orders[
@@ -65,7 +66,7 @@ function Orders() {
                     break;
             }
         }
-        fetchFavorites();
+        fetchOrders();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage, orderType, token]);
 
@@ -98,7 +99,7 @@ function Orders() {
     }
 
     function handlePackageClick(orderId: number) {
-        const selectedOrder = orders.find(
+        const selectedOrder = orders?.find(
             (order) => order.order_id === orderId,
         );
         navigate(`/account?tab=orders&order-id=${orderId}`, {
@@ -106,15 +107,17 @@ function Orders() {
         });
     }
 
+    if (isLoading) return <LoadingOverlay />;
+
     let content = null;
-    if (orders.length === 0 && !isLoading) {
+    if (orders?.length === 0 && !isLoading) {
         content = (
             <p className={styles['container__not-found']}>
                 {t('orders.notFound')}
             </p>
         );
     } else {
-        content = orders.map((order: OrderInterface) => {
+        content = orders?.map((order: OrderInterface) => {
             const props = {
                 orderId: order.order_id,
                 packageId: order.package_id,

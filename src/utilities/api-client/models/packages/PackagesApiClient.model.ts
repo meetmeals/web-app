@@ -4,6 +4,7 @@ import {
     FavoritesResponseInterface,
     FilterRequestInterface,
     FilterResponseInterface,
+    PackageInfoResponseInterface,
     PackageLikeRequestInterface,
     PackageLikeResponseInterface,
     SurfingRequestInterface,
@@ -141,6 +142,38 @@ export class PackagesApiClientModel implements PackagesApiClientInterface {
             fetch(endpoint, requestOptions)
                 .then((response) => response.json())
                 .then((result: FavoritesResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `PackagesApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
+    }
+
+    packageInfo(
+        packageId: string,
+        headers: object = {},
+    ): Promise<PackageInfoResponseInterface> {
+        return new Promise<PackageInfoResponseInterface>((resolve) => {
+            const endpoint =
+                this.endpoints.packageInfo + `?package_id=${packageId}`;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.GET,
+                headers: Object.assign(headers, {
+                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
+                }),
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: PackageInfoResponseInterface) => {
                     if (!this.mockDelay) resolve(result);
                     else
                         setTimeout(() => {

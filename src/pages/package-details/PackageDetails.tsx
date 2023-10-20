@@ -3,22 +3,29 @@ import { Elements } from '@stripe/react-stripe-js';
 import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaClock, FaMinus, FaPlus } from 'react-icons/fa';
+import { FaClock, FaHeart, FaMinus, FaPlus } from 'react-icons/fa';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import BottomSidebar from 'components/bottom-sidebar';
 import CheckoutForm from 'components/checkout-form';
 import ExpandableText from 'components/expandable-text';
+import LoadingOverlay from 'components/loading-overlay';
 import LoadingSpinner from 'components/loading-spinner';
+import StarRating from 'components/star-rating';
 import { AuthStep } from 'models/common';
+import {
+    InfoPackage,
+    PackageInfoSatisfaction,
+    PackageLikeResponseInterface,
+} from 'models/packages';
 import { OrderSubmitResponseInterface } from 'models/orders';
 import { RootState } from 'stores';
 import { Device } from 'stores/platform';
-import { setAuthenticating } from 'stores/user';
+import { setAuthenticating, setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
-import { stripePromise } from 'utilities/constants';
+import { PackageViewStatus, stripePromise } from 'utilities/constants';
 import { getMapsLink, Map } from 'utilities/geometry';
 
 import styles from './package-details.module.scss';
@@ -29,11 +36,17 @@ enum PurchaseStep {
 }
 
 function PackageDetails() {
+    const { packageId } = useParams();
+    const [packageInfo, setPackageInfo] = React.useState<InfoPackage>();
+    const [satisfaction, setSatisfaction] =
+        React.useState<PackageInfoSatisfaction>();
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
     const { language, device } = useSelector(
         (root: RootState) => root.platform,
     );
     const { state } = useLocation();
+    const [isPackageInfoLoading, setPackageInfoLoading] =
+        React.useState<boolean>(state === null);
     const [stripeClientSecret, setStripeClientSecret] =
         React.useState<string>('');
     const [isLoading, setLoading] = React.useState<boolean>(false);
@@ -44,17 +57,84 @@ function PackageDetails() {
     const [shouldShowPurchase, setShowPurchase] =
         React.useState<boolean>(false);
     const [packageCount, setPackageCount] = React.useState<number>(1);
+    const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
+        React.useState<boolean>(false);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    React.useEffect(() => {
+        async function fetchPackageInfo() {
+            if (packageId === undefined) return;
+            try {
+                const packageInfoResponse =
+                    await apiClient.packages.packageInfo(packageId, {
+                        ...(isLoggedIn && { Authorization: `Bearer ${token}` }),
+                    });
+                switch (packageInfoResponse.status) {
+                    case 200:
+                        setPackageInfo(packageInfoResponse.data);
+                        setSatisfaction(packageInfoResponse.satisfaction);
+                        break;
+                }
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                setPackageInfoLoading(false);
+            }
+        }
+        fetchPackageInfo();
+    }, [isLoggedIn, packageId, token]);
+
+    async function handleFavoriteClick(packageId: number) {
+        setFavoriteChangeLoading(true);
+        const packageLikeResponse: PackageLikeResponseInterface =
+            await apiClient.packages.packageLike(
+                { package_id: packageId },
+                { Authorization: `Bearer ${token}` },
+            );
+        setFavoriteChangeLoading(false);
+        switch (packageLikeResponse.status) {
+            case 200:
+                setPackageInfo((prev) => {
+                    if (!prev) return undefined;
+                    const isLike = prev?.is_like === 0 ? 1 : 0;
+                    dispatch(
+                        setToast({
+                            toast: isLike
+                                ? Toast.LikePackageFromPackages
+                                : Toast.DislikePackageFromPackages,
+                        }),
+                    );
+                    return {
+                        ...prev,
+                        is_like: isLike,
+                    };
+                });
+                break;
+            case 400:
+                break;
+            case 422:
+                break;
+            default:
+                break;
+        }
+    }
+
     function handleBuy() {
+        if (isPackageDisabled) return;
         setPurchaseStep(PurchaseStep.Details);
         setShowPurchase(true);
     }
 
     function handlePackageCountChange(operation: string) {
-        setPackageCount((prev) => (operation === '-' ? prev - 1 : prev + 1));
+        setPackageCount((prev) =>
+            operation === '-'
+                ? prev - 1
+                : prev === info.remaining
+                    ? prev
+                    : prev + 1,
+        );
     }
 
     function handleCancelOrder() {
@@ -71,7 +151,7 @@ function PackageDetails() {
             const orderSubmitResponse: OrderSubmitResponseInterface =
                 await apiClient.orders.orderSubmit(
                     {
-                        package_id: state.id,
+                        package_id: packageInfo?.id ?? state.id,
                         package_count: packageCount,
                         user_os: 'mac',
                     },
@@ -107,6 +187,8 @@ function PackageDetails() {
         setPurchaseStep(PurchaseStep.Details);
     }
 
+    if (isPackageInfoLoading) return <LoadingOverlay />;
+
     const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL;
     let options: StripeElementsOptions = {};
     let appearance: Appearance = {};
@@ -133,14 +215,34 @@ function PackageDetails() {
         };
     }
 
+    const info = {
+        foodImg: packageInfo?.food_img ?? state?.food_img,
+        packageName: packageInfo?.PackageName ?? state?.PackageName,
+        mainPrice: packageInfo?.main_price ?? state?.main_price,
+        restaurantName: packageInfo?.restaurant_name ?? state?.restaurant_name,
+        logo: packageInfo?.logo ?? state?.logo,
+        lat: packageInfo?.lat ?? state?.lat,
+        long: packageInfo?.long ?? state?.long,
+        restaurantAddress:
+            packageInfo?.restaurant_address ?? state?.restaurantAddress,
+        startTime: packageInfo?.start_time ?? state?.start_time,
+        endTime: packageInfo?.end_time ?? state?.end_time,
+        desc: packageInfo?.desc ?? state?.desc,
+        isLike: packageInfo?.is_like,
+        status: packageInfo?.status ?? (state?.status as number),
+        packageId: packageInfo?.id ?? state?.id,
+        remaining:
+            packageInfo?.remindPackage ?? (state?.remindPackage as number),
+    };
+
     const routingMedia = [
         {
             name: 'Google Maps',
             link: getMapsLink(
                 device,
                 {
-                    latitude: state.lat as string,
-                    longitude: state.long as string,
+                    latitude: info.lat as string,
+                    longitude: info.long as string,
                 },
                 Map.GoogleMaps,
             ),
@@ -151,8 +253,8 @@ function PackageDetails() {
             link: getMapsLink(
                 device,
                 {
-                    latitude: state.lat as string,
-                    longitude: state.long as string,
+                    latitude: info.lat as string,
+                    longitude: info.long as string,
                 },
                 Map.Waze,
             ),
@@ -160,18 +262,49 @@ function PackageDetails() {
         },
     ];
 
-    console.log(routingMedia);
+    const isPackageDisabled = [1, 2, 6].includes(info.status);
+
     return (
         <div className={styles.container}>
+            {isFavoriteChangeLoading && <LoadingOverlay />}
             <div
                 className={styles['container__header']}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, .1) 0, rgba(0, 0, 0, .6) 100%), url(${ASSETS_BASE_URL}/${state.food_img})`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, .1) 0, rgba(0, 0, 0, .6) 100%), url(${ASSETS_BASE_URL}/${info.foodImg})`,
+                    ...(isPackageDisabled && { opacity: 0.4 }),
                 }}
             >
                 <div className={styles['container__header__top']}>
-                    <span>{state.PackageName}</span>
-                    <span>{state.main_price}</span>
+                    {isLoggedIn && (
+                        <FaHeart
+                            className={
+                                styles['container__header__top__favorite']
+                            }
+                            size="24px"
+                            color={info.isLike ? '#ff7072' : 'transparent'}
+                            onClick={() =>
+                                handleFavoriteClick(info.packageId as number)
+                            }
+                            {...(!info.isLike && {
+                                style: { stroke: '#eee', strokeWidth: '35px' },
+                            })}
+                        />
+                    )}
+                    {info.status >= 0 && (
+                        <span
+                            className={styles['container__header__top__status']}
+                            style={{
+                                backgroundColor:
+                                    PackageViewStatus[info.status.toString()]
+                                        .color,
+                            }}
+                        >
+                            {t(
+                                PackageViewStatus[info.status.toString()]
+                                    .transKey,
+                            )}
+                        </span>
+                    )}
                 </div>
                 <div className={styles['container__header__bottom']}>
                     <section
@@ -179,7 +312,7 @@ function PackageDetails() {
                             styles['container__header__bottom__chef-name']
                         }
                     >
-                        {state.restaurant_name}
+                        {info.restaurantName}
                     </section>
                     <section
                         className={
@@ -193,8 +326,8 @@ function PackageDetails() {
                                 ]
                             }
                             src={
-                                state.logo
-                                    ? `${ASSETS_BASE_URL}/${state.logo}`
+                                info.logo
+                                    ? `${ASSETS_BASE_URL}/${info.logo}`
                                     : '/img/icons/common/chef-img-placeholder.png'
                             }
                             alt="Chef logo"
@@ -204,20 +337,42 @@ function PackageDetails() {
             </div>
             <div className={styles['container__body']}>
                 <div className={styles['container__body__package-info']}>
-                    <span
+                    <div
+                        className={styles['container__body__package-info__top']}
+                    >
+                        <span
+                            className={
+                                styles[
+                                    'container__body__package-info__top__name'
+                                ]
+                            }
+                        >
+                            {info.packageName}
+                        </span>
+                        <span
+                            className={
+                                styles[
+                                    'container__body__package-info__top__price'
+                                ]
+                            }
+                        >
+                            &euro; {info.mainPrice}
+                        </span>
+                    </div>
+                    <div
                         className={
-                            styles['container__body__package-info__name']
+                            styles['container__body__package-info__bottom']
                         }
                     >
-                        {state.PackageName}
-                    </span>
-                    <span
-                        className={
-                            styles['container__body__package-info__price']
-                        }
-                    >
-                        &euro; {state.main_price}
-                    </span>
+                        <FaClock size="20px" />
+                        <span>
+                            {isPackageDisabled
+                                ? t('app.nothingForTomorrow')
+                                : `${t('app.tomorrow')} ${t('app.from')} ${
+                                    info.startTime
+                                } ${t('app.to')} ${info.endTime}`}
+                        </span>
+                    </div>
                 </div>
                 <div className={styles['container__body__package-desc']}>
                     <p
@@ -227,29 +382,52 @@ function PackageDetails() {
                     >
                         {t('app.packageDetails')}
                     </p>
-                    <ExpandableText
-                        descriptionLength={120}
-                        text={`<p>Aliquam maximus, purus vel tempus luctus, libero ipsum consectetur
-purus, eu efficitur mi nunc sed purus. Etiam tristique sit amet
-nisi vel rhoncus. Vestibulum porta, metus sit amet tincidunt
-malesuada, dui sapien egestas magna, quis viverra turpis sapien a
-dolor. Fusce ultrices eros eget tincidunt viverra. Ut a dapibus
-erat, vel cursus odio. Phasellus erat enim, volutpat vel lacus eu,
-aliquam sodales turpis. Fusce ipsum ex, vehicula tempor accumsan</p>
-nec, gravida at eros. In aliquam, metus id mollis interdum, nunc
-sem dignissim quam, non iaculis tortor erat nec eros. <p>Nunc
-sollicitudin ac dolor eget lobortis. Aenean suscipit rutrum </p>dolor
-in euismod. Curabitur quis dapibus lectus. Mauris enim leo,
-condimentum ac elit sit amet, iaculis vulputate sem.
-`}
-                    />
+                    <ExpandableText descriptionLength={120} text={info.desc} />
                 </div>
-                <div className={styles['container__body__comments']}></div>
+                <div className={styles['container__body__comments']}>
+                    <h2>{t('packageInfo.whatOthersSay')}</h2>
+                    <section
+                        className={styles['container__body__comments__box']}
+                    >
+                        <div>
+                            <p>{t('packageInfo.generalRating')}</p>
+                            <StarRating rating={4} setRating={() => {}} />
+                        </div>
+                        <div>
+                            <p>{t('packageInfo.foodQuality')}</p>
+                            <StarRating rating={4} setRating={() => {}} />
+                        </div>
+                    </section>
+                    <section
+                        className={styles['container__body__comments__box']}
+                    >
+                        <div>
+                            <p>{t('packageInfo.foodVolume')}</p>
+                            <StarRating rating={4} setRating={() => {}} />
+                        </div>
+                        <div>
+                            <p>{t('packageInfo.sellerEncounter')}</p>
+                            <StarRating rating={4} setRating={() => {}} />
+                        </div>
+                    </section>
+                    <section
+                        className={styles['container__body__comments__count']}
+                    >
+                        {t('packageInfo.outOf', {
+                            count: satisfaction?.total_opinion_count,
+                            s:
+                                /* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */
+                                satisfaction?.total_opinion_count! > 0
+                                    ? 's'
+                                    : '',
+                        })}
+                    </section>
+                </div>
                 <div className={styles['container__body__location']}>
                     <MapContainer
                         center={[
-                            parseFloat(state.lat as string),
-                            parseFloat(state.long as string),
+                            parseFloat(info.lat as string),
+                            parseFloat(info.long as string),
                         ]}
                         zoom={15}
                         scrollWheelZoom={false}
@@ -262,12 +440,12 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                         <Marker
                             position={[
-                                parseFloat(state.lat as string),
-                                parseFloat(state.long as string),
+                                parseFloat(info.lat as string),
+                                parseFloat(info.long as string),
                             ]}
                         >
                             <Popup>
-                                {state.restaurant_name}
+                                {info.restaurantName}
                                 <br />
                                 <span
                                     className={
@@ -276,7 +454,7 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                                         ]
                                     }
                                     dangerouslySetInnerHTML={{
-                                        __html: state.restaurant_address,
+                                        __html: info.restaurantAddress,
                                     }}
                                 />
                             </Popup>
@@ -285,14 +463,11 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                     <p
                         className={styles['container__body__location__address']}
                         dangerouslySetInnerHTML={{
-                            __html: state.restaurant_address,
+                            __html: info.restaurantAddress,
                         }}
                     />
                     <button
                         className={styles['container__body__location__routing']}
-                        // href={`geo:${state.lat},${state.long}`}
-                        // target="_blank"
-                        // rel="noopener noreferrer"
                         onClick={() => setShowRouting((prev) => !prev)}
                     >
                         {t('app.routing')}
@@ -367,7 +542,12 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                     )}
                 </div>
             </div>
-            <div className={styles['container__buy']} onClick={handleBuy}>
+            <div
+                className={classNames(styles['container__buy'], {
+                    [styles['container__buy--disabled']]: isPackageDisabled,
+                })}
+                onClick={handleBuy}
+            >
                 {t('app.buy')}
             </div>
             {shouldShowPurchase && (
@@ -408,7 +588,7 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                                             ]
                                         }
                                     >
-                                        {state.PackageName}
+                                        {info.packageName}
                                     </p>
                                     <p
                                         className={
@@ -419,9 +599,8 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                                     >
                                         <FaClock size="20px" />
                                         <span>
-                                            {t('app.tomorrow')}{' '}
-                                            {state.start_time} -{' '}
-                                            {state.end_time}
+                                            {t('app.tomorrow')} {info.startTime}{' '}
+                                            - {info.endTime}
                                         </span>
                                     </p>
                                 </div>
@@ -493,7 +672,7 @@ condimentum ac elit sit amet, iaculis vulputate sem.
                                         }
                                     >
                                         {t('app.totalPrice')}:{' '}
-                                        {packageCount * state.main_price}
+                                        {packageCount * info.mainPrice}
                                     </p>
                                 </div>
                                 <div

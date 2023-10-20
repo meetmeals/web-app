@@ -17,6 +17,16 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 3rem;
+            position: relative;
+            top: 20%;
+
+            &__status {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: color.$secondary-white;
+                border-radius: layout.$border-radius-5;
+                padding: 1rem;
+            }
         }
 
         &__bottom {
@@ -32,8 +42,8 @@
 
             &__chef-logo {
                 &__img {
-                    width: 7rem;
-                    height: 7rem;
+                    width: 9rem;
+                    height: 9rem;
                 }
             }
         }
@@ -90,13 +100,26 @@
         }
 
         &__package-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
             font-size: 1.4rem;
-            color: color.$main-green;
-            font-weight: bold;
+
+            &__top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 2rem;
+                font-weight: bold;
+                color: color.$main-green;
+            }
+
+            &__bottom {
+                border-top: 1px solid color.$secondary-white;
+                padding-top: 0.7rem;
+                display: flex;
+                color: color.$black-600;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+            }
         }
 
         &__package-desc {
@@ -111,6 +134,48 @@
                 margin-bottom: 1rem;
                 font-weight: bold;
                 border-bottom: 1px solid color.$ternary-white;
+            }
+        }
+
+        &__comments {
+            padding: 2rem 1rem;
+
+            h2 {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: color.$black-600;
+                text-align: center;
+                padding-bottom: 1rem;
+                border-bottom: 2px solid color.$secondary-white;
+            }
+
+            &__box {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                margin-top: 1rem;
+
+                & > div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    & > p {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+
+            &__count {
+                margin-top: 1rem;
+                border-top: 1px solid color.$secondary-white;
+                font-size: 1.4rem;
+                text-align: center;
+                padding-top: 1rem;
+                color: color.$black-600;
             }
         }
 
@@ -161,6 +226,10 @@
         color: color.$main-white;
         font-weight: bold;
         font-size: 1.6rem;
+
+        &--disabled {
+            background-color: color.$grey-600;
+        }
     }
 
     &__bottom-sidebar {

@@ -11,6 +11,10 @@
     margin-top: 1.5rem;
     background-color: color.$main-white;
 
+    &__fix-width {
+        min-width: 24rem;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;
@@ -18,7 +22,7 @@
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
-        height: 12rem;
+        height: 14rem;
         color: color.$secondary-white;
 
         &__top {
@@ -30,6 +34,14 @@
             &__favorite {
                 cursor: pointer;
             }
+
+            &__status {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: color.$secondary-white;
+                border-radius: layout.$border-radius-5;
+                padding: 1rem;
+            }
         }
 
         &__bottom {
@@ -40,8 +52,8 @@
             gap: 1rem;
 
             &__chef-img {
-                width: 3rem;
-                height: 3rem;
+                width: 5rem;
+                height: 5rem;
             }
 
             &__chef-name {

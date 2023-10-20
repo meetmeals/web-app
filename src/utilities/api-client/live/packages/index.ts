@@ -12,6 +12,7 @@ const options: PackagesApiClientOptions = {
         surfing: packagesBaseUrl + '/surfing',
         packageLike: packagesBaseUrl + '/package-like',
         favorites: packagesBaseUrl + '/package-user-like',
+        packageInfo: packagesBaseUrl + '/package-info',
     },
 };
 
