@@ -14,8 +14,9 @@
         "deliveryTime": "Delivery Time",
         "packageType": "Package Type",
         "vegetarian": "Are you vegetarian?",
-        "imVegetarian": "I'm vegetarian",
-        "imVegan": "I'm vegan",
+        "imVegetarian": "Vegetarian",
+        "imVegan": "Vegan",
+        "imNotVeg": "None",
         "reset": "Reset",
         "apply": "Apply",
         "showMore": "Show more",
@@ -36,7 +37,14 @@
         "orders": "Orders",
         "favorites": "Favorites",
         "comments": "Comments",
-        "selectRouting": "Routing via..."
+        "selectRouting": "Routing via...",
+        "finishedInFirstHour": "Finished in 1st hour",
+        "finished": "Finished",
+        "lessThanFive": "<5 Remaining",
+        "moreThanFive": ">5 Remaining",
+        "lastChance": "Last chance",
+        "saleFinished": "Sale finished",
+        "nothingForTomorrow": "Nothing for tomorrow"
     },
     "pages": {
         "contactUs": "Contact Us",
@@ -158,5 +166,13 @@
     "comments": {
         "price": "Price",
         "orderNumber": "Order Number"
+    },
+    "packageInfo": {
+        "generalRating": "Average",
+        "foodQuality": "Food Quality",
+        "foodVolume": "Food Volume",
+        "sellerEncounter": "Seller Encounter",
+        "outOf": "Out of {{count}} comment{{s}}",
+        "whatOthersSay": "What others say?"
     }
 }

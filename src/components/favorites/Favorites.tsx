@@ -122,6 +122,8 @@ function Favorites() {
         navigate(`/packages/${packageId}`, { state: selectedPackage });
     }
 
+    if (isLoading) return <LoadingOverlay />;
+
     let content = null;
     if (packages.length === 0 && !isLoading) {
         content = (
@@ -145,8 +147,7 @@ function Favorites() {
                 setFavorite: handleFavoriteChange,
                 packageTitle: favoritePackage.PackageName,
                 price: favoritePackage.main_price,
-                topBadgeType: '',
-                topBadgeText: '',
+                topBadgeType: favoritePackage.status.toString(),
                 chefLogoUrl: favoritePackage.logo,
                 chefTitle: favoritePackage.restaurant_name,
                 packageId: favoritePackage.package_id,

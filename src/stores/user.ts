@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthStep, UserInterface } from 'models/common';
 
 import { UserEnum } from 'models/local-storage';
-import { DEFAULT_NATIONALITY } from 'utilities/constants';
 
 export enum Toast {
     Login,
@@ -18,16 +17,12 @@ export enum Toast {
 
 type UserState = {
     authenticationStep: AuthStep;
-    selectedNationality: string;
     tempEmail: string;
     isLoggedIn: boolean;
     token: string;
     info: UserInterface;
     toast: Toast;
 };
-
-const selectedNationality =
-    localStorage.getItem(UserEnum.SELECTED_NATIONALITY) || DEFAULT_NATIONALITY;
 
 const isLoggedIn = localStorage.getItem(UserEnum.IS_LOGGED_IN) === '1';
 const token = localStorage.getItem(UserEnum.TOKEN) || '';
@@ -37,7 +32,6 @@ const info = infoString ? JSON.parse(infoString) : {};
 
 const initialState: UserState = {
     authenticationStep: AuthStep.NONE,
-    selectedNationality,
     tempEmail: '',
     isLoggedIn,
     token,
@@ -49,16 +43,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setSelectedNationality: (
-            state,
-            action: PayloadAction<{ selectedNationality: string }>,
-        ) => {
-            localStorage.setItem(
-                UserEnum.SELECTED_NATIONALITY,
-                action.payload.selectedNationality,
-            );
-            state.selectedNationality = action.payload.selectedNationality;
-        },
         setAuthenticating: (
             state,
             action: PayloadAction<{ authStep: AuthStep }>,
@@ -108,11 +92,6 @@ const userSlice = createSlice({
     },
 });
 
-export const {
-    setAuthenticating,
-    setSelectedNationality,
-    setTempEmail,
-    setLoggedIn,
-    setToast,
-} = userSlice.actions;
+export const { setAuthenticating, setTempEmail, setLoggedIn, setToast } =
+    userSlice.actions;
 export default userSlice.reducer;

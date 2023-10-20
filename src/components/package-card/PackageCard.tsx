@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { FaHeart, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
+import { PackageViewStatus } from 'utilities/constants';
 
 import styles from './package-card.module.scss';
 
@@ -10,7 +11,6 @@ type PackageCardProps = {
     isFavorite: number;
     setFavorite: (packageId: number) => void;
     topBadgeType?: string;
-    topBadgeText?: string;
     chefLogoUrl?: string;
     chefTitle: string;
     packageTitle: string;
@@ -32,10 +32,14 @@ function PackageCard(props: PackageCardProps) {
     }
 
     const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL;
+    const isPackageDisabled =
+        props.topBadgeType && ['1', '2', '6'].includes(props.topBadgeType);
 
     return (
         <div
-            className={styles.container}
+            className={classNames(styles.container, {
+                [styles['container__fix-width']]: props.shouldShrinkView,
+            })}
             onClick={() => props.handlePackageClick(props.packageId)}
         >
             <section
@@ -44,6 +48,7 @@ function PackageCard(props: PackageCardProps) {
                     backgroundImage: props.packageImageUrl
                         ? `url('${ASSETS_BASE_URL}/${props.packageImageUrl}')`
                         : 'url("/img/meal-placeholder.png")',
+                    ...(isPackageDisabled && { opacity: 0.4 }),
                 }}
             >
                 <section className={styles['container__header__top']}>
@@ -60,7 +65,17 @@ function PackageCard(props: PackageCardProps) {
                             })}
                         />
                     )}
-                    <span>{props.topBadgeText}</span>
+                    {props.topBadgeType && (
+                        <span
+                            className={styles['container__header__top__status']}
+                            style={{
+                                backgroundColor:
+                                    PackageViewStatus[props.topBadgeType].color,
+                            }}
+                        >
+                            {t(PackageViewStatus[props.topBadgeType].transKey)}
+                        </span>
+                    )}
                 </section>
                 <section className={styles['container__header__bottom']}>
                     <img
@@ -100,9 +115,11 @@ function PackageCard(props: PackageCardProps) {
                     <p className={styles['container__body__package-info__row']}>
                         <FaClock size="22px" color="black" />
                         <span>
-                            {t('app.tomorrow')} {t('app.from')}{' '}
-                            {props.deliveryStartDate} {t('app.to')}{' '}
-                            {props.deliveryEndDate}
+                            {isPackageDisabled
+                                ? t('app.nothingForTomorrow')
+                                : `${t('app.tomorrow')} ${t('app.from')}  ${
+                                    props.deliveryStartDate
+                                } ${t('app.to')}  ${props.deliveryEndDate}`}
                         </span>
                     </p>
                     <p className={styles['container__body__package-info__row']}>

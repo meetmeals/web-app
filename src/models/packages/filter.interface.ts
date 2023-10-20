@@ -1,4 +1,4 @@
-import { ApiResponse, BooleanEnum, Packagetype } from 'models/common';
+import { ApiResponse, BooleanEnum } from 'models/common';
 
 export interface FilterPackage {
     fa_title: string;
@@ -64,7 +64,7 @@ export interface FilterRequestInterface {
     containing_package?: BooleanEnum;
     customer_preference?: CustomerPreference;
     materials?: Array<Materials>;
-    package_type?: Array<Packagetype>;
+    package_type?: Array<number>;
 }
 
 export interface FilterResponseInterface extends ApiResponse {

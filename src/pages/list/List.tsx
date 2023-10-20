@@ -19,7 +19,11 @@ import {
 import { RootState } from 'stores';
 import { setToast, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
-import { ThemeColor } from 'utilities/constants';
+import {
+    DEFAULT_NATIONALITY,
+    nationalities,
+    ThemeColor,
+} from 'utilities/constants';
 import { calculateDistance } from 'utilities/geometry';
 import { debounce } from 'utilities/helpers';
 import { useLocation } from 'utilities/hooks';
@@ -45,6 +49,8 @@ function List() {
         min: number;
         max: number;
     }>({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
+    const [nationality, setNationality] =
+        React.useState<string>(DEFAULT_NATIONALITY);
     const [customerPreference, setCustomerPreference] =
         React.useState<CustomerPreference>(CustomerPreference.Other);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
@@ -57,6 +63,13 @@ function List() {
     React.useEffect(() => {
         async function filter() {
             setLoading(true);
+
+            const selectedNationality = nationalities.find(
+                (nationalityItem) =>
+                    nationalityItem.translationKey === nationality,
+            );
+            const packageType = parseInt(selectedNationality?.index || '0');
+
             const filterResponse: FilterResponseInterface =
                 await apiClient.packages.filter(
                     {
@@ -66,6 +79,7 @@ function List() {
                         customer_preference: customerPreference,
                         start_time: formatDeliveryTime(deliveryTime.min),
                         end_time: formatDeliveryTime(deliveryTime.max),
+                        package_type: packageType === 0 ? [] : [packageType],
                         ...(!error &&
                             location.latitude && {
                             customer_latitude: location.latitude,
@@ -153,9 +167,13 @@ function List() {
 
     function handleCancel() {
         // Reset search params
-        setDeliveryTime({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
-        handleVegType(CustomerPreference.Other);
         setFilterSectionOpen(false);
+        setDeliveryTime({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
+        setNationality(DEFAULT_NATIONALITY);
+        handleVegType(CustomerPreference.Other);
+        setFilterTries((prev) => prev + 1);
+        setPackages([]);
+        setCurrentPage(0);
     }
 
     function handleApply() {
@@ -219,8 +237,7 @@ function List() {
                 setFavorite: handleFavoriteChange,
                 packageTitle: filterPackage.PackageName,
                 price: filterPackage.main_price,
-                topBadgeType: '',
-                topBadgeText: '',
+                topBadgeType: filterPackage.status.toString(),
                 chefLogoUrl: filterPackage.logo,
                 chefTitle: filterPackage.restaurant_name,
                 packageId: filterPackage.id,
@@ -331,7 +348,11 @@ function List() {
                         >
                             {t('app.packageType')}
                         </p>
-                        <NationalityPicker theme={ThemeColor.WHITE} />
+                        <NationalityPicker
+                            selected={nationality}
+                            setNationality={setNationality}
+                            theme={ThemeColor.WHITE}
+                        />
                     </div>
                     <div
                         className={
@@ -392,6 +413,25 @@ function List() {
                                 }
                             >
                                 {t('app.imVegan')}
+                            </button>
+                            <button
+                                className={classNames(
+                                    styles[
+                                        'container__bottom-sidebar__vegan__section__btn'
+                                    ],
+                                    {
+                                        [styles[
+                                            'container__bottom-sidebar__vegan__section__btn--selected'
+                                        ]]:
+                                            customerPreference ===
+                                            CustomerPreference.Other,
+                                    },
+                                )}
+                                onClick={() =>
+                                    handleVegType(CustomerPreference.Other)
+                                }
+                            >
+                                {t('app.imNotVeg')}
                             </button>
                         </section>
                     </div>

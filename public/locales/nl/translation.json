@@ -14,8 +14,9 @@
         "deliveryTime": "Aflevertijd",
         "packageType": "Pakkettype",
         "vegetarian": "Ben je vegetariër?",
-        "imVegetarian": "Ik ben vegetariër",
-        "imVegan": "Ik ben veganist",
+        "imVegetarian": "Vegetariër",
+        "imVegan": "Veganist",
+        "imNotVeg": "Geen",
         "reset": "Opnieuw instellen",
         "apply": "Toepassen",
         "showMore": "Laat meer zien",
@@ -36,7 +37,14 @@
         "orders": "Bestellingen",
         "favorites": "Favorieten",
         "comments": "Opmerkingen",
-        "selectRouting": "Routebeschrijving via"
+        "selectRouting": "Routebeschrijving via",
+        "finishedInFirstHour": "Klaar in het 1e uur",
+        "finished": "Afgerond",
+        "lessThanFive": "<5 Resterend",
+        "moreThanFive": ">5 Resterend",
+        "lastChance": "Laatste kans",
+        "saleFinished": "Verkoop afgerond",
+        "nothingForTomorrow": "Niets voor morgen"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
@@ -158,5 +166,13 @@
     "comments": {
         "price": "Prijs",
         "orderNumber": "Bestellingsnummer"
+    },
+    "packageInfo": {
+        "generalRating": "Gemiddeld",
+        "foodQuality": "Voedselkwaliteit",
+        "foodVolume": "Voedselvolume",
+        "sellerEncounter": "Ontmoeting met verkoper",
+        "outOf": "Uit {{count}} reactie{s}}",
+        "whatOthersSay": "Wat anderen zeggen?"
     }
 }
