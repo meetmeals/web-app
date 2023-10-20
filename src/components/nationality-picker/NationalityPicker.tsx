@@ -1,26 +1,21 @@
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from 'stores';
-import { setSelectedNationality } from 'stores/user';
 import { nationalities, ThemeColor } from 'utilities/constants';
 
 import styles from './nationality-picker.module.scss';
 
 type NationalityPickerProps = {
     theme: ThemeColor;
+    selected: string;
+    setNationality: (selectedNationality: string) => void;
 };
 
 function NationalityPicker(props: NationalityPickerProps) {
-    const { selectedNationality } = useSelector(
-        (state: RootState) => state.user,
-    );
-    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     function handleNationalityChange(nationality: string) {
-        dispatch(setSelectedNationality({ selectedNationality: nationality }));
+        props.setNationality(nationality);
     }
 
     return (
@@ -60,14 +55,14 @@ function NationalityPicker(props: NationalityPickerProps) {
                                     [styles[
                                         'nationality-picker__content__item__span--selected'
                                     ]]:
-                                        selectedNationality ===
+                                        props.selected ===
                                         nationality.translationKey,
                                 },
                                 {
                                     [styles[
                                         'nationality-picker__content__item__span__white--selected'
                                     ]]:
-                                        selectedNationality ===
+                                        props.selected ===
                                             nationality.translationKey &&
                                         props.theme === ThemeColor.WHITE,
                                 },
