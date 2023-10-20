@@ -26,15 +26,17 @@ function ExpandableText(props: ExpandableTextProps) {
                         : `${props.text.slice(0, props.descriptionLength)}...`,
                 }}
             />
-            <p
-                className={styles['container__toggle-expand']}
-                onClick={toggleExpand}
-            >
-                <button className={styles['container__toggle-expand__btn']}>
-                    {isExpanded ? t('app.showLess') : t('app.showMore')}
-                </button>
-                {isExpanded ? <FaAngleUp /> : <FaAngleDown />}
-            </p>
+            {props.text.length > 120 && (
+                <p
+                    className={styles['container__toggle-expand']}
+                    onClick={toggleExpand}
+                >
+                    <button className={styles['container__toggle-expand__btn']}>
+                        {isExpanded ? t('app.showLess') : t('app.showMore')}
+                    </button>
+                    {isExpanded ? <FaAngleUp /> : <FaAngleDown />}
+                </p>
+            )}
         </div>
     );
 }
