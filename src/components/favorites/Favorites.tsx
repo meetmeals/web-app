@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ function Favorites() {
     const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
         React.useState<boolean>(false);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
+    const { isMobile } = useSelector((root: RootState) => root.platform);
     const { location, error } = useLocation();
 
     const { t } = useTranslation();
@@ -42,12 +44,12 @@ function Favorites() {
                     {
                         ...(!error &&
                             location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
+                                customer_latitude: location.latitude,
+                            }),
                         ...(!error &&
                             location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                                customer_longitude: location.longitude,
+                            }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -164,7 +166,13 @@ function Favorites() {
     return (
         <div className={styles.container} onScroll={debounce(handleScroll)}>
             {isFavoriteChangeLoading && <LoadingOverlay />}
-            {content}
+            <div
+                className={classNames({
+                    [styles['container__content']]: !isMobile,
+                })}
+            >
+                {content}
+            </div>
         </div>
     );
 }

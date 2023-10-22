@@ -1,7 +1,11 @@
 @use 'styles/colors.scss' as color;
 @use 'styles/layout.scss' as layout;
+@use 'styles/media.scss' as media;
 
 .container {
+    height: calc(100vh - 14rem);
+    overflow-y: auto;
+
     &__img-container {
         display: flex;
         flex-direction: column;
@@ -12,6 +16,7 @@
             width: 13rem;
             height: 13rem;
             border-radius: 50%;
+            cursor: pointer;
         }
 
         &__img-input {
@@ -21,8 +26,13 @@
 
         &__img-text {
             margin-top: 1rem;
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             color: color.$black-600;
+            cursor: pointer;
+
+            @include media.mobile {
+                font-size: 1.2rem;
+            }
         }
     }
 
@@ -35,7 +45,7 @@
         padding: 2rem;
 
         &__input {
-            width: 100%;
+            width: 40rem;
             height: 4rem;
             line-height: 4rem;
             text-indent: 1rem;
@@ -44,6 +54,12 @@
             outline: none;
             border: none;
             font-weight: bold;
+            font-size: 1.4rem;
+
+            @include media.mobile {
+                width: 100%;
+                font-size: unset;
+            }
 
             &--error {
                 border: 2px solid color.$error-red;
@@ -51,9 +67,9 @@
         }
 
         &__error {
-            align-self: flex-start;
-            margin-left: 1rem;
+            align-self: center;
             color: color.$error-red;
+            font-size: 1.4rem;
         }
 
         &__submit {
@@ -68,6 +84,7 @@
                 font-size: 1.6rem;
                 font-weight: bold;
                 border-radius: layout.$border-radius-10;
+                cursor: pointer;
 
                 &:disabled {
                     pointer-events: none;

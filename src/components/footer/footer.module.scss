@@ -1,0 +1,14 @@
+@use 'styles/colors.scss' as color;
+
+.container {
+    position: fixed;
+    height: 5rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: color.$main-green;
+    color: color.$secondary-white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

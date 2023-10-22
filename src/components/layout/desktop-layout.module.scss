@@ -1,9 +1,17 @@
 @use 'styles/colors.scss' as color;
+@use 'styles/media.scss' as media;
 
 .container {
     position: fixed;
-    top: 6rem;
+    top: 5rem;
     left: 0;
     width: 100%;
-    background-color: color.$ternary-white;
+    background-color: color.$white-850;
+
+    @include media.desktop {
+        left: 0;
+        right: 0;
+        max-width: 120rem;
+        margin: 0 auto;
+    }
 }

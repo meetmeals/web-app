@@ -2,8 +2,17 @@
 @use 'styles/layout.scss' as layout;
 
 .container {
+    height: calc(100vh - 21rem);
     overflow-y: auto;
-    max-height: calc(100vh - 25rem);
+    max-height: calc(100vh - 21rem);
+
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+        column-gap: 1rem;
+        overflow-y: auto;
+        max-height: calc(100vh - 25rem);
+    }
 
     &__loading {
         width: 80%;

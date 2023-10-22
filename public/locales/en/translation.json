@@ -138,6 +138,7 @@
         "header": "How we can help you?",
         "selectIssue": "What is the issue?",
         "issue": "Issue",
+        "problem": "Subject",
         "chooseProblem": "Please choose a subject.",
         "problemTextTitle": "Any comment/consideration",
         "problemTextPlaceholder": "Comments",
