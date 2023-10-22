@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AuthWrapper from 'components/auth-wrapper';
+import Footer from 'components/footer';
 import { AuthStep } from 'models/common';
 import { RootState } from 'stores';
 import { setAuthenticating } from 'stores/user';
@@ -20,19 +21,22 @@ function DesktopLayout(props: DesktopLayoutProps) {
     const dispatch = useDispatch();
 
     return (
-        <div className={styles.container}>
-            {authenticationStep !== AuthStep.NONE && (
-                <AuthWrapper
-                    step={authenticationStep}
-                    onClose={() => {
-                        dispatch(
-                            setAuthenticating({ authStep: AuthStep.NONE }),
-                        );
-                    }}
-                />
-            )}
-            {props.children}
-        </div>
+        <main>
+            <div className={styles.container}>
+                {authenticationStep !== AuthStep.NONE && (
+                    <AuthWrapper
+                        step={authenticationStep}
+                        onClose={() => {
+                            dispatch(
+                                setAuthenticating({ authStep: AuthStep.NONE }),
+                            );
+                        }}
+                    />
+                )}
+                {props.children}
+            </div>
+            <Footer />
+        </main>
     );
 }
 

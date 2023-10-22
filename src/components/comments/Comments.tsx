@@ -1,5 +1,6 @@
-import StarRating from 'components/star-rating';
 import { useTranslation } from 'react-i18next';
+
+import StarRating from 'components/star-rating';
 
 import styles from './comments.module.scss';
 
@@ -12,7 +13,8 @@ const data = [
         restaurant_name: 'Chef Sara',
         logo: null,
         total_satisfaction: 10,
-        desc_satisfaction: 'My Comment Goes here',
+        desc_satisfaction:
+            'My Comment Goes hereMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes herMy Comment Goes hereeeeeeeeeee',
     },
     {
         id: 4,

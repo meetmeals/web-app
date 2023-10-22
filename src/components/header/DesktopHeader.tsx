@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import LanguagePicker from 'components/language-picker';
 import { AuthStep, ThemeEnum } from 'models/common';
@@ -17,6 +17,7 @@ function DesktopHeader() {
     const currentPage = useCurrentPage();
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <header className={styles.header}>
@@ -60,6 +61,19 @@ function DesktopHeader() {
             </nav>
             <section className={styles['header__more']}>
                 <LanguagePicker theme={ThemeEnum.WHITE} />
+                {isLoggedIn && (
+                    <button
+                        className={styles['header__more__account-btn']}
+                        onClick={() => {
+                            navigate({
+                                pathname: pages.account.path,
+                                search: '?tab=profile',
+                            });
+                        }}
+                    >
+                        {t('app.account')}
+                    </button>
+                )}
                 <button
                     className={classNames(styles['header__more__login-btn'], {
                         [styles['header__more__login-btn--logout']]: isLoggedIn,

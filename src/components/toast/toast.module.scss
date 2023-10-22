@@ -1,5 +1,6 @@
 @use 'styles/colors.scss' as color;
 @use 'styles/layout.scss' as layout;
+@use 'styles/media.scss' as media;
 
 .container {
     position: fixed;
@@ -11,6 +12,18 @@
     background-color: color.$main-orange;
     overflow: hidden;
     transition: 0.6s;
+
+    @include media.laptop {
+        left: unset;
+        right: 0;
+        width: 50rem;
+    }
+
+    @include media.desktop {
+        left: unset;
+        right: 0;
+        width: 50rem;
+    }
 
     &__body {
         display: flex;
@@ -27,6 +40,10 @@
             a {
                 color: color.$secondary-white;
             }
+        }
+
+        &__close-btn {
+            cursor: pointer;
         }
     }
 }

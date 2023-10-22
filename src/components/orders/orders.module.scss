@@ -1,7 +1,10 @@
 @use 'styles/colors.scss' as color;
 @use 'styles/layout.scss' as layout;
+@use 'styles/media.scss' as media;
 
 .container {
+    height: calc(100vh - 20rem);
+
     &__choose-type {
         display: flex;
         justify-content: space-between;
@@ -15,6 +18,7 @@
             border-radius: layout.$border-radius-5;
             min-width: 10rem;
             height: 3rem;
+            cursor: pointer;
 
             &--active {
                 background-color: color.$main-orange;
@@ -24,8 +28,16 @@
     }
 
     &__content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+        column-gap: 1rem;
         overflow-y: auto;
-        max-height: calc(100vh - 30rem);
+        max-height: calc(100vh - 25rem);
+
+        @include media.mobile {
+            overflow-y: auto;
+            max-height: calc(100vh - 30rem);
+        }
     }
 
     &__not-found {
