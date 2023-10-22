@@ -23,7 +23,8 @@
             &__status {
                 font-size: 1.4rem;
                 font-weight: bold;
-                color: color.$secondary-white;
+                color: color.$main-white;
+                text-shadow: 1px 1px color.$black-600;
                 border-radius: layout.$border-radius-5;
                 padding: 1rem;
             }

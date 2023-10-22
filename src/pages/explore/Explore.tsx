@@ -211,9 +211,7 @@ function Explore() {
                                             packageImageUrl:
                                                 surfingPackageItem.food_img,
                                             handlePackageClick,
-                                            shouldShrinkView:
-                                                surfingPackage.packages.length >
-                                                1,
+                                            shouldShrinkView: true,
                                         };
                                         return (
                                             <PackageCard

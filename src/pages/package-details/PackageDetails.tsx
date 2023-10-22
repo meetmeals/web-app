@@ -153,6 +153,7 @@ function PackageDetails() {
                     {
                         package_id: packageInfo?.id ?? state.id,
                         package_count: packageCount,
+                        // [TODO]: Use correct user agent
                         user_os: 'mac',
                     },
                     {

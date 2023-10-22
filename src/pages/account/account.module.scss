@@ -1,4 +1,5 @@
 @use 'styles/colors.scss' as color;
+@use 'styles/media.scss' as media;
 
 .container {
     &__header {
@@ -12,6 +13,43 @@
 
     &__body {
         padding: 2rem;
+    }
+
+    &__desktop-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        height: 7rem;
+        background-color: color.$main-green;
+
+        @include media.tablet {
+            gap: 1rem;
+        }
+
+        &__tab {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            color: color.$secondary-white;
+            padding: 2rem;
+            cursor: pointer;
+            font-size: 1.4rem;
+
+            @include media.tablet {
+                gap: 1rem;
+                padding: 2rem 1rem;
+                font-size: 1.2rem;
+            }
+
+            &--active {
+                border-bottom: 3px solid color.$main-white;
+                color: color.$secondary-white;
+                font-weight: bold;
+                background-color: color.$main-orange;
+            }
+        }
     }
 
     &__bottom-navigation {
