@@ -89,9 +89,39 @@ const userSlice = createSlice({
         setToast: (state, action: PayloadAction<{ toast: Toast }>) => {
             state.toast = action.payload.toast;
         },
+        setUserInfo: (
+            state,
+            action: PayloadAction<{
+                email: string;
+                fName: string;
+                lName: string;
+                mobile: string;
+                userImage: string;
+            }>,
+        ) => {
+            const { email, fName, lName, mobile, userImage } = action.payload;
+            state.info = {
+                ...state.info,
+                email,
+                fName,
+                lName,
+                mobile,
+                userImage,
+            };
+            localStorage.removeItem(UserEnum.INFO);
+            localStorage.setItem(
+                UserEnum.INFO,
+                JSON.stringify({ ...state.info }),
+            );
+        },
     },
 });
 
-export const { setAuthenticating, setTempEmail, setLoggedIn, setToast } =
-    userSlice.actions;
+export const {
+    setAuthenticating,
+    setTempEmail,
+    setLoggedIn,
+    setToast,
+    setUserInfo,
+} = userSlice.actions;
 export default userSlice.reducer;
