@@ -17,6 +17,7 @@ import styles from './checkout-form.module.scss';
 type CheckoutFormProps = {
     clientSecret: string;
     handleBackClick: () => void;
+    orderId: number;
 };
 
 function CheckoutForm(props: CheckoutFormProps) {
@@ -70,7 +71,7 @@ function CheckoutForm(props: CheckoutFormProps) {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: STRIPE_RETURN_URL,
+                return_url: STRIPE_RETURN_URL + `?order-id=${props.orderId}`,
             },
         });
 

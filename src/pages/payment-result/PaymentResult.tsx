@@ -1,7 +1,9 @@
-import { useStripe } from '@stripe/react-stripe-js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useStripe } from '@stripe/react-stripe-js';
+
+import LoadingOverlay from 'components/loading-overlay';
 
 import styles from './payment-result.module.scss';
 
@@ -9,7 +11,9 @@ function PaymentResult() {
     const [isLoading, setLoading] = React.useState<boolean>(true);
     const [searchParams] = useSearchParams();
     const [paymentStatus, setPaymentStatus] = React.useState<string>('');
+    const [orderId, setOrderId] = React.useState<string>('');
 
+    const navigate = useNavigate();
     const stripe = useStripe();
     const { t } = useTranslation();
 
@@ -17,6 +21,7 @@ function PaymentResult() {
         const paymentIntentClientSecret = searchParams.get(
             'payment_intent_client_secret',
         );
+        setOrderId(searchParams.get('order-id') ?? '');
 
         if (paymentIntentClientSecret) {
             if (!stripe) {
@@ -47,9 +52,39 @@ function PaymentResult() {
         }
     }, [searchParams, stripe]);
 
+    React.useEffect(() => {
+        if (orderId) {
+            console.log(orderId);
+        }
+    }, [orderId]);
+
+    function handleViewOrder() {
+        navigate(`/account?tab=orders&order-id=${orderId}`);
+    }
+
     return (
         <div className={styles.container}>
-            <h1>{isLoading ? 'Loading...' : t(paymentStatus)}</h1>
+            {isLoading && <LoadingOverlay />}
+            <img
+                alt="Follow your order"
+                src="/img/icons/common/after-payment.png"
+                className={styles['container__img']}
+            />
+            {!isLoading && (
+                <>
+                    <h1 className={styles['container__header']}>
+                        {t(paymentStatus)}!
+                    </h1>
+                    {orderId && (
+                        <button
+                            className={styles['container__btn']}
+                            onClick={handleViewOrder}
+                        >
+                            {t('payment.viewOrder')}
+                        </button>
+                    )}
+                </>
+            )}
         </div>
     );
 }

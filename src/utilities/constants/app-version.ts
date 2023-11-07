@@ -9,3 +9,4 @@ export const STRIPE_RETURN_URL =
 export const stripePromise = loadStripe(
     process.env.REACT_APP_STRIPE_API_KEY || '',
 );
+export const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL;

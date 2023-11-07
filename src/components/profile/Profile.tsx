@@ -3,14 +3,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LoadingSpinner from 'components/loading-spinner/LoadingSpinner';
+import LoadingOverlay from 'components/loading-overlay';
+import LoadingSpinner from 'components/loading-spinner';
 import { ProfileUser, UserProfileResponseInterface } from 'models/account';
 import { RootState } from 'stores';
-import { setToast, Toast } from 'stores/user';
+import { setToast, setUserInfo, Toast } from 'stores/user';
 import apiClient from 'utilities/api-client';
 
 import styles from './profile.module.scss';
-import LoadingOverlay from 'components/loading-overlay/LoadingOverlay';
 
 function Profile() {
     const [user, setUser] = React.useState<ProfileUser>();
@@ -31,6 +31,7 @@ function Profile() {
         lName: string;
     }>({ fName: '', lName: '' });
     const { token } = useSelector((root: RootState) => root.user);
+    const [refreshTries, setRefreshTries] = React.useState<number>(0);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -46,6 +47,15 @@ function Profile() {
                 case 200:
                     setUser(profileResponse.user);
                     setLoading(false);
+                    dispatch(
+                        setUserInfo({
+                            email: profileResponse.user.username,
+                            fName: profileResponse.user.fName,
+                            lName: profileResponse.user.lName,
+                            mobile: profileResponse.user.mobile,
+                            userImage: profileResponse.user.userImage,
+                        }),
+                    );
                     break;
                 case 401:
                     // [TODO]: Log out user
@@ -53,7 +63,7 @@ function Profile() {
             }
         }
         getProfile();
-    }, [token]);
+    }, [dispatch, token, refreshTries]);
 
     React.useEffect(() => {
         if (user?.fName && user?.lName)
@@ -118,6 +128,7 @@ function Profile() {
             switch (editProfileResponse.status) {
                 case 200:
                     dispatch(setToast({ toast: Toast.ProfileUpdated }));
+                    setRefreshTries((prev) => prev + 1);
                     break;
                 case 401:
                     break;

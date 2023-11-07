@@ -7,6 +7,7 @@ export interface OrdersApiClientEndpoints {
     orderNewList: string;
     orderOldList: string;
     orderDetail: string;
+    orderReceived: string;
 }
 
 /**

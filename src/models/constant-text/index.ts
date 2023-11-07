@@ -67,8 +67,9 @@ export interface ConstantTextResponseData {
     package_view_status: Array<{ en: string; fa: string; color: string }>;
     help_title: Array<{
         id: number;
-        text: string;
-        subject: Array<{ id: number; fa_title: string }>;
+        en_title: string;
+        nl_title: string;
+        subject: Array<{ id: number; fa_title: string; nl_title: string }>;
     }>;
 }
 

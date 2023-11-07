@@ -23,7 +23,7 @@
         "showLess": "Laat minder zien",
         "buy": "Kopen",
         "routing": "Routering",
-        "packageDetails": "Details",
+        "packageDescription": "Beschrijving",
         "processing": "Verwerken",
         "checkout": "Uitchecken",
         "payNow": "Nu betalen",
@@ -40,11 +40,12 @@
         "selectRouting": "Routebeschrijving via",
         "finishedInFirstHour": "Klaar in het 1e uur",
         "finished": "Afgerond",
-        "lessThanFive": "<5 Resterend",
-        "moreThanFive": ">5 Resterend",
+        "moreThanFive": "+5 Resterend",
         "lastChance": "Laatste kans",
         "saleFinished": "Verkoop afgerond",
-        "nothingForTomorrow": "Niets voor morgen"
+        "nothingForTomorrow": "Niets voor morgen",
+        "remaining": "Overig",
+        "onlyAvailablePackages": "Alleen beschikbare pakketten"
     },
     "pages": {
         "contactUs": "Neem contact met ons op",
@@ -136,7 +137,7 @@
     },
     "contactUs": {
         "header": "Hoe kunnen wij u helpen?",
-        "selectIssue": "What is the issue?",
+        "selectIssue": "Wat is het probleem?",
         "issue": "Issue",
         "problem": "Onderwerp",
         "chooseProblem": "Kies een onderwerp.",
@@ -161,12 +162,18 @@
             "totalSatisfaction": "Totale tevredenheid",
             "comments": "Opmerkingen",
             "rateHeader": "Hoe was je bestelling?",
-            "send": "Indienen"
+            "send": "Indienen",
+            "didYouReceive": "Ontvangen?",
+            "receivedMyOrder": "Ik heb mijn bestelling ontvangen",
+            "received": "Ontvangen",
+            "paid": "Betaald",
+            "thankYou": "Bedankt voor uw beoordeling"
         }
     },
     "comments": {
         "price": "Prijs",
-        "orderNumber": "Bestellingsnummer"
+        "orderNumber": "Bestellingsnummer",
+        "notFound": "Nog geen reacties!"
     },
     "packageInfo": {
         "generalRating": "Gemiddeld",
@@ -175,5 +182,9 @@
         "sellerEncounter": "Ontmoeting met verkoper",
         "outOf": "Uit {{count}} reactie{s}}",
         "whatOthersSay": "Wat anderen zeggen?"
+    },
+    "payment": {
+        "succeeded": "Betaling Gelukt",
+        "viewOrder": "Bestelling bekijken"
     }
 }

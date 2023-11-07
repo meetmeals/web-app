@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import LoadingOverlay from 'components/loading-overlay';
 import PackageCard from 'components/package-card';
-import { NullableString } from 'models/common';
 import {
     FavoritePackage,
     FavoritesResponseInterface,
@@ -25,7 +24,7 @@ function Favorites() {
     const [packages, setPackages] = React.useState<Array<FavoritePackage>>([]);
     const [isLoading, setLoading] = React.useState<boolean>(true);
     const [currentPage, setCurrentPage] = React.useState<number>(1);
-    const [hasNextPage, setHasNextPage] = React.useState<NullableString>('yes');
+    const [hasNextPage, setHasNextPage] = React.useState<boolean>(false);
     const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
         React.useState<boolean>(false);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
@@ -38,7 +37,7 @@ function Favorites() {
 
     React.useEffect(() => {
         async function fetchFavorites() {
-            setLoading(true);
+            if (currentPage === 1) setLoading(true);
             const favoritesResponse: FavoritesResponseInterface =
                 await apiClient.packages.favorites(
                     {
@@ -62,7 +61,11 @@ function Favorites() {
                         ...prevPackages,
                         ...favoritesResponse.data.data,
                     ]);
-                    setHasNextPage(favoritesResponse.data.next_page_url);
+                    setHasNextPage(
+                        favoritesResponse.data.next_page_url === null
+                            ? false
+                            : true,
+                    );
                     setLoading(false);
                     break;
                 case 400:

@@ -24,7 +24,11 @@ const getEmailSchema = (t: TFunction) =>
         .max(255)
         .required(t('validations.emailRequired') as string);
 
-function ContactUs() {
+type MobileContactUsProps = {
+    language: string;
+};
+
+function MobileContactUs(props: MobileContactUsProps) {
     const [email, setEmail] = React.useState<string>('');
     const [emailError, setEmailError] = React.useState<string>('');
     const [helpText, setHelpText] = React.useState<ConstantTextResponseData>();
@@ -165,7 +169,11 @@ function ContactUs() {
                         {issueTitleId > 0
                             ? helpText?.help_title.find(
                                 (issue) => issue.id === issueTitleId,
-                            )?.text
+                            )?.[
+                                props.language === 'en'
+                                    ? 'en_title'
+                                    : 'nl_title'
+                            ]
                             : t('contactUs.selectIssue')}
                     </p>
                     <BottomSidebar
@@ -211,7 +219,9 @@ function ContactUs() {
                                             setIssueSelectOpen(false);
                                         }}
                                     >
-                                        {issue.text}
+                                        {props.language === 'en'
+                                            ? issue.en_title
+                                            : issue.nl_title}
                                     </p>
                                 ))}
                             </div>
@@ -233,7 +243,11 @@ function ContactUs() {
                                     )
                                     ?.subject.find(
                                         (subject) => subject.id === problemId,
-                                    )?.fa_title
+                                    )?.[
+                                        props.language === 'en'
+                                            ? 'fa_title'
+                                            : 'nl_title'
+                                    ]
                                 : t('contactUs.chooseProblem')}
                         </p>
                         <BottomSidebar
@@ -287,7 +301,9 @@ function ContactUs() {
                                                     setProblemSelectOpen(false);
                                                 }}
                                             >
-                                                {subject.fa_title}
+                                                {props.language === 'en'
+                                                    ? subject.fa_title
+                                                    : subject.nl_title}
                                             </p>
                                         ))}
                                 </div>
@@ -362,4 +378,4 @@ function ContactUs() {
     );
 }
 
-export default ContactUs;
+export default MobileContactUs;

@@ -59,6 +59,7 @@ function PackageDetails() {
     const [packageCount, setPackageCount] = React.useState<number>(1);
     const [isFavoriteChangeLoading, setFavoriteChangeLoading] =
         React.useState<boolean>(false);
+    const [orderId, setOrderId] = React.useState<number>(0);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -165,6 +166,7 @@ function PackageDetails() {
                     setStripeClientSecret(
                         orderSubmitResponse.data.payment.client_secret,
                     );
+                    setOrderId(orderSubmitResponse.data.order.id);
                     setLoading(false);
                     setPurchaseStep(PurchaseStep.Checkout);
                     break;
@@ -300,10 +302,12 @@ function PackageDetails() {
                                         .color,
                             }}
                         >
-                            {t(
-                                PackageViewStatus[info.status.toString()]
-                                    .transKey,
-                            )}
+                            {info.status == 3
+                                ? `${info.status} ${t('app.remaining')}`
+                                : t(
+                                    PackageViewStatus[info.status.toString()]
+                                        .transKey,
+                                )}
                         </span>
                     )}
                 </div>
@@ -357,7 +361,7 @@ function PackageDetails() {
                                 ]
                             }
                         >
-                            &euro; {info.mainPrice}
+                            &euro;{info.mainPrice}
                         </span>
                     </div>
                     <div
@@ -381,49 +385,85 @@ function PackageDetails() {
                             styles['container__body__package-desc__title']
                         }
                     >
-                        {t('app.packageDetails')}
+                        {t('app.packageDescription')}
                     </p>
                     <ExpandableText descriptionLength={120} text={info.desc} />
                 </div>
-                <div className={styles['container__body__comments']}>
-                    <h2>{t('packageInfo.whatOthersSay')}</h2>
-                    <section
-                        className={styles['container__body__comments__box']}
-                    >
-                        <div>
-                            <p>{t('packageInfo.generalRating')}</p>
-                            <StarRating rating={4} setRating={() => {}} />
-                        </div>
-                        <div>
-                            <p>{t('packageInfo.foodQuality')}</p>
-                            <StarRating rating={4} setRating={() => {}} />
-                        </div>
-                    </section>
-                    <section
-                        className={styles['container__body__comments__box']}
-                    >
-                        <div>
-                            <p>{t('packageInfo.foodVolume')}</p>
-                            <StarRating rating={4} setRating={() => {}} />
-                        </div>
-                        <div>
-                            <p>{t('packageInfo.sellerEncounter')}</p>
-                            <StarRating rating={4} setRating={() => {}} />
-                        </div>
-                    </section>
-                    <section
-                        className={styles['container__body__comments__count']}
-                    >
-                        {t('packageInfo.outOf', {
-                            count: satisfaction?.total_opinion_count,
-                            s:
-                                /* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */
-                                satisfaction?.total_opinion_count! > 0
-                                    ? 's'
-                                    : '',
-                        })}
-                    </section>
-                </div>
+                {typeof satisfaction?.total_opinion_count === 'number' &&
+                    satisfaction.total_opinion_count > 0 && (
+                    <div className={styles['container__body__comments']}>
+                        <h2>{t('packageInfo.whatOthersSay')}</h2>
+                        <section
+                            className={
+                                styles['container__body__comments__box']
+                            }
+                        >
+                            <div>
+                                <p>{t('packageInfo.generalRating')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.total_text
+                                            ? +satisfaction.total_text
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                            <div>
+                                <p>{t('packageInfo.foodQuality')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.food_quality
+                                            ? +satisfaction.food_quality
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                        </section>
+                        <section
+                            className={
+                                styles['container__body__comments__box']
+                            }
+                        >
+                            <div>
+                                <p>{t('packageInfo.foodVolume')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.food_volume
+                                            ? +satisfaction.food_volume
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                            <div>
+                                <p>{t('packageInfo.sellerEncounter')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.seller_encounter
+                                            ? +satisfaction.seller_encounter
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                        </section>
+                        <section
+                            className={
+                                styles['container__body__comments__count']
+                            }
+                        >
+                            {t('packageInfo.outOf', {
+                                count: satisfaction?.total_opinion_count,
+                                s:
+                                        satisfaction?.total_opinion_count > 0
+                                            ? 's'
+                                            : '',
+                            })}
+                        </section>
+                    </div>
+                )}
                 <div className={styles['container__body__location']}>
                     <MapContainer
                         center={[
@@ -719,6 +759,7 @@ function PackageDetails() {
                                 <CheckoutForm
                                     clientSecret={stripeClientSecret}
                                     handleBackClick={handleCancelCheckout}
+                                    orderId={orderId}
                                 />
                             </Elements>
                         )}

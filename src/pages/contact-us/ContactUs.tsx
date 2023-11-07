@@ -5,9 +5,15 @@ import DesktopContactUs from './DesktopContactUs';
 import MobileContactUs from './MobileContactUs';
 
 function ContactUs() {
-    const { isMobile } = useSelector((state: RootState) => state.platform);
+    const { isMobile, language } = useSelector(
+        (state: RootState) => state.platform,
+    );
 
-    return isMobile ? <MobileContactUs /> : <DesktopContactUs />;
+    return isMobile ? (
+        <MobileContactUs language={language} />
+    ) : (
+        <DesktopContactUs language={language} />
+    );
 }
 
 export default ContactUs;

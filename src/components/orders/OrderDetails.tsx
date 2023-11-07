@@ -31,6 +31,11 @@ type Satisfaction = {
 const SATISFACTION_COMMENTS_MAX_LENGTH = 600;
 const SATISFACTION_COMMENTS_ROWS = 8;
 
+enum OrderStatus {
+    Paid = '1', // Paid
+    Received = '2', // Received
+}
+
 function OrderDetails(props: OrderDetailsProps) {
     const [order, setOrder] = React.useState<OrderDetailsInterface>();
     const [isLoading, setLoading] = React.useState<boolean>(false);
@@ -45,6 +50,9 @@ function OrderDetails(props: OrderDetailsProps) {
     });
     const [formChanged, setFormChanged] = React.useState<boolean>(false);
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+    const [retries, setRetries] = React.useState<number>(0);
+    const [isReceivedLoading, setReceivedLoading] =
+        React.useState<boolean>(false);
     const [error, setError] = React.useState<string>('');
     const { token } = useSelector((root: RootState) => root.user);
     const navigate = useNavigate();
@@ -75,12 +83,38 @@ function OrderDetails(props: OrderDetailsProps) {
         }
         fetchOrderDetails();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [token]);
+    }, [retries, token]);
 
     function handleRating(key: string, value: number | string) {
         setError('');
         setSatisfaction((prev) => ({ ...prev, [key]: value }));
         setFormChanged(true);
+    }
+
+    async function handleReceivedSubmit() {
+        if (isReceivedLoading) return;
+
+        setReceivedLoading(true);
+        try {
+            const orderReceivedResponse = await apiClient.orders.orderReceived(
+                props.orderId,
+                {
+                    Authorization: `Bearer ${token}`,
+                },
+            );
+            switch (orderReceivedResponse.status) {
+                case 200:
+                case 400:
+                    setRetries((prev) => prev + 1);
+                    break;
+                case 401:
+                    break;
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setReceivedLoading(false);
+        }
     }
 
     async function handleSatisfactionSubmit() {
@@ -125,7 +159,8 @@ function OrderDetails(props: OrderDetailsProps) {
                                     );
                                 switch (satisfactionDescResponse.status) {
                                     case 200:
-                                        navigate(0);
+                                        setShowSatisfactionSheet(false);
+                                        setRetries((prev) => prev + 1);
                                         break;
                                 }
                                 break;
@@ -157,13 +192,24 @@ function OrderDetails(props: OrderDetailsProps) {
         );
     }
 
+    let orderStatus: string = '';
+    switch (order?.status) {
+        case OrderStatus.Paid:
+            orderStatus = t('orders.orderDetails.paid');
+            break;
+        case OrderStatus.Received:
+            orderStatus = t('orders.orderDetails.received');
+            break;
+    }
+
     return (
         <div className={styles.container}>
+            {isReceivedLoading && <LoadingOverlay />}
             <section className={styles['container__order-status']}>
                 <h2>{t('orders.orderDetails.orderStatus')}</h2>
                 <p>
-                    <span>{order?.order_status}</span>
-                    <span>Tick</span>
+                    <span>{orderStatus}</span>
+                    <span>&#x2714;</span>
                 </p>
             </section>
             <section className={styles['container__order-details']}>
@@ -191,8 +237,7 @@ function OrderDetails(props: OrderDetailsProps) {
                     {order?.end_time}
                 </p>
                 <p>
-                    {t('orders.orderDetails.price')}: &euro;{' '}
-                    {order?.total_price}
+                    {t('orders.orderDetails.price')}: &euro;{order?.total_price}
                 </p>
                 <p className={styles['container__order-details__need-help']}>
                     <button onClick={() => navigate('/contact-us')}>
@@ -200,22 +245,48 @@ function OrderDetails(props: OrderDetailsProps) {
                     </button>
                 </p>
             </section>
-            <section className={styles['container__rating']}>
-                <p>{t('orders.orderDetails.yourScore')}</p>
-                {order?.total_satisfaction ? (
-                    <div>
-                        <StarRating
-                            rating={order.total_satisfaction}
-                            setRating={() => console.warn}
-                        />
-                        <p>{t('orders.orderDetails.thankYou')}</p>
+            {order?.status === OrderStatus.Paid && (
+                <section className={styles['container__confirm-received']}>
+                    <button
+                        className={styles['container__confirm-received__btn']}
+                        onClick={handleReceivedSubmit}
+                    >
+                        {t('orders.orderDetails.didYouReceive')}
+                    </button>
+                </section>
+            )}
+            {order?.customer_satisfactions_id &&
+                order?.total_satisfaction &&
+                order.total_satisfaction >= 0 && (
+                <section className={styles['container__rating']}>
+                    <p className={styles['container__rating__title']}>
+                        {t('orders.orderDetails.yourScore')}
+                    </p>
+                    <div className={styles['container__rating__stars']}>
+                        <section>
+                            <StarRating
+                                rating={order.total_satisfaction}
+                                setRating={() => console.warn}
+                            />
+                        </section>
+                        <p
+                            className={
+                                styles['container__rating__thank-you']
+                            }
+                        >
+                            {t('orders.orderDetails.thankYou')}
+                        </p>
                     </div>
-                ) : (
+                </section>
+            )}
+            {order?.status === OrderStatus.Received &&
+                !order.customer_satisfactions_id && (
+                <section className={styles['container__rating']}>
                     <button onClick={() => setShowSatisfactionSheet(true)}>
                         {t('orders.orderDetails.rate')}
                     </button>
-                )}
-            </section>
+                </section>
+            )}
             <BottomSidebar
                 isOpen={shouldShowSatisfactionSheet}
                 setOpen={setShowSatisfactionSheet}

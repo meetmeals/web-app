@@ -1,4 +1,4 @@
-import { ApiResponse, BooleanEnum } from 'models/common';
+import { ApiResponse, BooleanEnum, NullableString } from 'models/common';
 
 export interface FilterPackage {
     fa_title: string;
@@ -38,6 +38,7 @@ export interface FilterPackage {
     end_time_str: string;
     status: number;
     package_finished_time: string;
+    satisfaction: NullableString;
     distance: number;
     is_like: number;
 }
@@ -65,6 +66,7 @@ export interface FilterRequestInterface {
     customer_preference?: CustomerPreference;
     materials?: Array<Materials>;
     package_type?: Array<number>;
+    not_available_packages?: number;
 }
 
 export interface FilterResponseInterface extends ApiResponse {

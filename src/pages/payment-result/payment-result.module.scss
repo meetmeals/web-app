@@ -1,6 +1,33 @@
+@use 'styles/colors.scss' as color;
+@use 'styles/layout.scss' as layout;
+
 .container {
-    h1 {
-        font-size: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+
+    &__img {
+        width: 100%;
+    }
+
+    &__header {
+        font-size: 2rem;
         text-align: center;
+        font-weight: bold;
+        color: color.$main-green;
+    }
+
+    &__btn {
+        min-width: 12rem;
+        height: 5rem;
+        border: none;
+        background-color: color.$main-orange;
+        color: color.$main-white;
+        border-radius: layout.$border-radius-10;
+        padding: 1rem 3rem;
+        font-size: 1.6rem;
+        cursor: pointer;
     }
 }
