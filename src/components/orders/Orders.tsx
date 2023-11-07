@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { NullableString } from 'models/common';
 import { OrderInterface, OrdersResponseInterface } from 'models/orders';
 import { RootState } from 'stores';
 import apiClient from 'utilities/api-client';
@@ -26,7 +25,7 @@ function Orders() {
     const [orders, setOrders] = React.useState<Array<OrderInterface>>([]);
     const [isLoading, setLoading] = React.useState<boolean>(true);
     const [currentPage, setCurrentPage] = React.useState<number>(1);
-    const [hasNextPage, setHasNextPage] = React.useState<NullableString>('yes');
+    const [hasNextPage, setHasNextPage] = React.useState<boolean>(false);
 
     const { token } = useSelector((root: RootState) => root.user);
     const { t } = useTranslation();
@@ -55,7 +54,11 @@ function Orders() {
                         ...prevOrders,
                         ...ordersResponse.data.data,
                     ]);
-                    setHasNextPage(ordersResponse.data.next_page_url);
+                    setHasNextPage(
+                        ordersResponse.data.next_page_url === null
+                            ? false
+                            : true,
+                    );
                     setLoading(false);
                     break;
                 case 400:
@@ -127,8 +130,7 @@ function Orders() {
                 restaurant_name: order.restaurant_name,
                 logo: order.logo,
                 date: order.date,
-                // [TODO]: total_satisfaction: order.total_satisfaction,
-                total_satisfaction: 4,
+                total_satisfaction: order.total_satisfaction,
                 package_name: order.package_name,
                 food_img: order.food_img,
                 handlePackageClick,

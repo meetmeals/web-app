@@ -82,6 +82,31 @@
         }
     }
 
+    &__confirm-received {
+        width: 100%;
+        margin: 1rem auto;
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &__btn {
+            background-color: color.$main-orange;
+            color: color.$main-white;
+            font-size: 1.4rem;
+            height: 5rem;
+            width: 14rem;
+            border: none;
+            letter-spacing: 0.2rem;
+            border-radius: layout.$border-radius-10;
+
+            &--received {
+                background-color: color.$main-green;
+                pointer-events: none;
+            }
+        }
+    }
+
     &__rating {
         margin-top: 2rem;
         background-color: color.$main-white;
@@ -96,16 +121,26 @@
         p {
             font-size: 1.4rem;
             font-weight: bold;
-            border-bottom: 1px solid color.$ternary-white;
             padding-bottom: 1rem;
         }
 
-        div {
+        &__title {
+            border-bottom: 1px solid color.$ternary-white;
+        }
+
+        &__stars {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 1rem;
+
+            &__section {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+            }
         }
 
         button {
@@ -151,7 +186,8 @@
 
                 p {
                     font-size: 1.3rem;
-                    color: color.$ternary-white;
+                    color: color.$main-orange;
+                    text-shadow: 1px 1px 1px color.$black-600;
                     font-weight: bold;
                 }
             }
