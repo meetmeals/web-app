@@ -35,6 +35,17 @@ function PackageCard(props: PackageCardProps) {
     const isPackageDisabled =
         props.topBadgeType && ['1', '2', '6'].includes(props.topBadgeType);
 
+    let topBadgeText: string;
+    switch (props.topBadgeType) {
+        case '3':
+            topBadgeText = `${props.topBadgeType} ${t('app.remaining')}`;
+            break;
+        default:
+            topBadgeText = props.topBadgeType
+                ? t(PackageViewStatus[props.topBadgeType].transKey)
+                : '';
+    }
+
     return (
         <div
             className={classNames(styles.container, {
@@ -73,7 +84,7 @@ function PackageCard(props: PackageCardProps) {
                                     PackageViewStatus[props.topBadgeType].color,
                             }}
                         >
-                            {t(PackageViewStatus[props.topBadgeType].transKey)}
+                            {topBadgeText}
                         </span>
                     )}
                 </section>
@@ -118,8 +129,8 @@ function PackageCard(props: PackageCardProps) {
                             {isPackageDisabled
                                 ? t('app.nothingForTomorrow')
                                 : `${t('app.tomorrow')} ${t('app.from')}  ${
-                                    props.deliveryStartDate
-                                } ${t('app.to')}  ${props.deliveryEndDate}`}
+                                      props.deliveryStartDate
+                                  } ${t('app.to')}  ${props.deliveryEndDate}`}
                         </span>
                     </p>
                     <p className={styles['container__body__package-info__row']}>
