@@ -23,7 +23,7 @@
         "showLess": "Show less",
         "buy": "Buy",
         "routing": "Routing",
-        "packageDetails": "Details",
+        "packageDescription": "Description",
         "processing": "Processing",
         "checkout": "Checkout",
         "payNow": "Pay Now",
@@ -40,11 +40,12 @@
         "selectRouting": "Routing via...",
         "finishedInFirstHour": "Finished in 1st hour",
         "finished": "Finished",
-        "lessThanFive": "<5 Remaining",
-        "moreThanFive": ">5 Remaining",
+        "moreThanFive": "+5 Remaining",
         "lastChance": "Last chance",
         "saleFinished": "Sale finished",
-        "nothingForTomorrow": "Nothing for tomorrow"
+        "nothingForTomorrow": "Nothing for tomorrow",
+        "remaining": "Remaining",
+        "onlyAvailablePackages": "Only available packages"
     },
     "pages": {
         "contactUs": "Contact Us",
@@ -161,12 +162,18 @@
             "totalSatisfaction": "Total Satisfaction",
             "comments": "Comments",
             "rateHeader": "How was your order?",
-            "send": "Submit"
+            "send": "Submit",
+            "didYouReceive": "Received?",
+            "receivedMyOrder": "I've received my order",
+            "received": "Received",
+            "paid": "Paid",
+            "thankYou": "Thanks for rating"
         }
     },
     "comments": {
         "price": "Price",
-        "orderNumber": "Order Number"
+        "orderNumber": "Order Number",
+        "notFound": "No comments yet!"
     },
     "packageInfo": {
         "generalRating": "Average",
@@ -175,5 +182,9 @@
         "sellerEncounter": "Seller Encounter",
         "outOf": "Out of {{count}} comment{{s}}",
         "whatOthersSay": "What others say?"
+    },
+    "payment": {
+        "succeeded": "Payment Succeeded",
+        "viewOrder": "View Order"
     }
 }
