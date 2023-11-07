@@ -5,6 +5,7 @@ import {
     OrderSubmitResponseInterface,
     OrderDetailsRequestInterface,
     OrderDetailsResponseInterface,
+    OrderReceivedResponseInterface,
 } from 'models/orders';
 
 import { OrdersApiClientInterface } from './OrdersApiClient.interface';
@@ -137,6 +138,38 @@ export class OrdersApiClientModel implements OrdersApiClientInterface {
             fetch(endpoint, requestOptions)
                 .then((response) => response.json())
                 .then((result: OrderDetailsResponseInterface) => {
+                    if (!this.mockDelay) resolve(result);
+                    else
+                        setTimeout(() => {
+                            resolve(result);
+                        }, this.mockDelay);
+                })
+                .catch((error) => {
+                    console.error(
+                        `OrdersApiClient: HttpClient: ${requestOptions.method} ${endpoint}:`,
+                        error,
+                    );
+                });
+        });
+    }
+
+    orderReceived(
+        orderId: string,
+        headers: object,
+    ): Promise<OrderReceivedResponseInterface> {
+        return new Promise<OrderReceivedResponseInterface>((resolve) => {
+            const endpoint =
+                this.endpoints.orderReceived + `?order_id=${orderId}`;
+            const requestOptions: RequestInit = {
+                method: HttpMethodsEnum.POST,
+                headers: Object.assign(headers, {
+                    'Content-Type': MimeTypesEnum.APPLICATION_JSON,
+                }),
+            };
+
+            fetch(endpoint, requestOptions)
+                .then((response) => response.json())
+                .then((result: OrderReceivedResponseInterface) => {
                     if (!this.mockDelay) resolve(result);
                     else
                         setTimeout(() => {

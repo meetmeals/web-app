@@ -1,4 +1,4 @@
-import { ApiResponse } from 'models/common';
+import { ApiResponse, NullableString } from 'models/common';
 
 export interface SurfingRequestInterface {
     customer_latitude?: number;
@@ -43,6 +43,7 @@ export interface SurfingPackageItem {
     end_time_str: string;
     status: number;
     package_finished_time: string;
+    satisfaction: NullableString;
     distance: number;
     is_like: number;
 }

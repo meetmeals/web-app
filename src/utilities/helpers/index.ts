@@ -8,3 +8,5 @@ export function debounce(fn: Function, delayMs = 100) {
         timeout = setTimeout(() => fn.apply(this, args), delayMs);
     };
 }
+
+export const isTouchDevice = 'ontouchstart' in document.documentElement;

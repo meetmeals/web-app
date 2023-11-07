@@ -4,6 +4,7 @@ import {
     OrderSubmitRequestInterface,
     OrderDetailsRequestInterface,
     OrderDetailsResponseInterface,
+    OrderReceivedResponseInterface,
 } from 'models/orders';
 
 /**
@@ -27,4 +28,8 @@ export interface OrdersApiClientInterface {
         body: OrderDetailsRequestInterface,
         headers: object,
     ) => Promise<OrderDetailsResponseInterface>;
+    orderReceived: (
+        orderId: string,
+        headers: object,
+    ) => Promise<OrderReceivedResponseInterface>;
 }

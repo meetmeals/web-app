@@ -53,6 +53,8 @@ function List() {
         React.useState<string>(DEFAULT_NATIONALITY);
     const [customerPreference, setCustomerPreference] =
         React.useState<CustomerPreference>(CustomerPreference.Other);
+    const [onlyAvailablePackages, setOnlyAvailablePackages] =
+        React.useState<number>(1);
     const { isLoggedIn, token } = useSelector((root: RootState) => root.user);
     const { location, error } = useLocation();
 
@@ -80,14 +82,16 @@ function List() {
                         start_time: formatDeliveryTime(deliveryTime.min),
                         end_time: formatDeliveryTime(deliveryTime.max),
                         package_type: packageType === 0 ? [] : [packageType],
+                        not_available_packages:
+                            onlyAvailablePackages === 1 ? 0 : 1,
                         ...(!error &&
                             location.latitude && {
-                            customer_latitude: location.latitude,
-                        }),
+                                customer_latitude: location.latitude,
+                            }),
                         ...(!error &&
                             location.longitude && {
-                            customer_longitude: location.longitude,
-                        }),
+                                customer_longitude: location.longitude,
+                            }),
                     },
                     {
                         Authorization: `Bearer ${token}`,
@@ -168,6 +172,7 @@ function List() {
     function handleCancel() {
         // Reset search params
         setFilterSectionOpen(false);
+        setOnlyAvailablePackages(1);
         setDeliveryTime({ min: MIN_DELIVERY_RANGE, max: MAX_DELIVERY_RANGE });
         setNationality(DEFAULT_NATIONALITY);
         handleVegType(CustomerPreference.Other);
@@ -296,6 +301,35 @@ function List() {
                     <p className={styles['container__bottom-sidebar__header']}>
                         {t('app.advancedSearch')}
                     </p>
+                    <div
+                        className={
+                            styles['container__bottom-sidebar__availability']
+                        }
+                    >
+                        <p>{t('app.onlyAvailablePackages')}</p>
+                        <label className={styles.switch}>
+                            <input
+                                type="checkbox"
+                                checked={onlyAvailablePackages === 1}
+                                onChange={(e) =>
+                                    setOnlyAvailablePackages(
+                                        e.target.checked ? 1 : 0,
+                                    )
+                                }
+                            />
+                            <span
+                                className={classNames(
+                                    styles.slider,
+                                    styles.round,
+                                )}
+                            ></span>
+                        </label>
+                    </div>
+                    <div
+                        className={
+                            styles['container__bottom-sidebar__separator']
+                        }
+                    />
                     <div
                         className={
                             styles['container__bottom-sidebar__delivery-time']

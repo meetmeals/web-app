@@ -12,6 +12,7 @@ const options: OrdersApiClientOptions = {
         orderNewList: ordersBaseUrl + '/order-buying-list',
         orderOldList: ordersBaseUrl + '/order-bought-list',
         orderDetail: ordersBaseUrl + '/order-detail',
+        orderReceived: ordersBaseUrl + '/receive-order',
     },
 };
 

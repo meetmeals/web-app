@@ -24,7 +24,11 @@ const getEmailSchema = (t: TFunction) =>
         .max(255)
         .required(t('validations.emailRequired') as string);
 
-function ContactUs() {
+type DesktopContactUsProps = {
+    language: string;
+};
+
+function DesktopContactUs(props: DesktopContactUsProps) {
     const [email, setEmail] = React.useState<string>('');
     const [emailError, setEmailError] = React.useState<string>('');
     const [helpText, setHelpText] = React.useState<ConstantTextResponseData>();
@@ -164,8 +168,12 @@ function ContactUs() {
                     >
                         {issueTitleId > 0
                             ? helpText?.help_title.find(
-                                (issue) => issue.id === issueTitleId,
-                            )?.text
+                                  (issue) => issue.id === issueTitleId,
+                              )?.[
+                                  props.language === 'en'
+                                      ? 'en_title'
+                                      : 'nl_title'
+                              ]
                             : t('contactUs.selectIssue')}
                     </p>
                     {isIssueSelectOpen && (
@@ -200,7 +208,9 @@ function ContactUs() {
                                                 setIssueSelectOpen(false);
                                             }}
                                         >
-                                            {issue.text}
+                                            {props.language === 'en'
+                                                ? issue.en_title
+                                                : issue.nl_title}
                                         </p>
                                     ))}
                                 </div>
@@ -218,12 +228,16 @@ function ContactUs() {
                         >
                             {problemId > 0
                                 ? helpText?.help_title
-                                    .find(
-                                        (issue) => issue.id === issueTitleId,
-                                    )
-                                    ?.subject.find(
-                                        (subject) => subject.id === problemId,
-                                    )?.fa_title
+                                      .find(
+                                          (issue) => issue.id === issueTitleId,
+                                      )
+                                      ?.subject.find(
+                                          (subject) => subject.id === problemId,
+                                      )?.[
+                                      props.language === 'en'
+                                          ? 'fa_title'
+                                          : 'nl_title'
+                                  ]
                                 : t('contactUs.chooseProblem')}
                         </p>
                         {isProblemSelectOpen && (
@@ -272,7 +286,9 @@ function ContactUs() {
                                                         );
                                                     }}
                                                 >
-                                                    {subject.fa_title}
+                                                    {props.language === 'en'
+                                                        ? subject.fa_title
+                                                        : subject.nl_title}
                                                 </p>
                                             ))}
                                     </div>
@@ -348,4 +364,4 @@ function ContactUs() {
     );
 }
 
-export default ContactUs;
+export default DesktopContactUs;

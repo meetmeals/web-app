@@ -20,7 +20,7 @@ import {
  * @description Implements the SatisfactionsApiClientInterface
  */
 export class SatisfactionsApiClientModel
-implements SatisfactionsApiClientInterface
+    implements SatisfactionsApiClientInterface
 {
     private readonly endpoints!: SatisfactionsApiClientEndpoints;
     private readonly mockDelay: number = 0;
@@ -101,7 +101,7 @@ implements SatisfactionsApiClientInterface
         return new Promise<SatisfactionDescResponseInterface>((resolve) => {
             const endpoint = this.endpoints.satisfactionDesc;
             const requestOptions: RequestInit = {
-                method: HttpMethodsEnum.GET,
+                method: HttpMethodsEnum.POST,
                 headers: Object.assign(headers, {
                     'Content-Type': MimeTypesEnum.APPLICATION_JSON,
                 }),
