@@ -168,12 +168,12 @@ function MobileContactUs(props: MobileContactUsProps) {
                     >
                         {issueTitleId > 0
                             ? helpText?.help_title.find(
-                                  (issue) => issue.id === issueTitleId,
-                              )?.[
-                                  props.language === 'en'
-                                      ? 'en_title'
-                                      : 'nl_title'
-                              ]
+                                (issue) => issue.id === issueTitleId,
+                            )?.[
+                                props.language === 'en'
+                                    ? 'en_title'
+                                    : 'nl_title'
+                            ]
                             : t('contactUs.selectIssue')}
                     </p>
                     <BottomSidebar
@@ -238,16 +238,16 @@ function MobileContactUs(props: MobileContactUsProps) {
                         >
                             {problemId > 0
                                 ? helpText?.help_title
-                                      .find(
-                                          (issue) => issue.id === issueTitleId,
-                                      )
-                                      ?.subject.find(
-                                          (subject) => subject.id === problemId,
-                                      )?.[
-                                      props.language === 'en'
-                                          ? 'fa_title'
-                                          : 'nl_title'
-                                  ]
+                                    .find(
+                                        (issue) => issue.id === issueTitleId,
+                                    )
+                                    ?.subject.find(
+                                        (subject) => subject.id === problemId,
+                                    )?.[
+                                        props.language === 'en'
+                                            ? 'fa_title'
+                                            : 'nl_title'
+                                    ]
                                 : t('contactUs.chooseProblem')}
                         </p>
                         <BottomSidebar

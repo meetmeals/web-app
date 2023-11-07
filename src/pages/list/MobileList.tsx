@@ -86,12 +86,12 @@ function List() {
                             onlyAvailablePackages === 1 ? 0 : 1,
                         ...(!error &&
                             location.latitude && {
-                                customer_latitude: location.latitude,
-                            }),
+                            customer_latitude: location.latitude,
+                        }),
                         ...(!error &&
                             location.longitude && {
-                                customer_longitude: location.longitude,
-                            }),
+                            customer_longitude: location.longitude,
+                        }),
                     },
                     {
                         Authorization: `Bearer ${token}`,

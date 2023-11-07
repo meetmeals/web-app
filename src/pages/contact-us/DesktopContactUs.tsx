@@ -168,12 +168,12 @@ function DesktopContactUs(props: DesktopContactUsProps) {
                     >
                         {issueTitleId > 0
                             ? helpText?.help_title.find(
-                                  (issue) => issue.id === issueTitleId,
-                              )?.[
-                                  props.language === 'en'
-                                      ? 'en_title'
-                                      : 'nl_title'
-                              ]
+                                (issue) => issue.id === issueTitleId,
+                            )?.[
+                                props.language === 'en'
+                                    ? 'en_title'
+                                    : 'nl_title'
+                            ]
                             : t('contactUs.selectIssue')}
                     </p>
                     {isIssueSelectOpen && (
@@ -228,16 +228,16 @@ function DesktopContactUs(props: DesktopContactUsProps) {
                         >
                             {problemId > 0
                                 ? helpText?.help_title
-                                      .find(
-                                          (issue) => issue.id === issueTitleId,
-                                      )
-                                      ?.subject.find(
-                                          (subject) => subject.id === problemId,
-                                      )?.[
-                                      props.language === 'en'
-                                          ? 'fa_title'
-                                          : 'nl_title'
-                                  ]
+                                    .find(
+                                        (issue) => issue.id === issueTitleId,
+                                    )
+                                    ?.subject.find(
+                                        (subject) => subject.id === problemId,
+                                    )?.[
+                                        props.language === 'en'
+                                            ? 'fa_title'
+                                            : 'nl_title'
+                                    ]
                                 : t('contactUs.chooseProblem')}
                         </p>
                         {isProblemSelectOpen && (

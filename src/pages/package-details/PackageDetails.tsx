@@ -133,8 +133,8 @@ function PackageDetails() {
             operation === '-'
                 ? prev - 1
                 : prev === info.remaining
-                ? prev
-                : prev + 1,
+                    ? prev
+                    : prev + 1,
         );
     }
 
@@ -305,9 +305,9 @@ function PackageDetails() {
                             {info.status == 3
                                 ? `${info.status} ${t('app.remaining')}`
                                 : t(
-                                      PackageViewStatus[info.status.toString()]
-                                          .transKey,
-                                  )}
+                                    PackageViewStatus[info.status.toString()]
+                                        .transKey,
+                                )}
                         </span>
                     )}
                 </div>
@@ -374,8 +374,8 @@ function PackageDetails() {
                             {isPackageDisabled
                                 ? t('app.nothingForTomorrow')
                                 : `${t('app.tomorrow')} ${t('app.from')} ${
-                                      info.startTime
-                                  } ${t('app.to')} ${info.endTime}`}
+                                    info.startTime
+                                } ${t('app.to')} ${info.endTime}`}
                         </span>
                     </div>
                 </div>
@@ -391,79 +391,79 @@ function PackageDetails() {
                 </div>
                 {typeof satisfaction?.total_opinion_count === 'number' &&
                     satisfaction.total_opinion_count > 0 && (
-                        <div className={styles['container__body__comments']}>
-                            <h2>{t('packageInfo.whatOthersSay')}</h2>
-                            <section
-                                className={
-                                    styles['container__body__comments__box']
-                                }
-                            >
-                                <div>
-                                    <p>{t('packageInfo.generalRating')}</p>
-                                    <StarRating
-                                        rating={
-                                            satisfaction?.total_text
-                                                ? +satisfaction.total_text
-                                                : 0
-                                        }
-                                        setRating={() => {}}
-                                    />
-                                </div>
-                                <div>
-                                    <p>{t('packageInfo.foodQuality')}</p>
-                                    <StarRating
-                                        rating={
-                                            satisfaction?.food_quality
-                                                ? +satisfaction.food_quality
-                                                : 0
-                                        }
-                                        setRating={() => {}}
-                                    />
-                                </div>
-                            </section>
-                            <section
-                                className={
-                                    styles['container__body__comments__box']
-                                }
-                            >
-                                <div>
-                                    <p>{t('packageInfo.foodVolume')}</p>
-                                    <StarRating
-                                        rating={
-                                            satisfaction?.food_volume
-                                                ? +satisfaction.food_volume
-                                                : 0
-                                        }
-                                        setRating={() => {}}
-                                    />
-                                </div>
-                                <div>
-                                    <p>{t('packageInfo.sellerEncounter')}</p>
-                                    <StarRating
-                                        rating={
-                                            satisfaction?.seller_encounter
-                                                ? +satisfaction.seller_encounter
-                                                : 0
-                                        }
-                                        setRating={() => {}}
-                                    />
-                                </div>
-                            </section>
-                            <section
-                                className={
-                                    styles['container__body__comments__count']
-                                }
-                            >
-                                {t('packageInfo.outOf', {
-                                    count: satisfaction?.total_opinion_count,
-                                    s:
+                    <div className={styles['container__body__comments']}>
+                        <h2>{t('packageInfo.whatOthersSay')}</h2>
+                        <section
+                            className={
+                                styles['container__body__comments__box']
+                            }
+                        >
+                            <div>
+                                <p>{t('packageInfo.generalRating')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.total_text
+                                            ? +satisfaction.total_text
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                            <div>
+                                <p>{t('packageInfo.foodQuality')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.food_quality
+                                            ? +satisfaction.food_quality
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                        </section>
+                        <section
+                            className={
+                                styles['container__body__comments__box']
+                            }
+                        >
+                            <div>
+                                <p>{t('packageInfo.foodVolume')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.food_volume
+                                            ? +satisfaction.food_volume
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                            <div>
+                                <p>{t('packageInfo.sellerEncounter')}</p>
+                                <StarRating
+                                    rating={
+                                        satisfaction?.seller_encounter
+                                            ? +satisfaction.seller_encounter
+                                            : 0
+                                    }
+                                    setRating={() => {}}
+                                />
+                            </div>
+                        </section>
+                        <section
+                            className={
+                                styles['container__body__comments__count']
+                            }
+                        >
+                            {t('packageInfo.outOf', {
+                                count: satisfaction?.total_opinion_count,
+                                s:
                                         satisfaction?.total_opinion_count > 0
                                             ? 's'
                                             : '',
-                                })}
-                            </section>
-                        </div>
-                    )}
+                            })}
+                        </section>
+                    </div>
+                )}
                 <div className={styles['container__body__location']}>
                     <MapContainer
                         center={[

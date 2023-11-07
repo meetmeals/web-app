@@ -129,8 +129,8 @@ function PackageCard(props: PackageCardProps) {
                             {isPackageDisabled
                                 ? t('app.nothingForTomorrow')
                                 : `${t('app.tomorrow')} ${t('app.from')}  ${
-                                      props.deliveryStartDate
-                                  } ${t('app.to')}  ${props.deliveryEndDate}`}
+                                    props.deliveryStartDate
+                                } ${t('app.to')}  ${props.deliveryEndDate}`}
                         </span>
                     </p>
                     <p className={styles['container__body__package-info__row']}>
